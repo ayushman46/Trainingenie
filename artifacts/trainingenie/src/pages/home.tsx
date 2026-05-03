@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { Link } from "wouter";
 import { Star, CheckCircle2 } from "lucide-react";
 import heroImage from "@/assets/images/hero.png";
 import techImage from "@/assets/images/service-technical.png";
@@ -36,33 +37,39 @@ export default function Home() {
             initial="hidden" animate="show" variants={STAGGER}
             className="max-w-xl space-y-6 md:space-y-8"
           >
-            <motion.span variants={FADE_UP}
-              className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/8 px-3.5 py-1 text-[11px] font-semibold uppercase tracking-widest text-primary"
-            >
-              <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
-              India's Premier Tech Training Partner
-            </motion.span>
-
             <motion.h1 variants={FADE_UP}
-              className="text-[2.6rem] leading-[1.06] sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight"
+              className="text-[2.75rem] leading-[1.04] sm:text-5xl md:text-6xl lg:text-[5rem] font-black tracking-tight"
             >
-              Build engineering teams that ship{" "}
+              Build engineering<br />
+              teams that ship{" "}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">
                 faster.
               </span>
             </motion.h1>
 
             <motion.p variants={FADE_UP}
-              className="text-base md:text-lg text-muted-foreground leading-relaxed max-w-md"
+              className="text-base md:text-lg text-muted-foreground leading-relaxed max-w-md font-normal"
             >
               Hands-on software engineering programmes — microservices, DevOps, cloud — built around your actual codebase.
             </motion.p>
 
-            <motion.div variants={FADE_UP} className="flex flex-col xs:flex-row items-start gap-6 pt-2">
-              <CtaLink href="/contact" className="text-base md:text-lg">
-                Start a conversation
-              </CtaLink>
-              <CtaLink href="/services" variant="muted" className="text-base md:text-lg">
+            <motion.div variants={FADE_UP} className="flex flex-row flex-wrap items-center gap-5 pt-4">
+              {/* Primary CTA — bordered rectangle, fill slides up from bottom on hover */}
+              <Link href="/contact">
+                <span className="group relative inline-flex items-center gap-2.5 overflow-hidden border border-foreground/80 px-7 py-3.5 text-sm font-bold cursor-pointer select-none">
+                  {/* fill layer — slides up from bottom */}
+                  <span className="absolute inset-0 origin-bottom scale-y-0 bg-foreground group-hover:scale-y-100 transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]" />
+                  <span className="relative z-10 text-foreground group-hover:text-background transition-colors duration-200">
+                    Start a conversation
+                  </span>
+                  <span className="relative z-10 text-foreground group-hover:text-background transition-all duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
+                    ↗
+                  </span>
+                </span>
+              </Link>
+
+              {/* Secondary CTA — clean underline text link */}
+              <CtaLink href="/services" variant="muted" className="text-sm">
                 See all programmes
               </CtaLink>
             </motion.div>
