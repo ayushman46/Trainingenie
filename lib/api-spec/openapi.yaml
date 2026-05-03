@@ -3,13 +3,21 @@ info:
   # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: TraininGenie API specification
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
     description: Health operations
+  - name: contact
+    description: Contact form operations
+  - name: newsletter
+    description: Newsletter subscription operations
+  - name: testimonials
+    description: Client testimonials
+  - name: stats
+    description: Company statistics
 paths:
   /healthz:
     get:
@@ -24,6 +32,92 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  /contact:
+    post:
+      operationId: submitContact
+      tags: [contact]
+      summary: Submit contact form
+      description: Submit a contact/inquiry form from the website
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ContactFormInput"
+      responses:
+        "201":
+          description: Contact form submitted successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ContactSubmission"
+        "400":
+          description: Invalid input
+    get:
+      operationId: listContacts
+      tags: [contact]
+      summary: List all contact submissions
+      responses:
+        "200":
+          description: List of contact submissions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ContactSubmission"
+
+  /newsletter:
+    post:
+      operationId: subscribeNewsletter
+      tags: [newsletter]
+      summary: Subscribe to newsletter
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NewsletterInput"
+      responses:
+        "201":
+          description: Subscribed successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NewsletterSubscription"
+        "400":
+          description: Invalid input or already subscribed
+
+  /testimonials:
+    get:
+      operationId: listTestimonials
+      tags: [testimonials]
+      summary: List client testimonials
+      responses:
+        "200":
+          description: List of testimonials
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Testimonial"
+
+  /stats:
+    get:
+      operationId: getCompanyStats
+      tags: [stats]
+      summary: Get company statistics
+      description: Returns aggregate stats like clients trained, courses delivered, satisfaction rate
+      responses:
+        "200":
+          description: Company statistics
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CompanyStats"
+
 components:
   schemas:
     HealthStatus:
@@ -34,3 +128,129 @@ components:
       required:
         - status
 
+    ContactFormInput:
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+          format: email
+        company:
+          type: string
+        phone:
+          type: string
+        service:
+          type: string
+          description: Service they are interested in
+        message:
+          type: string
+      required:
+        - name
+        - email
+        - message
+
+    ContactSubmission:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        email:
+          type: string
+        company:
+          type: string
+        phone:
+          type: string
+        service:
+          type: string
+        message:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - name
+        - email
+        - message
+        - createdAt
+
+    NewsletterInput:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        name:
+          type: string
+      required:
+        - email
+
+    NewsletterSubscription:
+      type: object
+      properties:
+        id:
+          type: integer
+        email:
+          type: string
+        name:
+          type: string
+        subscribedAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - email
+        - subscribedAt
+
+    Testimonial:
+      type: object
+      properties:
+        id:
+          type: integer
+        clientName:
+          type: string
+        clientRole:
+          type: string
+        clientCompany:
+          type: string
+        quote:
+          type: string
+        rating:
+          type: integer
+        industry:
+          type: string
+        avatarUrl:
+          type: string
+      required:
+        - id
+        - clientName
+        - clientRole
+        - clientCompany
+        - quote
+        - rating
+
+    CompanyStats:
+      type: object
+      properties:
+        clientsTrained:
+          type: integer
+        coursesDelivered:
+          type: integer
+        satisfactionRate:
+          type: number
+        yearsOfExperience:
+          type: integer
+        citiesCovered:
+          type: integer
+        expertTrainers:
+          type: integer
+      required:
+        - clientsTrained
+        - coursesDelivered
+        - satisfactionRate
+        - yearsOfExperience
+        - citiesCovered
+        - expertTrainers

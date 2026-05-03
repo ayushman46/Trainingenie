@@ -1,0 +1,44 @@
+uploads = []
+outputs = []
+
+[[generated]]
+id = "VV9QF81IcQQNy21LEnVhu"
+uri = "file://artifacts/trainingenie/src/assets/images/hero.png"
+type = "image"
+title = "corporate boardroom natural light"
+
+[[generated]]
+id = "DBIG9DJRJj1REc39vRSyG"
+uri = "file://artifacts/trainingenie/src/assets/images/service-leadership.png"
+type = "image"
+title = "leadership team training"
+
+[[generated]]
+id = "qTidvuen4Ep7H2btVoipu"
+uri = "file://artifacts/trainingenie/src/assets/images/service-sales.png"
+type = "image"
+title = "sales force presentation"
+
+[[generated]]
+id = "JmwEh3YDv-x4Nd9xhkVee"
+uri = "file://artifacts/trainingenie/src/assets/images/service-soft-skills.png"
+type = "image"
+title = "soft skills workshop"
+
+[[generated]]
+id = "xD9Q7IHjuFMgiFzipKv00"
+uri = "file://artifacts/trainingenie/src/assets/images/service-technical.png"
+type = "image"
+title = "technical training session"
+
+[[generated]]
+id = "WiyumCxdOM6u7yh7_fXnw"
+uri = "file://artifacts/trainingenie/src/assets/images/service-dei.png"
+type = "image"
+title = "diverse team collaboration"
+
+[[generated]]
+id = "XoturLeURCYuTx3qrxPRF"
+uri = "file://artifacts/trainingenie/src/assets/images/service-digital.png"
+type = "image"
+title = "AI digital upskilling"
