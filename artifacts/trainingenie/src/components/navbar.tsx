@@ -1,130 +1,111 @@
 import { Link, useLocation } from "wouter";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useMotionValueEvent } from "framer-motion";
 import { Menu, X } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { COMPANY_NAME, NAV_LINKS } from "@/data";
 
 export function Navbar() {
   const [location] = useLocation();
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen,     setIsOpen]     = useState(false);
+  const [scrolled,   setScrolled]   = useState(false);
   const { scrollY } = useScroll();
 
-  // Transparent at top, frosted glass as you scroll
-  const backgroundColor = useTransform(
-    scrollY,
-    [0, 80],
-    ["rgba(255,255,255,0)", "rgba(255,255,255,0.92)"]
-  );
-  const backdropFilter = useTransform(
-    scrollY,
-    [0, 80],
-    ["blur(0px)", "blur(14px)"]
-  );
-  const borderBottom = useTransform(
-    scrollY,
-    [0, 80],
-    ["1px solid rgba(226,232,240,0)", "1px solid rgba(226,232,240,1)"]
-  );
-
-  // Close mobile menu on navigation
-  useEffect(() => {
-    setIsOpen(false);
-  }, [location]);
+  // Swap classes instead of animated inline styles — avoids re-renders
+  useMotionValueEvent(scrollY, "change", (y) => setScrolled(y > 60));
 
   return (
-    <motion.header
-      style={{ backgroundColor, backdropFilter, borderBottom }}
-      className="fixed top-0 left-0 right-0 z-50"
+    <header
+      className={cn(
+        "fixed top-0 inset-x-0 z-50 transition-all duration-300",
+        scrolled
+          ? "bg-background/90 backdrop-blur-md border-b border-border shadow-sm"
+          : "bg-transparent border-b border-transparent"
+      )}
     >
-      <div className="container mx-auto px-4 md:px-6 h-20 flex items-center justify-between">
+      <div className="container mx-auto px-5 md:px-8 h-18 flex items-center justify-between" style={{ height: "4.5rem" }}>
+
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2 group">
-          <div className="w-9 h-9 bg-primary rounded-lg flex items-center justify-center text-primary-foreground font-bold text-lg group-hover:scale-105 transition-transform">
+          <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center text-primary-foreground font-bold text-sm group-hover:scale-105 transition-transform">
             T
           </div>
-          <span className="font-bold text-lg tracking-tight text-foreground group-hover:text-primary transition-colors">
+          <span className="font-bold text-base tracking-tight group-hover:text-primary transition-colors">
             {COMPANY_NAME}
           </span>
         </Link>
 
         {/* Desktop nav */}
-        <nav className="hidden md:flex items-center gap-8">
+        <nav className="hidden md:flex items-center gap-7">
           {NAV_LINKS.map((link) => (
             <Link
               key={link.href}
               href={link.href}
               className={cn(
-                "text-sm font-medium transition-colors hover:text-primary relative py-2",
-                location === link.href
-                  ? "text-primary"
-                  : "text-muted-foreground"
+                "relative text-sm font-medium py-1 transition-colors hover:text-foreground",
+                location === link.href ? "text-foreground" : "text-muted-foreground"
               )}
             >
+              {link.label}
               {location === link.href && (
                 <motion.span
-                  layoutId="nav-underline"
-                  className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary rounded-full"
+                  layoutId="nav-dot"
+                  className="absolute -bottom-0.5 left-0 right-0 h-[2px] rounded-full bg-primary"
+                  transition={{ type: "spring", stiffness: 380, damping: 30 }}
                 />
               )}
-              {link.label}
             </Link>
           ))}
         </nav>
 
-        {/* Desktop CTA */}
-        <div className="hidden md:block">
-          <Link href="/contact">
-            <Button
-              size="sm"
-              className="rounded-full px-6 font-semibold shadow-md hover:shadow-lg transition-all hover:-translate-y-0.5"
-            >
+        {/* CTA + mobile toggle */}
+        <div className="flex items-center gap-3">
+          <Link href="/contact" className="hidden md:block">
+            <Button size="sm" className="rounded-full px-5 font-semibold">
               Let's Talk
             </Button>
           </Link>
-        </div>
 
-        {/* Mobile toggle */}
-        <button
-          className="md:hidden p-2 text-foreground"
-          onClick={() => setIsOpen((v) => !v)}
-          aria-label="Toggle navigation"
-        >
-          {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-        </button>
+          <button
+            className="md:hidden p-1.5 rounded-lg text-foreground hover:bg-muted transition-colors"
+            onClick={() => setIsOpen((v) => !v)}
+            aria-label="Toggle menu"
+          >
+            {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </button>
+        </div>
       </div>
 
       {/* Mobile drawer */}
       {isOpen && (
         <motion.div
-          initial={{ opacity: 0, y: -12 }}
+          initial={{ opacity: 0, y: -8 }}
           animate={{ opacity: 1, y: 0 }}
-          className="absolute top-20 left-0 right-0 bg-background border-b border-border shadow-xl md:hidden py-4 px-6 flex flex-col gap-3"
+          exit={{ opacity: 0, y: -8 }}
+          transition={{ duration: 0.2 }}
+          className="md:hidden bg-background border-b border-border px-5 pb-5 pt-2 flex flex-col gap-1"
+          onClick={() => setIsOpen(false)}
         >
           {NAV_LINKS.map((link) => (
             <Link
               key={link.href}
               href={link.href}
               className={cn(
-                "text-base font-medium py-2",
-                location === link.href
-                  ? "text-primary"
-                  : "text-muted-foreground"
+                "block py-3 text-base font-medium border-b border-border/50 last:border-0 transition-colors",
+                location === link.href ? "text-primary" : "text-muted-foreground"
               )}
             >
               {link.label}
             </Link>
           ))}
-          <div className="pt-3 border-t border-border">
-            <Link href="/contact" className="block w-full">
-              <Button size="lg" className="w-full rounded-full">
-                Let's Talk
-              </Button>
+          <div className="pt-3">
+            <Link href="/contact">
+              <Button className="w-full rounded-full font-semibold">Let's Talk</Button>
             </Link>
           </div>
         </motion.div>
       )}
-    </motion.header>
+    </header>
   );
 }
