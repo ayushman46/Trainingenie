@@ -1,5 +1,4 @@
 uploads = []
-outputs = []
 
 [[generated]]
 id = "VV9QF81IcQQNy21LEnVhu"
@@ -42,3 +41,9 @@ id = "XoturLeURCYuTx3qrxPRF"
 uri = "file://artifacts/trainingenie/src/assets/images/service-digital.png"
 type = "image"
 title = "AI digital upskilling"
+
+[[outputs]]
+id = "vwslAL8XHV3XKaUuuQ6ov"
+uri = "file://artifacts/trainingenie/README.md"
+type = "text"
+title = "TraininGenie — README"

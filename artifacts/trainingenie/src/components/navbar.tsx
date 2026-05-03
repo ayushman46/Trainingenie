@@ -1,3 +1,27 @@
+// ─────────────────────────────────────────────────────────────────────────────
+// LOGO CONFIGURATION
+// ─────────────────────────────────────────────────────────────────────────────
+//
+// To use your own company logo:
+//
+//   STEP 1 — Place your logo file here:
+//              artifacts/trainingenie/public/logo.png
+//            (also works with .svg, .webp, .jpg)
+//
+//   STEP 2 — Uncomment the line below that imports the logo:
+//              import companyLogo from "/logo.png";
+//            (the leading "/" means it's served from the public/ folder)
+//
+//   STEP 3 — In the JSX below, find the comment:
+//              {/* ── LOGO: swap between image logo and lettermark ── */}
+//            and follow the swap instructions there.
+//
+//   The navbar currently shows the "T" lettermark as a fallback.
+//   Once you add your logo file and uncomment the import, swap as shown.
+// ─────────────────────────────────────────────────────────────────────────────
+
+// import companyLogo from "/logo.png"; // ← STEP 2: uncomment this line
+
 import { Link, useLocation } from "wouter";
 import { cn } from "@/lib/utils";
 import { motion, useMotionValueEvent, useScroll } from "framer-motion";
@@ -24,15 +48,34 @@ export function Navbar() {
     >
       <div className="container mx-auto px-5 sm:px-6 md:px-10 flex h-[72px] items-center justify-between">
 
-        {/* Logo */}
-        <Link href="/" className="flex items-center gap-2 group">
+        {/* ── LOGO: swap between image logo and lettermark ── */}
+        <Link href="/" className="flex items-center gap-2.5 group">
+
+          {/* ── OPTION A (default): Lettermark fallback ──────────────────────
+              Shows a "T" box + company name. Used when no logo image exists.
+              DELETE or comment out this block when you add your logo image. */}
           <div className="h-7 w-7 rounded-md bg-foreground flex items-center justify-center text-background font-black text-xs group-hover:opacity-80 transition-opacity">
             T
           </div>
           <span className="font-bold text-sm tracking-tight group-hover:opacity-70 transition-opacity">
             {COMPANY_NAME}
           </span>
+          {/* ── End of OPTION A ──────────────────────────────────────────── */}
+
+          {/* ── OPTION B: Image logo ─────────────────────────────────────────
+              After completing STEP 2 above, DELETE the OPTION A block above
+              and UNCOMMENT the block below.
+
+          <img
+            src={companyLogo}
+            alt={COMPANY_NAME}
+            className="h-8 w-auto object-contain group-hover:opacity-80 transition-opacity"
+          />
+
+          ── End of OPTION B ────────────────────────────────────────────── */}
+
         </Link>
+        {/* ── End logo area ───────────────────────────────────────────────── */}
 
         {/* Desktop nav */}
         <nav className="hidden md:flex items-center gap-7 lg:gap-9">
@@ -55,7 +98,7 @@ export function Navbar() {
           ))}
         </nav>
 
-        {/* Desktop CTA — clean text, no arrow */}
+        {/* Desktop CTA */}
         <Link href="/contact" className="hidden md:block">
           <span className="text-sm font-semibold text-foreground hover:opacity-60 transition-opacity cursor-pointer">
             Let's Talk
