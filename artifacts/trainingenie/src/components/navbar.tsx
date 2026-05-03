@@ -18,7 +18,7 @@ export function Navbar() {
       className={cn(
         "fixed inset-x-0 top-0 z-50 transition-all duration-300",
         scrolled
-          ? "bg-background/90 backdrop-blur-lg border-b border-border"
+          ? "bg-background/92 backdrop-blur-lg border-b border-border"
           : "bg-transparent border-b border-transparent"
       )}
     >
@@ -26,20 +26,20 @@ export function Navbar() {
 
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2 group">
-          <div className="h-7 w-7 rounded-lg bg-primary flex items-center justify-center text-primary-foreground font-extrabold text-xs group-hover:scale-105 transition-transform">
+          <div className="h-7 w-7 rounded-md bg-foreground flex items-center justify-center text-background font-black text-xs group-hover:opacity-80 transition-opacity">
             T
           </div>
-          <span className="font-extrabold text-sm tracking-tight group-hover:text-primary transition-colors">
+          <span className="font-bold text-sm tracking-tight group-hover:opacity-70 transition-opacity">
             {COMPANY_NAME}
           </span>
         </Link>
 
         {/* Desktop nav */}
-        <nav className="hidden md:flex items-center gap-6 lg:gap-8">
+        <nav className="hidden md:flex items-center gap-7 lg:gap-9">
           {NAV_LINKS.map((link) => (
             <Link key={link.href} href={link.href}
               className={cn(
-                "relative text-sm font-semibold py-1 transition-colors hover:text-foreground",
+                "relative text-sm font-medium py-1 transition-colors hover:text-foreground",
                 location === link.href ? "text-foreground" : "text-muted-foreground"
               )}
             >
@@ -47,23 +47,19 @@ export function Navbar() {
               {location === link.href && (
                 <motion.span
                   layoutId="nav-line"
-                  className="absolute -bottom-0.5 left-0 right-0 h-[2px] rounded-full bg-primary"
-                  transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                  className="absolute -bottom-0.5 left-0 right-0 h-[1.5px] rounded-full bg-foreground"
+                  transition={{ type: "spring", stiffness: 380, damping: 30 }}
                 />
               )}
             </Link>
           ))}
         </nav>
 
-        {/* Desktop CTA */}
+        {/* Desktop CTA — clean text, no arrow */}
         <Link href="/contact" className="hidden md:block">
-          <motion.span
-            whileHover={{ scale: 1.04 }}
-            whileTap={{ scale: 0.97 }}
-            className="inline-flex items-center gap-1.5 text-sm font-bold text-primary cursor-pointer"
-          >
-            Let's Talk ↗
-          </motion.span>
+          <span className="text-sm font-semibold text-foreground hover:opacity-60 transition-opacity cursor-pointer">
+            Let's Talk
+          </span>
         </Link>
 
         {/* Mobile toggle */}
@@ -72,7 +68,7 @@ export function Navbar() {
           onClick={() => setOpen((v) => !v)}
           aria-label="Toggle menu"
         >
-          <motion.div animate={{ rotate: open ? 90 : 0 }} transition={{ duration: 0.2 }}>
+          <motion.div animate={{ rotate: open ? 90 : 0 }} transition={{ duration: 0.18 }}>
             {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </motion.div>
         </button>
@@ -82,25 +78,25 @@ export function Navbar() {
       <motion.div
         initial={false}
         animate={open ? { height: "auto", opacity: 1 } : { height: 0, opacity: 0 }}
-        transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
+        transition={{ duration: 0.26, ease: [0.16, 1, 0.3, 1] }}
         className="overflow-hidden md:hidden bg-background border-b border-border"
       >
-        <div className="px-5 pt-2 pb-5 flex flex-col gap-0.5">
+        <div className="px-5 pt-2 pb-6 flex flex-col gap-0.5">
           {NAV_LINKS.map((link) => (
             <Link key={link.href} href={link.href}
               onClick={() => setOpen(false)}
               className={cn(
-                "py-3 text-base font-semibold border-b border-border/40 last:border-0 transition-colors",
-                location === link.href ? "text-primary" : "text-muted-foreground"
+                "py-3 text-base font-medium border-b border-border/40 last:border-0 transition-colors",
+                location === link.href ? "text-foreground" : "text-muted-foreground"
               )}
             >
               {link.label}
             </Link>
           ))}
           <Link href="/contact" onClick={() => setOpen(false)}
-            className="mt-4 text-base font-bold text-primary"
+            className="mt-4 text-base font-bold text-foreground"
           >
-            Let's Talk ↗
+            Let's Talk
           </Link>
         </div>
       </motion.div>

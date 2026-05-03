@@ -53,23 +53,19 @@ export default function Home() {
               Hands-on software engineering programmes — microservices, DevOps, cloud — built around your actual codebase.
             </motion.p>
 
-            <motion.div variants={FADE_UP} className="flex flex-row flex-wrap items-center gap-5 pt-4">
-              {/* Primary CTA — bordered rectangle, fill slides up from bottom on hover */}
+            <motion.div variants={FADE_UP} className="flex flex-row flex-wrap items-center gap-6 pt-4">
+              {/* Primary CTA — sharp bordered box, fill slides up on hover */}
               <Link href="/contact">
-                <span className="group relative inline-flex items-center gap-2.5 overflow-hidden border border-foreground/80 px-7 py-3.5 text-sm font-bold cursor-pointer select-none">
-                  {/* fill layer — slides up from bottom */}
+                <span className="group relative inline-flex items-center overflow-hidden border border-foreground/70 px-8 py-3 text-sm font-bold cursor-pointer select-none tracking-wide">
                   <span className="absolute inset-0 origin-bottom scale-y-0 bg-foreground group-hover:scale-y-100 transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]" />
                   <span className="relative z-10 text-foreground group-hover:text-background transition-colors duration-200">
                     Start a conversation
                   </span>
-                  <span className="relative z-10 text-foreground group-hover:text-background transition-all duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
-                    ↗
-                  </span>
                 </span>
               </Link>
 
-              {/* Secondary CTA — clean underline text link */}
-              <CtaLink href="/services" variant="muted" className="text-sm">
+              {/* Secondary CTA — underline text link, no arrow */}
+              <CtaLink href="/services" variant="muted" className="text-sm tracking-wide">
                 See all programmes
               </CtaLink>
             </motion.div>
