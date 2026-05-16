@@ -1,0 +1,107 @@
+npm warn Unknown project config "auto-install-peers". This will stop working in the next major version of npm.
+npm warn Unknown project config "strict-peer-dependencies". This will stop working in the next major version of npm.
+
+> workspace@0.0.0 build
+> npm run typecheck && npm run build --workspaces --if-present
+
+npm warn Unknown project config "auto-install-peers". This will stop working in the next major version of npm.
+npm warn Unknown project config "strict-peer-dependencies". This will stop working in the next major version of npm.
+
+> workspace@0.0.0 typecheck
+> npm run typecheck:libs && npm run typecheck --workspaces --if-present
+
+npm warn Unknown project config "auto-install-peers". This will stop working in the next major version of npm.
+npm warn Unknown project config "strict-peer-dependencies". This will stop working in the next major version of npm.
+
+> workspace@0.0.0 typecheck:libs
+> tsc --build
+
+npm warn Unknown project config "auto-install-peers". This will stop working in the next major version of npm.
+npm warn Unknown project config "strict-peer-dependencies". This will stop working in the next major version of npm.
+
+> @workspace/api-server@0.0.0 typecheck
+> tsc -p tsconfig.json --noEmit
+
+
+> @workspace/mockup-sandbox@2.0.0 typecheck
+> tsc -p tsconfig.json --noEmit
+
+
+> @workspace/trainingenie@0.0.0 typecheck
+> tsc -p tsconfig.json --noEmit
+
+
+> @workspace/scripts@0.0.0 typecheck
+> tsc -p tsconfig.json --noEmit
+
+npm warn Unknown project config "auto-install-peers". This will stop working in the next major version of npm.
+npm warn Unknown project config "strict-peer-dependencies". This will stop working in the next major version of npm.
+
+> @workspace/api-server@0.0.0 build
+> node ./build.mjs
+
+
+  dist/index.mjs                       2.2mb ⚠️
+  dist/pino-worker.mjs               150.9kb
+  dist/pino-file.mjs                 139.9kb
+  dist/pino-pretty.mjs               111.6kb
+  dist/thread-stream-worker.mjs        7.1kb
+  dist/index.mjs.map                   3.7mb
+  dist/pino-worker.mjs.map           255.6kb
+  dist/pino-file.mjs.map             228.0kb
+  dist/pino-pretty.mjs.map           202.4kb
+  dist/thread-stream-worker.mjs.map   11.9kb
+
+⚡ Done in 105ms
+
+> @workspace/mockup-sandbox@2.0.0 build
+> vite build
+
+failed to load config from /Users/ayush/Downloads/traininggenie/Trainingenie/artifacts/mockup-sandbox/vite.config.ts
+error during build:
+Error: PORT environment variable is required but was not provided.
+    at file:///Users/ayush/Downloads/traininggenie/Trainingenie/node_modules/.vite-temp/vite.config.ts.timestamp-1778943586929-451b344a17d7f.mjs:145:9
+    at ModuleJob.run (node:internal/modules/esm/module_job:377:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:689:26)
+    at async loadConfigFromBundledFile (file:///Users/ayush/Downloads/traininggenie/Trainingenie/node_modules/vite/dist/node/chunks/config.js:35936:12)
+    at async bundleAndLoadConfigFile (file:///Users/ayush/Downloads/traininggenie/Trainingenie/node_modules/vite/dist/node/chunks/config.js:35824:17)
+    at async loadConfigFromFile (file:///Users/ayush/Downloads/traininggenie/Trainingenie/node_modules/vite/dist/node/chunks/config.js:35791:42)
+    at async resolveConfig (file:///Users/ayush/Downloads/traininggenie/Trainingenie/node_modules/vite/dist/node/chunks/config.js:35440:22)
+    at async createBuilder (file:///Users/ayush/Downloads/traininggenie/Trainingenie/node_modules/vite/dist/node/chunks/config.js:33895:19)
+    at async CAC.<anonymous> (file:///Users/ayush/Downloads/traininggenie/Trainingenie/node_modules/vite/dist/node/cli.js:629:10)
+npm error Lifecycle script `build` failed with error:
+npm error code 1
+npm error path /Users/ayush/Downloads/traininggenie/Trainingenie/artifacts/mockup-sandbox
+npm error workspace @workspace/mockup-sandbox@2.0.0
+npm error location /Users/ayush/Downloads/traininggenie/Trainingenie/artifacts/mockup-sandbox
+npm error command failed
+npm error command sh -c vite build
+
+
+> @workspace/trainingenie@0.0.0 build
+> vite build --config vite.config.ts
+
+vite v7.3.3 building client environment for production...
+transforming...
+src/components/ui/tooltip.tsx (2:0): Error when using sourcemap for reporting an error: Can't resolve original location of error.
+src/components/ui/select.tsx (2:0): Error when using sourcemap for reporting an error: Can't resolve original location of error.
+src/components/ui/label.tsx (2:0): Error when using sourcemap for reporting an error: Can't resolve original location of error.
+✓ 2249 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/public/index.html                                   0.73 kB │ gzip:   0.41 kB
+dist/public/assets/service-sales-Ta_UJXVQ.png        1,382.80 kB
+dist/public/assets/service-soft-skills-D2ekbi5C.png  1,400.02 kB
+dist/public/assets/service-leadership-BLIKPBg4.png   1,406.01 kB
+dist/public/assets/hero-B2S_kcXm.png                 1,452.35 kB
+dist/public/assets/service-dei-BG26CJpE.png          1,485.83 kB
+dist/public/assets/service-digital-BbIGc_fG.png      1,543.70 kB
+dist/public/assets/service-technical-Cc5R74ax.png    1,645.65 kB
+dist/public/assets/index-D30lIymH.css                  112.51 kB │ gzip:  18.09 kB
+dist/public/assets/index-8nuGC4iT.js                   610.83 kB │ gzip: 192.84 kB
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 2.72s

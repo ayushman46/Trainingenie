@@ -53,12 +53,12 @@ export default function NotFound() {
           className="flex flex-col sm:flex-row justify-center gap-4"
         >
           <Link href="/">
-            <Button size="xl" className="w-full sm:w-auto text-lg h-14 px-8 rounded-full">
+            <Button size="lg" className="w-full sm:w-auto text-lg h-14 px-8 rounded-full">
               Return Home
             </Button>
           </Link>
           <Link href="/services">
-            <Button size="xl" variant="outline" className="w-full sm:w-auto text-lg h-14 px-8 rounded-full">
+            <Button size="lg" variant="outline" className="w-full sm:w-auto text-lg h-14 px-8 rounded-full">
               Explore Our Expertise
             </Button>
           </Link>

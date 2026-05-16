@@ -17,7 +17,7 @@ const queryClient = new QueryClient({
 
 // ── Dramatic page transition — blur + scale + fade ────────────────────────
 // Pages "zoom focus-pull" in and out, like a camera lens pulling focus
-const variants = {
+const variants: any = {
   initial: {
     opacity: 0,
     scale: 0.96,
