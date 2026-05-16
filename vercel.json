@@ -1,0 +1,10 @@
+{
+  "buildCommand": "npm run build -w @workspace/trainingenie",
+  "outputDirectory": "artifacts/trainingenie/dist/public",
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}
