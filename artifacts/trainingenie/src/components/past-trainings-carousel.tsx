@@ -6,17 +6,19 @@ export function PastTrainingsCarousel() {
       {/* Native horizontal scrolling container */}
       <div className="flex overflow-x-auto pb-12 pt-4 snap-x snap-mandatory gap-5 sm:gap-6 no-scrollbar">
         {PAST_TRAININGS.map((training) => (
+          /* Added flex-none and absolute widths to prevent stretching */
           <div
             key={training.id}
-            className="snap-start flex-[0_0_auto] min-w-[200px] sm:min-w-[220px] md:min-w-[240px]"
+            className="snap-start flex-none w-[280px] sm:w-[300px] md:w-[320px]"
           >
-            <div className="h-[280px] sm:h-[320px] bg-white rounded-3xl shadow-[0_8px_24px_rgb(0,0,0,0.04)] border border-[#f0f4f1] overflow-hidden flex flex-col group transition-all duration-300 hover:shadow-[0_12px_32px_rgb(0,0,0,0.08)] hover:-translate-y-1">
+            {/* Standardized height to 380px to match target design */}
+            <div className="h-[380px] bg-white rounded-3xl shadow-[0_8px_24px_rgb(0,0,0,0.04)] border border-[#f0f4f1] overflow-hidden flex flex-col group transition-all duration-300 hover:shadow-[0_12px_32px_rgb(0,0,0,0.08)] hover:-translate-y-1">
               {/* Image Section */}
               <div className="relative h-[50%] overflow-hidden bg-muted shrink-0">
                 <img
                   src={training.image}
                   alt={training.title}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-100"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent" />
 
