@@ -10,6 +10,7 @@ import About       from "@/pages/about";
 import Services    from "@/pages/services";
 import CaseStudies from "@/pages/case-studies";
 import Contact     from "@/pages/contact";
+import PastTrainings from "@/pages/past-trainings";
 
 const queryClient = new QueryClient({
   defaultOptions: { queries: { refetchOnWindowFocus: false, staleTime: 5 * 60 * 1000 } },
@@ -61,11 +62,12 @@ function AnimatedRoutes() {
         exit="exit"
       >
         <Switch location={location}>
-          <Route path="/"             component={Home} />
-          <Route path="/about"        component={About} />
-          <Route path="/services"     component={Services} />
-          <Route path="/case-studies" component={CaseStudies} />
-          <Route path="/contact"      component={Contact} />
+          <Route path="/"               component={Home} />
+          <Route path="/past-trainings" component={PastTrainings} />
+          <Route path="/about"          component={About} />
+          <Route path="/services"       component={Services} />
+          <Route path="/case-studies"   component={CaseStudies} />
+          <Route path="/contact"        component={Contact} />
           <Route component={() => (
             <div className="flex items-center justify-center min-h-screen text-muted-foreground text-lg">
               Page not found.

@@ -175,9 +175,47 @@ export const FEATURED_SERVICES = [SERVICES[0], SERVICES[1], SERVICES[6]];
 // ── Navbar links ──────────────────────────────────────────────────────────────
 export const NAV_LINKS = [
   { href: "/", label: "Home" },
-  { href: "/services", label: "Training" },
-  { href: "/case-studies", label: "Impact" },
+  { href: "/past-trainings", label: "Past Trainings" },
   { href: "/about", label: "About" },
+];
+
+// ── Past Trainings ────────────────────────────────────────────────────────────
+export const PAST_TRAININGS = [
+  {
+    id: "doc-intel",
+    title: "Multimodal Document Intelligence",
+    status: "Completed",
+    image: "https://images.unsplash.com/photo-1555949963-aa79dcee981c?auto=format&fit=crop&q=80&w=1000",
+    tags: ["Python", "TensorFlow", "Computer Vision"],
+  },
+  {
+    id: "cloud-arch",
+    title: "Distributed Cloud Architecture at Scale",
+    status: "Completed",
+    image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=1000",
+    tags: ["Kubernetes", "AWS", "Go"],
+  },
+  {
+    id: "gen-ai",
+    title: "Advanced Generative AI Models",
+    status: "Completed",
+    image: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&q=80&w=1000",
+    tags: ["PyTorch", "LLMs", "NLP"],
+  },
+  {
+    id: "data-pipes",
+    title: "Real-time Event Streaming Pipelines",
+    status: "Completed",
+    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=1000",
+    tags: ["Kafka", "Scala", "Spark"],
+  },
+  {
+    id: "sec-ops",
+    title: "Zero-Trust Security Architecture",
+    status: "Completed",
+    image: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&q=80&w=1000",
+    tags: ["Security", "Rust", "Networking"],
+  }
 ];
 
 // ── About page content ────────────────────────────────────────────────────────

@@ -1,27 +1,3 @@
-// ─────────────────────────────────────────────────────────────────────────────
-// LOGO CONFIGURATION
-// ─────────────────────────────────────────────────────────────────────────────
-//
-// To use your own company logo:
-//
-//   STEP 1 — Place your logo file here:
-//              artifacts/trainingenie/public/logo.png
-//            (also works with .svg, .webp, .jpg)
-//
-//   STEP 2 — Uncomment the line below that imports the logo:
-//              import companyLogo from "/logo.png";
-//            (the leading "/" means it's served from the public/ folder)
-//
-//   STEP 3 — In the JSX below, find the comment:
-//              {/* ── LOGO: swap between image logo and lettermark ── */}
-//            and follow the swap instructions there.
-//
-//   The navbar currently shows the "T" lettermark as a fallback.
-//   Once you add your logo file and uncomment the import, swap as shown.
-// ─────────────────────────────────────────────────────────────────────────────
-
-// import companyLogo from "/logo.png"; // ← STEP 2: uncomment this line
-
 import { Link, useLocation } from "wouter";
 import { cn } from "@/lib/utils";
 import { motion, useMotionValueEvent, useScroll } from "framer-motion";
@@ -30,84 +6,56 @@ import { useState } from "react";
 import { COMPANY_NAME, NAV_LINKS } from "@/data";
 
 export function Navbar() {
-  const [location]  = useLocation();
-  const [open,       setOpen]       = useState(false);
-  const [scrolled,   setScrolled]   = useState(false);
+  const [location] = useLocation();
+  const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const { scrollY } = useScroll();
 
-  useMotionValueEvent(scrollY, "change", (y) => setScrolled(y > 50));
+  useMotionValueEvent(scrollY, "change", (y) => setScrolled(y > 20));
 
   return (
-    <header
-      className={cn(
-        "fixed inset-x-0 top-0 z-50 transition-all duration-300",
-        scrolled
-          ? "bg-background/92 backdrop-blur-lg border-b border-border"
-          : "bg-transparent border-b border-transparent"
-      )}
-    >
-      <div className="container mx-auto px-5 sm:px-6 md:px-10 flex h-[72px] items-center justify-between">
-
-        {/* ── LOGO: swap between image logo and lettermark ── */}
-        <Link href="/" className="flex items-center gap-2.5 group">
-
-          {/* ── OPTION A (default): Lettermark fallback ──────────────────────
-              Shows a "T" box + company name. Used when no logo image exists.
-              DELETE or comment out this block when you add your logo image. */}
-          <div className="h-7 w-7 rounded-md bg-foreground flex items-center justify-center text-background font-black text-xs group-hover:opacity-80 transition-opacity">
+    <header className="fixed inset-x-0 top-4 z-50 flex justify-center px-4 transition-all duration-300">
+      {/* Outer container for the floating pill */}
+      <div 
+        className={cn(
+          "flex items-center justify-between px-3 py-2 rounded-full transition-all duration-300",
+          scrolled 
+            ? "bg-background/95 backdrop-blur-md shadow-lg border border-border/50 w-full max-w-4xl" 
+            : "bg-background/80 backdrop-blur-sm shadow-md border border-border/20 w-full max-w-4xl"
+        )}
+      >
+        {/* LOGO */}
+        <Link href="/" className="flex items-center gap-2.5 group pl-3">
+          <div className="h-8 w-8 rounded-full bg-foreground flex items-center justify-center text-background font-black text-sm group-hover:opacity-80 transition-opacity">
             T
           </div>
-          <span className="font-bold text-sm tracking-tight group-hover:opacity-70 transition-opacity">
+          <span className="font-bold text-sm tracking-tight hidden sm:block group-hover:opacity-70 transition-opacity">
             {COMPANY_NAME}
           </span>
-          {/* ── End of OPTION A ──────────────────────────────────────────── */}
-
-          {/* ── OPTION B: Image logo ─────────────────────────────────────────
-              After completing STEP 2 above, DELETE the OPTION A block above
-              and UNCOMMENT the block below.
-
-          <img
-            src={companyLogo}
-            alt={COMPANY_NAME}
-            className="h-8 w-auto object-contain group-hover:opacity-80 transition-opacity"
-          />
-
-          ── End of OPTION B ────────────────────────────────────────────── */}
-
         </Link>
-        {/* ── End logo area ───────────────────────────────────────────────── */}
 
-        {/* Desktop nav */}
-        <nav className="hidden md:flex items-center gap-7 lg:gap-9">
+        {/* Desktop Nav */}
+        <nav className="hidden md:flex items-center gap-1 bg-muted/40 rounded-full px-1.5 py-1.5">
           {NAV_LINKS.map((link) => (
             <Link key={link.href} href={link.href}
               className={cn(
-                "relative text-sm font-medium py-1 transition-colors hover:text-foreground",
-                location === link.href ? "text-foreground" : "text-muted-foreground"
+                "relative text-sm font-medium px-5 py-2.5 rounded-full transition-all hover:text-foreground",
+                location === link.href ? "text-foreground bg-background shadow-sm" : "text-muted-foreground"
               )}
             >
               {link.label}
-              {location === link.href && (
-                <motion.span
-                  layoutId="nav-line"
-                  className="absolute -bottom-0.5 left-0 right-0 h-[1.5px] rounded-full bg-foreground"
-                  transition={{ type: "spring", stiffness: 380, damping: 30 }}
-                />
-              )}
             </Link>
           ))}
+          <Link href="/contact" className="ml-1">
+            <span className="px-6 py-2.5 text-sm font-semibold bg-foreground text-background rounded-full hover:bg-foreground/90 transition-colors cursor-pointer inline-block">
+              Enquire
+            </span>
+          </Link>
         </nav>
-
-        {/* Desktop CTA */}
-        <Link href="/contact" className="hidden md:block">
-          <span className="text-sm font-semibold text-foreground hover:opacity-60 transition-opacity cursor-pointer">
-            Let's Talk
-          </span>
-        </Link>
 
         {/* Mobile toggle */}
         <button
-          className="md:hidden p-1.5 rounded-lg text-foreground hover:bg-muted transition-colors"
+          className="md:hidden p-2 rounded-full text-foreground hover:bg-muted transition-colors mr-1"
           onClick={() => setOpen((v) => !v)}
           aria-label="Toggle menu"
         >
@@ -120,26 +68,26 @@ export function Navbar() {
       {/* Mobile drawer */}
       <motion.div
         initial={false}
-        animate={open ? { height: "auto", opacity: 1 } : { height: 0, opacity: 0 }}
+        animate={open ? { height: "auto", opacity: 1, y: 0 } : { height: 0, opacity: 0, y: -10 }}
         transition={{ duration: 0.26, ease: [0.16, 1, 0.3, 1] }}
-        className="overflow-hidden md:hidden bg-background border-b border-border"
+        className="absolute top-full left-4 right-4 mt-3 overflow-hidden md:hidden bg-background rounded-2xl shadow-xl border border-border"
       >
-        <div className="px-5 pt-2 pb-6 flex flex-col gap-0.5">
+        <div className="p-3 flex flex-col gap-1">
           {NAV_LINKS.map((link) => (
             <Link key={link.href} href={link.href}
               onClick={() => setOpen(false)}
               className={cn(
-                "py-3 text-base font-medium border-b border-border/40 last:border-0 transition-colors",
-                location === link.href ? "text-foreground" : "text-muted-foreground"
+                "px-4 py-3 rounded-xl text-base font-medium transition-colors",
+                location === link.href ? "bg-muted text-foreground" : "text-muted-foreground hover:bg-muted/50 hover:text-foreground"
               )}
             >
               {link.label}
             </Link>
           ))}
           <Link href="/contact" onClick={() => setOpen(false)}
-            className="mt-4 text-base font-bold text-foreground"
+            className="mt-2 px-4 py-3 text-center rounded-xl text-base font-bold bg-foreground text-background"
           >
-            Let's Talk
+            Enquire
           </Link>
         </div>
       </motion.div>
