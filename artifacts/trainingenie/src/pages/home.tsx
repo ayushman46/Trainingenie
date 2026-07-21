@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Link } from "wouter";
-import { ArrowRight, Code2, Cloud, Shield, PlayCircle } from "lucide-react";
+import { ArrowRight, Code2, Cloud, Shield } from "lucide-react";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 const FADE_UP = {
@@ -30,24 +30,24 @@ export default function Home() {
           
           <motion.h1 
             variants={FADE_UP} initial="hidden" animate="show"
-            className="text-5xl sm:text-6xl md:text-7xl lg:text-[5.5rem] font-extrabold tracking-tight text-[#0e1726] max-w-5xl leading-[1.05]"
+            className="text-4xl sm:text-6xl md:text-7xl lg:text-[5.5rem] font-extrabold tracking-tight text-[#0e1726] max-w-5xl leading-[1.1] sm:leading-[1.05]"
           >
             Build engineering teams that <span className="text-[#313b72]">ship</span> <span className="text-[#bd6d38]">faster</span>
           </motion.h1>
 
           <motion.p 
             variants={FADE_UP} initial="hidden" animate="show" transition={{ delay: 0.1 }}
-            className="mt-8 text-lg sm:text-xl md:text-2xl text-muted-foreground max-w-3xl font-medium leading-relaxed"
+            className="mt-6 sm:mt-8 text-base sm:text-xl md:text-2xl text-muted-foreground max-w-3xl font-medium leading-relaxed px-2 sm:px-0"
           >
             Shape scattered skills into meaningful outcomes via hands-on, outcome-driven software engineering training programs.
           </motion.p>
 
           <motion.div 
             variants={FADE_UP} initial="hidden" animate="show" transition={{ delay: 0.2 }}
-            className="mt-12 flex items-center justify-center"
+            className="mt-10 sm:mt-12 flex items-center justify-center w-full px-4 sm:px-0"
           >
-            <Link href="/contact">
-              <button className="px-8 py-4 bg-[#0e1726] text-white text-base font-bold rounded-full hover:bg-black transition-all hover:scale-105 active:scale-95 shadow-lg flex items-center justify-center gap-2">
+            <Link href="/contact" className="w-full sm:w-auto">
+              <button className="w-full sm:w-auto px-8 py-4 bg-[#0e1726] text-white text-base font-bold rounded-full hover:bg-black transition-all hover:scale-105 active:scale-95 shadow-lg flex items-center justify-center gap-2">
                 Start a conversation <ArrowRight className="h-5 w-5" />
               </button>
             </Link>
@@ -59,8 +59,8 @@ export default function Home() {
       <section className="py-24 md:py-32 bg-muted/20 border-t border-border/50">
         <div className="container mx-auto px-5 sm:px-6 md:px-10">
           <motion.div 
-            initial="hidden" whileInView="show" viewport={{ once: true, margin: "-100px" }} variants={STAGGER}
-            className="grid md:grid-cols-3 gap-12 md:gap-8 lg:gap-16 max-w-6xl mx-auto"
+            initial="hidden" whileInView="show" viewport={{ once: true, margin: "-80px" }} variants={STAGGER}
+            className="grid md:grid-cols-3 gap-10 md:gap-8 lg:gap-16 max-w-6xl mx-auto"
           >
             <motion.div variants={FADE_UP} className="flex flex-col items-center text-center">
               <div className="h-16 w-16 rounded-2xl bg-primary/10 flex items-center justify-center mb-6 text-primary">

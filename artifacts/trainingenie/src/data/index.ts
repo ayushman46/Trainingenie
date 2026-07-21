@@ -10,7 +10,7 @@ export const COMPANY_DESCRIPTION =
 // ── Contact info ──────────────────────────────────────────────────────────────
 export const CONTACT_INFO = {
   address: "Level 4, Innovate Tower\nCyber City, Bengaluru\nKarnataka, India 560081",
-  email: "hello@trainingenie.com",
+  email: "ayushman.mitblr@gmail.com",
   emailPartnership: "partnerships@trainingenie.com",
   phone: "+91 80 4123 4567",
   hours: "Mon–Fri, 9:00 AM – 6:00 PM IST",

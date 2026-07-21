@@ -20,10 +20,10 @@ const VALUES = [
 
 export default function About() {
   return (
-    <div className="w-full pt-[72px] pb-24">
+    <div className="w-full pt-[72px] pb-24 overflow-hidden">
 
       {/* Hero */}
-      <section className="bg-primary text-primary-foreground py-20 md:py-28 px-5 sm:px-6 md:px-10">
+      <section className="bg-primary text-primary-foreground py-16 md:py-28 px-5 sm:px-6 md:px-10">
         <div className="container mx-auto max-w-3xl">
           <motion.h1
             initial={{ opacity: 0, y: 20, filter: "blur(8px)" }}
@@ -37,7 +37,7 @@ export default function About() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.12, duration: 0.5, ease: EASE }}
-            className="text-primary-foreground/70 text-base md:text-lg leading-relaxed max-w-xl"
+            className="text-primary-foreground/70 text-sm sm:text-base md:text-lg leading-relaxed max-w-xl"
           >
             TraininGenie was built by engineers who spent years closing skill gaps inside large Indian enterprises — and eventually decided to do it at scale.
           </motion.p>
@@ -45,7 +45,7 @@ export default function About() {
       </section>
 
       {/* Mission / Vision */}
-      <section className="py-20 md:py-28 container mx-auto px-5 sm:px-6 md:px-10">
+      <section className="py-16 md:py-28 container mx-auto px-5 sm:px-6 md:px-10">
         <div className="grid md:grid-cols-2 gap-10 md:gap-20">
           {[
             { tag: "Mission", heading: "What we're here to do.", body: MISSION },
@@ -61,7 +61,7 @@ export default function About() {
       </section>
 
       {/* Values */}
-      <section className="py-20 md:py-28 bg-muted/40">
+      <section className="py-16 md:py-28 bg-muted/40">
         <div className="container mx-auto px-5 sm:px-6 md:px-10">
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-12 leading-tight">How we operate.</h2>
           <motion.div
@@ -81,7 +81,7 @@ export default function About() {
       </section>
 
       {/* Stats */}
-      <section className="py-20 md:py-28 container mx-auto px-5 sm:px-6 md:px-10">
+      <section className="py-16 md:py-28 container mx-auto px-5 sm:px-6 md:px-10">
         <h2 className="text-3xl sm:text-4xl font-extrabold mb-3 leading-tight">India-wide presence.</h2>
         <p className="text-muted-foreground text-sm md:text-base mb-12 max-w-md leading-relaxed">
           From Bengaluru and Hyderabad to Pune, Noida, and Chennai.

@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 
 export default function PastTrainings() {
   return (
-    <div className="min-h-screen pt-32 pb-24 bg-[#fcfdfa] overflow-hidden">
+    <div className="min-h-screen pt-24 sm:pt-32 pb-24 bg-[#fcfdfa] overflow-hidden">
       <div className="container mx-auto px-5 sm:px-6 md:px-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

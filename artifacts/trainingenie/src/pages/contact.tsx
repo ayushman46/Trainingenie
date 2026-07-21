@@ -2,8 +2,8 @@ import { motion } from "framer-motion";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { useState } from "react";
-import { ArrowRight, Building2, User, Globe, Target, Users, MapPin } from "lucide-react";
+import { useState, useRef } from "react";
+import { ArrowRight, Building2, User, Globe, Target, Users, MapPin, Mail } from "lucide-react";
 import {
   Form, FormControl, FormField, FormItem, FormLabel, FormMessage,
 } from "@/components/ui/form";
@@ -13,11 +13,15 @@ import { Button }   from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
+const FORM_SUBMIT_URL = "https://formsubmit.co/ajax/s.mousumi@gmail.com";
+
 const EASE = [0.16, 1, 0.3, 1] as const;
 
 const schema = z.object({
-  organization: z.string().min(2, "Required"),
-  role:         z.string().min(2, "Required"),
+  name:         z.string().min(2, "Name is required"),
+  email:        z.string().email("Invalid email address"),
+  organization: z.string().min(2, "Company is required"),
+  role:         z.string().min(2, "Role is required"),
   domain:       z.string().optional(),
   depth:        z.string().optional(),
   teamSize:     z.string().optional(),
@@ -36,13 +40,58 @@ const DOMAINS = [
 
 export default function Contact() {
   const [done, setDone] = useState(false);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   const form = useForm<FormValues>({
     resolver: zodResolver(schema),
-    defaultValues: { organization: "", role: "", domain: "", depth: "", teamSize: "", skillLevel: "" },
+    defaultValues: { name: "", email: "", organization: "", role: "", domain: "", depth: "", teamSize: "", skillLevel: "" },
   });
+  const [isPending, setIsPending] = useState(false);
+  const submittedRef = useRef(false);
 
-  const onSubmit = (_data: FormValues) => setDone(true);
+  const onSubmit = async (data: FormValues) => {
+    if (submittedRef.current) return; // prevent duplicate submissions
+    setErrorMsg(null);
+    setIsPending(true);
+    submittedRef.current = true;
+
+    try {
+      const response = await fetch(FORM_SUBMIT_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json",
+        },
+        body: JSON.stringify({
+          name: data.name,
+          email: data.email,
+          company: data.organization,
+          role: data.role,
+          domain: data.domain || "Not specified",
+          training_depth: data.depth || "Not specified",
+          team_size: data.teamSize || "Not specified",
+          skill_level: data.skillLevel || "Not specified",
+          _replyto: data.email,
+          _subject: `New Website Enquiry from ${data.organization}`,
+          _template: "table",
+        }),
+      });
+
+      const result = await response.json();
+
+      if (result.success === "true" || result.success === true) {
+        setDone(true);
+      } else {
+        setErrorMsg(result.message || "Failed to submit inquiry. Please try again.");
+      }
+    } catch (err: any) {
+      console.error("Submission error:", err);
+      setErrorMsg("Network error. Please check your connection and try again.");
+    } finally {
+      setIsPending(false);
+      submittedRef.current = false;
+    }
+  };
 
   return (
     <div className="w-full bg-[#fcfdfa] min-h-screen pt-[120px] pb-24 font-sans text-[#2c3e32]">
@@ -84,8 +133,47 @@ export default function Contact() {
             </div>
           ) : (
             <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 relative">
+                {/* Honeypot field — hidden from humans, visible to bots */}
+                <div className="absolute left-[-9999px] opacity-0" aria-hidden="true">
+                  <label htmlFor="_honey">Leave this empty</label>
+                  <input id="_honey" type="text" name="_honey" tabIndex={-1} autoComplete="off" />
+                </div>
+
+                {errorMsg && (
+                  <div className="p-4 text-sm text-red-600 bg-red-50 rounded-xl border border-red-200">
+                    {errorMsg}
+                  </div>
+                )}
                 
+                {/* Row 0: Name & Email */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+                  <FormField control={form.control} name="name" render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-xs font-bold text-[#596d60] uppercase tracking-wider flex items-center gap-2 mb-2">
+                        <User className="h-3.5 w-3.5" /> Contact Name
+                      </FormLabel>
+                      <FormControl>
+                        <Input placeholder="Your Name" className="bg-[#f7f9f7] border-none h-12 rounded-xl text-sm px-4 focus-visible:ring-1 focus-visible:ring-[#2d4a36]" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )} />
+                  <FormField control={form.control} name="email" render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-xs font-bold text-[#596d60] uppercase tracking-wider flex items-center gap-2 mb-2">
+                        <Mail className="h-3.5 w-3.5" /> Work Email
+                      </FormLabel>
+                      <FormControl>
+                        <Input type="email" placeholder="you@company.com" className="bg-[#f7f9f7] border-none h-12 rounded-xl text-sm px-4 focus-visible:ring-1 focus-visible:ring-[#2d4a36]" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )} />
+                </div>
+
+                <div className="w-full h-px bg-[#f0f4f1]" />
+
                 {/* Row 1: Org & Role */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
                   <FormField control={form.control} name="organization" render={({ field }) => (
@@ -195,8 +283,8 @@ export default function Contact() {
                 </div>
 
                 <div className="flex justify-end pt-4 border-t border-[#f0f4f1]">
-                  <Button type="submit" className="bg-[#0b2818] hover:bg-[#1a3a28] text-white rounded-full px-8 py-6 text-xs font-bold uppercase tracking-widest gap-2">
-                    Submit Inquiry <ArrowRight className="h-4 w-4" />
+                  <Button type="submit" disabled={isPending} className="bg-[#0b2818] hover:bg-[#1a3a28] text-white rounded-full px-8 py-6 text-xs font-bold uppercase tracking-widest gap-2">
+                    {isPending ? "Submitting..." : "Submit Inquiry"} <ArrowRight className="h-4 w-4" />
                   </Button>
                 </div>
               </form>
@@ -215,8 +303,8 @@ export default function Contact() {
             <div>
               <p className="text-[10px] font-bold text-[#8a9e90] uppercase tracking-widest mb-2">Direct Line</p>
               <p className="text-sm font-medium flex items-center justify-center gap-2">
-                <Globe className="h-4 w-4 text-[#8a9e90]" />
-                mediate@trainingenie.com
+                <Mail className="h-4 w-4 text-[#8a9e90]" />
+                hello@trainingenie.com
               </p>
             </div>
             <div className="hidden sm:block w-px bg-[#2d3a31] h-12 self-center" />
@@ -224,7 +312,7 @@ export default function Contact() {
               <p className="text-[10px] font-bold text-[#8a9e90] uppercase tracking-widest mb-2">Headquarters</p>
               <p className="text-sm font-medium flex items-start justify-center gap-2">
                 <MapPin className="h-4 w-4 text-[#8a9e90] shrink-0 mt-0.5" />
-                <span>100 Tech Hub Blvd.<br />Innovation District</span>
+                <span>Level 4, Innovate Tower<br />Cyber City, Bengaluru</span>
               </p>
             </div>
           </div>
