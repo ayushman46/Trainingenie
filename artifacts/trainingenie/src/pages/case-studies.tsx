@@ -1,15 +1,23 @@
 import { motion } from "framer-motion";
 import { Star } from "lucide-react";
-import { TESTIMONIALS } from "@/data";
+import { TESTIMONIALS as STATIC_TESTIMONIALS } from "@/data";
+import { useListTestimonials } from "@workspace/api-client-react";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
 export default function CaseStudies() {
+  const { data: apiTestimonials } = useListTestimonials();
+
+  // Hybrid static fallback pattern for zero-downtime robustness
+  const testimonials = (apiTestimonials && apiTestimonials.length > 0)
+    ? apiTestimonials
+    : STATIC_TESTIMONIALS;
+
   return (
-    <div className="w-full pt-[72px] pb-24">
+    <div className="w-full pt-[72px] pb-24 overflow-hidden">
 
       {/* Header */}
-      <section className="bg-primary text-primary-foreground py-20 md:py-28 px-5 sm:px-6 md:px-10">
+      <section className="bg-primary text-primary-foreground py-16 md:py-28 px-5 sm:px-6 md:px-10">
         <div className="container mx-auto max-w-3xl">
           <motion.h1
             initial={{ opacity: 0, y: 20, filter: "blur(8px)" }}
@@ -33,13 +41,13 @@ export default function CaseStudies() {
       {/* Grid */}
       <section className="py-16 md:py-24 container mx-auto px-5 sm:px-6 md:px-10">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6">
-          {TESTIMONIALS.map((t, i) => (
+          {testimonials.map((t, i) => (
             <motion.div key={t.id}
               initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-60px" }}
               transition={{ delay: (i % 2) * 0.07, duration: 0.55, ease: EASE }}
-              className="flex flex-col bg-card border border-border rounded-2xl p-6 md:p-8 shadow-sm"
+              className="flex flex-col bg-card border border-border rounded-2xl p-5 sm:p-6 md:p-8 shadow-sm"
             >
               <div className="flex gap-1 mb-4 text-accent">
                 {Array.from({ length: t.rating }).map((_, j) => (

@@ -22,10 +22,10 @@ const IMGS: Record<string, string> = {
 
 export default function Services() {
   return (
-    <div className="w-full pt-[72px] pb-24">
+    <div className="w-full pt-[72px] pb-24 overflow-hidden">
 
       {/* Header */}
-      <section className="py-16 md:py-24 px-5 sm:px-6 md:px-10 container mx-auto">
+      <section className="py-12 md:py-24 px-5 sm:px-6 md:px-10 container mx-auto">
         <motion.h1
           initial={{ opacity: 0, y: 20, filter: "blur(8px)" }}
           animate={{ opacity: 1, y: 0,  filter: "blur(0px)" }}
@@ -33,15 +33,14 @@ export default function Services() {
           className="text-4xl sm:text-5xl md:text-6xl font-extrabold leading-tight mb-5 max-w-2xl"
         >
           Every layer of the modern stack.
-        </motion.h1>
-        <motion.p
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1, duration: 0.5, ease: EASE }}
-          className="text-muted-foreground text-base md:text-lg max-w-lg leading-relaxed"
-        >
-          Customised to your codebase. Delivered by engineers who've shipped in production.
-        </motion.p>
+        </motion.h1>          <motion.p
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1, duration: 0.5, ease: EASE }}
+            className="text-muted-foreground text-sm sm:text-base md:text-lg max-w-lg leading-relaxed"
+          >
+            Customised to your codebase. Delivered by engineers who've shipped in production.
+          </motion.p>
       </section>
 
       {/* Grid */}
