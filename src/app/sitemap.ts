@@ -1,0 +1,3 @@
+import type { MetadataRoute } from "next";
+import { COURSES, SITE_URL } from "@/data";
+export default function sitemap(): MetadataRoute.Sitemap { const paths = ["", "about-us", "corporate-training-services", "technology-training", "leadership-soft-skills-training", "itil-prince2-agile-training", "iso-standards-training", "training-methodology", "past-trainings", "clients-and-testimonials", "our-team", "faqs", "blog", "contact-us", ...COURSES.map((course) => course.slug)]; return paths.map((path) => ({ url: `${SITE_URL}/${path}`, changeFrequency: "monthly", priority: path === "" ? 1 : 0.7 })); }

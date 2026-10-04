@@ -1,69 +1,19 @@
-import Image from "next/image";
+import Link from "next/link";
+import { ArrowUpRight } from "lucide-react";
+import { CatalogueSection } from "@/components/catalogue-section";
+import { BEHAVIORAL_GROUPS, COMPANY_DESCRIPTION, FRAMEWORK_GROUPS, ISO_GROUPS, PROOF_STATS, TECHNOLOGY_GROUPS } from "@/data";
+import { jsonLd } from "@/lib/seo";
 
 export default function Home() {
-  return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
-  );
+  return <div className="bg-[#f7f8fa] text-[#0e1726]">
+    <section className="relative overflow-hidden border-b border-[#cfd5df] px-5 pb-24 pt-40 sm:px-8 md:pb-32 md:pt-52"><div className="absolute inset-0 -z-10 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:48px_48px]" /><div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:items-end"><div><p className="text-xs font-bold uppercase tracking-[0.22em] text-[#bd6d38]">Corporate learning and development</p><h1 className="mt-6 max-w-4xl text-5xl font-extrabold leading-[1.03] tracking-[-0.06em] sm:text-7xl">Corporate training that builds real capability.</h1></div><div className="max-w-xl lg:pb-2"><p className="text-lg leading-relaxed text-slate-600 md:text-xl">{COMPANY_DESCRIPTION} Training spans technology, leadership, soft skills, management systems, standards, governance, risk, and compliance.</p><div className="mt-8 flex flex-wrap gap-4"><Link href="/corporate-training-services" className="inline-flex items-center gap-2 rounded-full bg-[#0e1726] px-6 py-3 text-sm font-bold text-white hover:bg-[#1d2a63]">Explore training programs <ArrowUpRight className="h-4 w-4" /></Link><Link href="/contact-us" className="inline-flex items-center rounded-full border border-[#aeb6c4] px-6 py-3 text-sm font-bold text-[#0e1726] hover:bg-white">Discuss your training needs</Link></div></div></div></section>
+    <section className="border-b border-[#cfd5df] bg-white px-5 py-10 sm:px-8"><div className="mx-auto grid max-w-7xl grid-cols-2 gap-y-8 md:grid-cols-4">{PROOF_STATS.map((stat) => <div key={stat.label} className="border-l border-[#cfd5df] pl-5 first:border-l-0 md:pl-8"><p className="text-3xl font-extrabold tracking-[-0.05em] text-[#1d2a63]">{stat.value}</p><p className="mt-1 text-sm text-slate-500">{stat.label}</p></div>)}</div></section>
+    <main className="mx-auto max-w-7xl px-5 sm:px-8"><div className="py-20 md:py-28"><div className="max-w-2xl"><p className="text-xs font-bold uppercase tracking-[0.2em] text-[#bd6d38]">The training directory</p><h2 className="mt-4 text-4xl font-extrabold tracking-[-0.05em] sm:text-5xl">A broad capability, organized for clarity.</h2><p className="mt-5 text-lg leading-relaxed text-slate-600">Browse the major areas of learning supported by TraininGenie. Each programme can be adapted around the organization, the participants, and the outcome.</p></div><div className="mt-4"><CatalogueSection number="01" eyebrow="Technology" title="Technology Training" intro="Technical learning across infrastructure, software engineering, data, emerging technology, security, and networks." groups={TECHNOLOGY_GROUPS} href="/technology-training" /><CatalogueSection number="02" eyebrow="People and performance" title="Leadership and Soft Skills" intro="Practical programmes for leadership, communication, collaboration, workplace effectiveness, and team performance." groups={BEHAVIORAL_GROUPS} href="/leadership-soft-skills-training" /><CatalogueSection number="03" eyebrow="Delivery and management" title="Management Systems and Frameworks" intro="Shared approaches for service management, project delivery, agile ways of working, and organizational change." groups={FRAMEWORK_GROUPS} href="/itil-prince2-agile-training" /><CatalogueSection number="04" eyebrow="Standards and governance" title="ISO, Standards and GRC" intro="Learning across quality, information security, service continuity, risk, governance, privacy, and compliance." groups={ISO_GROUPS} href="/iso-standards-training" /></div></div>
+      <section className="grid gap-12 border-t border-[#cfd5df] py-20 md:grid-cols-2 md:py-28"><div><p className="text-xs font-bold uppercase tracking-[0.2em] text-[#bd6d38]">Why TraininGenie</p><h2 className="mt-4 text-4xl font-extrabold tracking-[-0.05em]">Start with the requirement. Work backward from the outcome.</h2></div><div className="space-y-5 text-lg leading-relaxed text-slate-600"><p>TraininGenie is agile, value driven, requirements driven, and focused on end-customer delight. The approach begins by understanding the client problem and the desired outcome.</p><p>That context shapes the training or product solution, including the level of customization, the learning activities, and the practical application.</p><Link href="/training-methodology" className="inline-flex items-center gap-2 text-base font-bold text-[#1d2a63] underline underline-offset-4">See the methodology <ArrowUpRight className="h-4 w-4" /></Link></div></section>
+      <section className="grid gap-12 border-t border-[#cfd5df] py-20 md:grid-cols-[0.8fr_1.2fr] md:py-28"><div><p className="text-xs font-bold uppercase tracking-[0.2em] text-[#bd6d38]">The brand idea</p><h2 className="mt-4 text-4xl font-extrabold tracking-[-0.05em]">Knowledge. Hands-On. Fun.</h2></div><div><p className="max-w-2xl text-xl leading-relaxed text-slate-600">Learning should be practical and engaging. TraininGenie aims to combine useful knowledge, hands-on participation, and an enjoyable experience that respects the seriousness of workplace learning.</p><Link href="/about-us" className="mt-7 inline-flex items-center gap-2 text-base font-bold text-[#1d2a63] underline underline-offset-4">Read the company profile <ArrowUpRight className="h-4 w-4" /></Link></div></section>
+      <section className="border-t border-[#cfd5df] py-20 md:py-28"><div className="flex flex-col justify-between gap-8 md:flex-row md:items-end"><div><p className="text-xs font-bold uppercase tracking-[0.2em] text-[#bd6d38]">Experience and trust</p><h2 className="mt-4 text-4xl font-extrabold tracking-[-0.05em]">A serious learning partner for organizations.</h2></div><Link href="/clients-and-testimonials" className="inline-flex items-center gap-2 text-sm font-bold text-[#1d2a63] underline underline-offset-4">View client evidence <ArrowUpRight className="h-4 w-4" /></Link></div><div className="mt-12 grid gap-10 border-y border-[#cfd5df] py-8 md:grid-cols-3"><div><p className="text-4xl font-extrabold text-[#1d2a63]">20+</p><p className="mt-2 text-slate-600">years of experience for Founder Director Mousumi Chakraborty across multiple businesses and industries.</p></div><div><p className="text-4xl font-extrabold text-[#1d2a63]">PRIDE</p><p className="mt-2 text-slate-600">Passion, Respect, Innovation, Determination, and Enthusiasm guide the company culture.</p></div><div><p className="text-4xl font-extrabold text-[#1d2a63]">Past work</p><p className="mt-2 text-slate-600">Explore the past training experience recorded on the site.</p><Link href="/past-trainings" className="mt-3 inline-flex text-sm font-bold text-[#1d2a63] underline">Past trainings</Link></div></div></section>
+    </main>
+    <section className="bg-[#0e1726] px-5 py-20 text-white sm:px-8 md:py-28"><div className="mx-auto flex max-w-7xl flex-col justify-between gap-8 md:flex-row md:items-end"><div><p className="text-xs font-bold uppercase tracking-[0.2em] text-[#e6a16f]">Start a conversation</p><h2 className="mt-4 max-w-2xl text-4xl font-extrabold tracking-[-0.05em] sm:text-5xl">Bring us the capability challenge your teams are facing.</h2></div><Link href="/contact-us" className="inline-flex shrink-0 items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-bold text-[#0e1726]">Contact TraininGenie <ArrowUpRight className="h-4 w-4" /></Link></div></section>
+    {jsonLd({ "@context": "https://schema.org", "@type": "WebSite", name: "TraininGenie", url: "https://www.trainingenie.com" })}
+  </div>;
 }
