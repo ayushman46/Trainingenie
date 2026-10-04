@@ -11,13 +11,6 @@ export const CONTACT_INFO = {
   directorLinkedIn: "https://www.linkedin.com/in/mousumi-chakraborty-468b1916/",
 };
 
-export const PROOF_STATS = [
-  { value: "5,000+", label: "professionals trained" },
-  { value: "200+", label: "training sessions" },
-  { value: "15+", label: "clients served" },
-  { value: "5+", label: "countries reached" },
-];
-
 export const TRAINING_PILLARS = [
   { slug: "technology-training", number: "01", title: "Technology Training", description: "Technical learning across cloud, AI, data, software engineering, enterprise systems, and cybersecurity." },
   { slug: "leadership-soft-skills-training", number: "02", title: "Leadership and Soft Skills", description: "Leadership, communication, workplace effectiveness, collaboration, and team capability programs." },
@@ -64,11 +57,14 @@ export const COURSES = [
 ];
 
 export const PAST_TRAININGS = [
-  { title: "Multimodal Document Intelligence", tags: ["Python", "TensorFlow", "Computer Vision"] },
-  { title: "Distributed Cloud Architecture at Scale", tags: ["Kubernetes", "AWS", "Go"] },
-  { title: "Advanced Generative AI Models", tags: ["PyTorch", "LLMs", "NLP"] },
-  { title: "Real-time Event Streaming Pipelines", tags: ["Kafka", "Scala", "Spark"] },
-  { title: "Zero-Trust Security Architecture", tags: ["Security", "Rust", "Networking"] },
+  { title: "SAP Document and Reporting Compliance readiness", tags: ["ERP", "Finance", "Compliance"] },
+  { title: "Leadership development programmes", tags: ["Leadership", "Communication", "Coaching"] },
+  { title: "VBA macros for Excel", tags: ["Excel", "VBA", "Automation"] },
+  { title: "Advanced Excel", tags: ["Excel", "Analysis", "Modelling"] },
+  { title: "Agentic AI for finance", tags: ["Artificial intelligence", "Finance", "Workflows"] },
+  { title: "AI tools in Excel and PowerPoint for procurement", tags: ["AI tools", "Excel", "Procurement"] },
+  { title: "Experiential team building", tags: ["Team building", "Collaboration", "Problem solving"] },
+  { title: "Design Thinking workshop", tags: ["Innovation", "Change", "Prototyping"] },
 ];
 
 export const PRIDE_VALUES = [
