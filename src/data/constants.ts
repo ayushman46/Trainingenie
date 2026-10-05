@@ -4,7 +4,7 @@ export const SITE_URL = "https://www.trainingenie.com";
 export const COMPANY_DESCRIPTION = "TraininGenie is a corporate learning and development partner providing need-based training, certification preparation, technology learning, leadership development, and management systems support.";
 
 export const CONTACT_INFO = {
-  email: "mousumi@trainingenie.com",
+  email: "s.mousumi@gmail.com",
   phones: ["+91 70226 12620", "+91 88846 26200"],
   locations: ["Bengaluru", "Kolkata", "India"],
   companyLinkedIn: "https://www.linkedin.com/company/trainingenie/",
