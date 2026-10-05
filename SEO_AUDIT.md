@@ -27,7 +27,7 @@ Audit scope: the Next.js App Router source for `https://www.trainingenie.com/`.
 - Added a homepage CollectionPage and ItemList schema connected to the four training pillars.
 - Removed fabricated sitemap modification timestamps and retained only crawl frequency and priority signals.
 - Updated robots rules to allow public pages and Next.js assets, expose `/sitemap.xml`, and keep only utility/API areas restricted.
-- Changed the generated icon asset to the existing compact TraininGenie icon.
+- Added a square 48 by 48 `app/favicon.ico` and a square 180 by 180 `app/apple-icon.png` from the existing transparent TraininGenie brand mark.
 - Added `public/llms.txt` as a concise, human-readable source of truth for AI systems and crawlers.
 - Preserved existing breadcrumbs, internal links, course pages, FAQ schema, social links, redirects, and noindex treatment for the thank-you page.
 
@@ -37,7 +37,8 @@ Audit scope: the Next.js App Router source for `https://www.trainingenie.com/`.
 - `src/app/layout.tsx`
 - `src/app/robots.ts`
 - `src/app/sitemap.ts`
-- `src/app/icon.png`
+- `src/app/favicon.ico`
+- `src/app/apple-icon.png`
 - `src/lib/seo.tsx`
 - `public/llms.txt`
 - `SEO_AUDIT.md`
