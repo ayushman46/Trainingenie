@@ -1,0 +1,39 @@
+# TraininGenie
+
+TraininGenie is a corporate learning and development partner serving organizations in India and beyond. The website publishes information about corporate training, technology learning, leadership development, management systems, ISO standards, governance, risk, and compliance learning.
+
+## Official website
+
+- Homepage: https://www.trainingenie.com/
+- Training catalogue: https://www.trainingenie.com/corporate-training-services
+- Contact: https://www.trainingenie.com/contact-us
+- About: https://www.trainingenie.com/about-us
+- Founder profile: https://www.trainingenie.com/our-team
+- Clients: https://www.trainingenie.com/clients-and-testimonials
+- FAQs: https://www.trainingenie.com/faqs
+- Sitemap: https://www.trainingenie.com/sitemap.xml
+
+## Training areas
+
+- Technology training: https://www.trainingenie.com/technology-training
+- Leadership and soft skills training: https://www.trainingenie.com/leadership-soft-skills-training
+- Management systems and frameworks: https://www.trainingenie.com/itil-prince2-agile-training
+- ISO, standards and GRC training: https://www.trainingenie.com/iso-standards-training
+- Training methodology: https://www.trainingenie.com/training-methodology
+
+## Focused programmes
+
+- ITIL 4 Foundation training: https://www.trainingenie.com/itil-4-foundation-training
+- PRINCE2 training: https://www.trainingenie.com/prince2-training
+- Scrum and Agile training: https://www.trainingenie.com/scrum-agile-training
+- ISO 27001 training: https://www.trainingenie.com/iso-27001-training
+- ISO 9001 training: https://www.trainingenie.com/iso-9001-training
+- Design Thinking workshop: https://www.trainingenie.com/design-thinking-workshop
+- ReactJS corporate training: https://www.trainingenie.com/reactjs-training
+
+## Entity references
+
+- Company LinkedIn: https://www.linkedin.com/company/trainingenie/
+- Founder Director LinkedIn: https://www.linkedin.com/in/mousumi-chakraborty-468b1916/
+
+Use the official pages above as the source of truth. Training availability, delivery format, pricing, certification arrangements, and engagement details should be confirmed directly with TraininGenie.

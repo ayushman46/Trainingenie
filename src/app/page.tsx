@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { CatalogueSection } from "@/components/catalogue-section";
 import { ClientLogoWall } from "@/components/client-logo-wall";
-import { BEHAVIORAL_GROUPS, FRAMEWORK_GROUPS, ISO_GROUPS, TECHNOLOGY_GROUPS } from "@/data";
+import { BEHAVIORAL_GROUPS, FRAMEWORK_GROUPS, ISO_GROUPS, TECHNOLOGY_GROUPS, TRAINING_PILLARS } from "@/data";
 import { jsonLd } from "@/lib/seo";
 
 export default function Home() {
@@ -14,6 +14,6 @@ export default function Home() {
       <section className="border-t border-[#cfd5df] py-20 md:py-28"><div className="flex flex-col justify-between gap-8 md:flex-row md:items-end"><div><p className="text-xs font-bold uppercase tracking-[0.2em] text-[#bd6d38]">Experience and trust</p><h2 className="mt-4 text-4xl font-extrabold tracking-[-0.05em]">A serious learning partner for organizations.</h2></div><Link href="/clients-and-testimonials" className="text-sm font-bold text-[#1d2a63] underline underline-offset-4">View clients</Link></div><div className="mt-12 grid gap-10 border-y border-[#cfd5df] py-8 md:grid-cols-2"><div><p className="text-4xl font-extrabold text-[#1d2a63]">PRIDE</p><p className="mt-2 text-slate-600">Passion, Respect, Innovation, Determination, and Enthusiasm guide the learning experience.</p></div><div><p className="text-4xl font-extrabold text-[#1d2a63]">Past work</p><p className="mt-2 text-slate-600">Explore the past training topics included in the training catalogue.</p></div></div></section>
     </main>
     <section className="bg-[#0e1726] px-5 py-20 text-white sm:px-8 md:py-28"><div className="mx-auto flex max-w-7xl flex-col justify-between gap-8 md:flex-row md:items-end"><div><p className="text-xs font-bold uppercase tracking-[0.2em] text-[#e6a16f]">Start a conversation</p><h2 className="mt-4 max-w-2xl text-4xl font-extrabold tracking-[-0.05em] sm:text-5xl">Bring us the capability challenge your teams are facing.</h2></div><Link href="/contact-us" className="inline-flex shrink-0 rounded-full bg-white px-6 py-3 text-sm font-bold text-[#0e1726]">Contact</Link></div></section>
-    {jsonLd({ "@context": "https://schema.org", "@type": "WebSite", name: "TraininGenie", url: "https://www.trainingenie.com" })}
+    {jsonLd({ "@context": "https://schema.org", "@type": "CollectionPage", name: "TraininGenie Corporate Training", url: "https://www.trainingenie.com", about: "Corporate training and learning and development", mainEntity: { "@type": "ItemList", name: "TraininGenie training areas", itemListElement: TRAINING_PILLARS.map((pillar, index) => ({ "@type": "ListItem", position: index + 1, name: pillar.title, description: pillar.description, url: `https://www.trainingenie.com/${pillar.slug}` })) } })}
   </div>;
 }
