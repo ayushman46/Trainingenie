@@ -14,6 +14,7 @@ const selectedClients: ClientLogo[] = [
   { name: "Essentra", logo: "/client-logos/essentra.png" },
   { name: "24 7 ai", logo: "/client-logos/247-ai.png" },
   { name: "Akshaya Patra", logo: "/client-logos/akshaya-patra.png" },
+  { name: "iQUANTI", logo: "/client-logos/iquanti.png" },
 ];
 
 export function ClientLogoWall({ clients = selectedClients }: { clients?: ClientLogo[] }) {
