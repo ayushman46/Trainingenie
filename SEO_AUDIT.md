@@ -10,6 +10,7 @@ Audit scope: the Next.js App Router source for `https://www.trainingenie.com/`.
 - `robots.txt` disallowed `/_next/`, which could unnecessarily prevent crawlers from fetching rendering assets.
 - The homepage had only generic root metadata instead of a search-intent title for corporate training in India.
 - The generated favicon route used a tall logo lockup rather than the compact brand icon.
+- The previous robots policy did not explicitly distinguish OpenAI search crawling from model-training crawling.
 - The project already had good foundations: App Router, server-rendered page content, page-level metadata for important routes, breadcrumbs, Organization and WebSite JSON-LD, path redirects, and a sitemap route.
 - The blog page is intentionally thin because no verified articles are present. No filler content was added.
 
@@ -27,6 +28,8 @@ Audit scope: the Next.js App Router source for `https://www.trainingenie.com/`.
 - Added a homepage CollectionPage and ItemList schema connected to the four training pillars.
 - Removed fabricated sitemap modification timestamps and retained only crawl frequency and priority signals.
 - Updated robots rules to allow public pages and Next.js assets, expose `/sitemap.xml`, and keep only utility/API areas restricted.
+- Added explicit crawler policy: `OAI-SearchBot` is allowed, `GPTBot` is disallowed, and `ChatGPT-User` is allowed. The normal wildcard rule remains open for public search engines.
+- Added valid `Service` JSON-LD to the corporate training, technology, leadership, management systems, and ISO/GRC service pages.
 - Added a square 48 by 48 `app/favicon.ico` and a square 180 by 180 `app/apple-icon.png` from the existing transparent TraininGenie brand mark.
 - Added `public/llms.txt` as a concise, human-readable source of truth for AI systems and crawlers.
 - Preserved existing breadcrumbs, internal links, course pages, FAQ schema, social links, redirects, and noindex treatment for the thank-you page.
@@ -42,6 +45,11 @@ Audit scope: the Next.js App Router source for `https://www.trainingenie.com/`.
 - `src/lib/seo.tsx`
 - `public/llms.txt`
 - `SEO_AUDIT.md`
+- `src/app/corporate-training-services/page.tsx`
+- `src/app/technology-training/page.tsx`
+- `src/app/leadership-soft-skills-training/page.tsx`
+- `src/app/itil-prince2-agile-training/page.tsx`
+- `src/app/iso-standards-training/page.tsx`
 
 ## 4. Issues that cannot be solved in code
 
@@ -50,6 +58,7 @@ Audit scope: the Next.js App Router source for `https://www.trainingenie.com/`.
 - Google ranking for company names and training terms also depends on external authority, links, mentions, reviews where genuine, and ongoing useful content.
 - HTTP to HTTPS and non-www to www redirects must be confirmed in the hosting or domain provider configuration. Next.js path redirects cannot replace a platform-level hostname redirect.
 - The current blog has no verified article content. Publishing genuinely useful, authored resources is an editorial task, not something to solve with generated filler.
+- Repository code does not control Vercel, DNS, CDN, WAF, or rate-limit behavior. Those systems must be checked for crawler challenges or 401, 403, and 429 responses after deployment.
 
 ## 5. Google Search Console actions I must perform manually
 
@@ -59,6 +68,8 @@ Audit scope: the Next.js App Router source for `https://www.trainingenie.com/`.
 4. Confirm that the inspected URL is canonical, indexable, returns HTTP 200, and has no blocked resources.
 5. Request indexing for the priority pages listed below.
 6. Check Page indexing, Sitemaps, Core Web Vitals, and HTTPS reports after Google has crawled the deployment.
+
+For Bing, verify the site in Bing Webmaster Tools, submit the same sitemap, and inspect the homepage URL. For OpenAI discovery, no account submission is available in this repository; the site must remain publicly reachable to `OAI-SearchBot`.
 
 ## 6. URLs to request indexing for first
 
@@ -90,6 +101,9 @@ Audit scope: the Next.js App Router source for `https://www.trainingenie.com/`.
 - Build output generated `/`, `/robots.txt`, `/sitemap.xml`, all training category pages, all configured course pages, and the utility routes.
 - `git diff --check` passed.
 - Repository inspection confirmed public page content is server-rendered through the App Router.
+- Runtime inspection confirmed the homepage returns HTTP 200 and exposes server-rendered title, description, canonical, H1, internal links, and Organization/WebSite JSON-LD.
+- Runtime inspection confirmed `/robots.txt` exposes the sitemap, allows `OAI-SearchBot`, disallows `GPTBot`, and allows `ChatGPT-User`.
+- Runtime inspection confirmed `/sitemap.xml` contains canonical HTTPS `www` URLs and excludes the noindex thank-you page.
 
 ## Important limitation
 
