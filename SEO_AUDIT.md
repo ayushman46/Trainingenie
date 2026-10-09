@@ -34,6 +34,7 @@ Audit scope: the Next.js App Router source for `https://www.trainingenie.com/`.
 - Added a square 48 by 48 `app/favicon.ico` and a square 180 by 180 `app/apple-icon.png` from the existing transparent TraininGenie brand mark.
 - Added `public/llms.txt` as a concise, human-readable source of truth for AI systems and crawlers.
 - Marked the unfinished `/blog` page `noindex` and removed it from the sitemap until genuine resources are published.
+- Strengthened the homepage brand signal with a brand-first title, H1, homepage WebPage schema, and direct Organization/WebSite relationships.
 - Preserved existing breadcrumbs, internal links, course pages, FAQ schema, social links, redirects, and noindex treatment for the thank-you page.
 
 ## 3. Files changed
