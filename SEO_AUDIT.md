@@ -13,6 +13,7 @@ Audit scope: the Next.js App Router source for `https://www.trainingenie.com/`.
 - The previous robots policy did not explicitly distinguish OpenAI search crawling from model-training crawling.
 - The project already had good foundations: App Router, server-rendered page content, page-level metadata for important routes, breadcrumbs, Organization and WebSite JSON-LD, path redirects, and a sitemap route.
 - The blog page is intentionally thin because no verified articles are present. No filler content was added.
+- The blog page was not suitable for indexing while it contains only a future-content notice.
 
 ## 2. Changes made
 
@@ -32,6 +33,7 @@ Audit scope: the Next.js App Router source for `https://www.trainingenie.com/`.
 - Added valid `Service` JSON-LD to the corporate training, technology, leadership, management systems, and ISO/GRC service pages.
 - Added a square 48 by 48 `app/favicon.ico` and a square 180 by 180 `app/apple-icon.png` from the existing transparent TraininGenie brand mark.
 - Added `public/llms.txt` as a concise, human-readable source of truth for AI systems and crawlers.
+- Marked the unfinished `/blog` page `noindex` and removed it from the sitemap until genuine resources are published.
 - Preserved existing breadcrumbs, internal links, course pages, FAQ schema, social links, redirects, and noindex treatment for the thank-you page.
 
 ## 3. Files changed
