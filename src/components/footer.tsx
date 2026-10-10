@@ -4,14 +4,14 @@ import { newTabHint } from "@/lib/ui";
 
 const companyLinks = [["About", "/about-us"], ["Training", "/corporate-training-services"], ["Clients", "/clients-and-testimonials"], ["Contact", "/contact-us"], ["Privacy policy", "/privacy-policy"]];
 const footerLink = "block py-1.5 text-sm text-white/75 transition hover:text-white";
-const footerHeading = "mb-4 text-xs font-semibold uppercase tracking-[0.18em] text-white/70";
-const socialLink = "inline-flex items-center rounded-md border border-white/25 px-3 py-2 text-xs font-semibold text-white/80 transition hover:border-white/50 hover:text-white";
+const footerHeading = "mb-4 text-xs font-bold uppercase tracking-[0.18em] text-white/70";
+const socialLink = "inline-flex items-center rounded-full border border-white/25 px-3 py-2 text-xs font-semibold text-white/80 transition hover:border-white/50 hover:text-white";
 
 export function Footer() {
   return <footer className="bg-[#081426] px-5 pb-8 pt-16 text-white sm:px-8">
     <div className="mx-auto grid max-w-7xl gap-12 md:grid-cols-[1.25fr_1fr_1fr_1fr]">
       <div>
-        <p className="text-2xl font-medium tracking-[-0.04em]">{COMPANY_NAME}</p>
+        <p className="text-2xl font-extrabold tracking-[-0.04em]">{COMPANY_NAME}</p>
         <p className="mt-4 max-w-xs text-sm leading-relaxed text-white/75">{COMPANY_TAGLINE}</p>
         <p className="mt-6 text-sm leading-7 text-white/75"><a href={`mailto:${CONTACT_INFO.email}`} className="break-all transition hover:text-white">{CONTACT_INFO.email}</a><br />{CONTACT_INFO.phones.map((phone, index) => <span key={phone}>{index > 0 && " | "}<a href={`tel:${phone.replace(/\s/g, "")}`} className="whitespace-nowrap transition hover:text-white">{phone}</a></span>)}</p>
         <div className="mt-6 flex flex-wrap gap-2 max-md:justify-center">

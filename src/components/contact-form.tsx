@@ -5,7 +5,7 @@ import { useEffect, useState, type FormEvent } from "react";
 import { CONTACT_INFO, SITE_URL } from "@/data";
 import { buttonPrimary } from "@/lib/ui";
 
-const input = "mt-2 block w-full min-w-0 rounded-md border border-input bg-background px-4 py-3 text-base font-normal text-foreground placeholder:text-slate-600/80";
+const input = "mt-2 block w-full min-w-0 rounded-xl border border-input bg-background px-4 py-3 text-base font-normal text-foreground placeholder:text-slate-600/80";
 const fieldLabel = "block min-w-0 text-sm font-semibold text-foreground";
 const Required = () => <span aria-hidden="true" className="text-accent"> *</span>;
 
@@ -25,7 +25,7 @@ export function ContactForm() {
     setSubmitting(true);
   };
 
-  return <form action={`https://formsubmit.co/${CONTACT_INFO.email}`} method="POST" onSubmit={onSubmit} aria-describedby="contact-required-note" className="min-w-0 space-y-5 rounded-md border border-border bg-white p-5 sm:p-8">
+  return <form action={`https://formsubmit.co/${CONTACT_INFO.email}`} method="POST" onSubmit={onSubmit} aria-describedby="contact-required-note" className="min-w-0 space-y-5 rounded-2xl border border-border bg-white p-5 sm:p-8">
     <input type="hidden" name="_subject" value="New TraininGenie website enquiry" />
     <input type="hidden" name="_next" value={`${SITE_URL}/thank-you`} />
     <input type="text" name="_honey" className="hidden" tabIndex={-1} autoComplete="off" aria-hidden="true" />
