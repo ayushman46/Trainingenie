@@ -1,5 +1,5 @@
 export const COMPANY_NAME = "TraininGenie";
-export const COMPANY_TAGLINE = "You Can Do It When You Skill It.";
+export const COMPANY_TAGLINE = "Transcend Beyond Growth";
 export const SITE_URL = "https://www.trainingenie.com";
 export const COMPANY_DESCRIPTION = "TraininGenie is a corporate learning and development partner providing need-based training, certification preparation, technology learning, leadership development, and management systems support.";
 
@@ -13,7 +13,7 @@ export const CONTACT_INFO = {
 
 export const TRAINING_PILLARS = [
   { slug: "technology-training", number: "01", title: "Technology Training", description: "Technical learning across cloud, AI, data, software engineering, enterprise systems, and cybersecurity." },
-  { slug: "leadership-soft-skills-training", number: "02", title: "Leadership and Soft Skills", description: "Leadership, communication, workplace effectiveness, collaboration, and team capability programs." },
+  { slug: "leadership-soft-skills-training", number: "02", title: "Leadership and Soft Skills", description: "Leadership, communication, workplace effectiveness, collaboration, and team capability programmes." },
   { slug: "itil-prince2-agile-training", number: "03", title: "Management Systems and Frameworks", description: "ITIL, PRINCE2, Agile, COBIT, DevOps, and change management learning." },
   { slug: "iso-standards-training", number: "04", title: "ISO, Standards and GRC", description: "Training across quality, information security, service continuity, risk, governance, and compliance." },
 ];
@@ -75,11 +75,4 @@ export const PRIDE_VALUES = [
   { letter: "E", title: "Enthusiasm", text: "Knowledge, hands-on practice, and fun come together in a learning philosophy that aims to be practical and engaging." },
 ];
 
-export const NAV_LINKS = [
-  { href: "/about-us", label: "About" },
-  { href: "/corporate-training-services", label: "Training" },
-  { href: "/clients-and-testimonials", label: "Experience" },
-  { href: "/blog", label: "Resources" },
-];
 
-export const TESTIMONIALS: never[] = [];

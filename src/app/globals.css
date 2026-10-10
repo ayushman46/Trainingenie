@@ -25,8 +25,8 @@
   --elevate-2: rgba(0, 0, 0, 0.08);
 
   /* Core */
-  --background: 216 24% 96%;
-  --foreground: 220 45% 10%;
+  --background: 220 23% 97%;
+  --foreground: 218 46% 10%;
 
   /* Card */
   --card: 0 0% 100%;
@@ -39,7 +39,7 @@
   --popover-border: 220 20% 88%;
 
   /* Primary */
-  --primary: 232 72% 26%;
+  --primary: 229 55% 25%;
   --primary-foreground: 0 0% 100%;
 
   /* Secondary */
@@ -51,17 +51,17 @@
   --muted-foreground: 220 15% 44%;
 
   /* Accent */
-  --accent: 36 96% 50%;
-  --accent-foreground: 232 72% 16%;
+  --accent: 24 57% 40%;
+  --accent-foreground: 0 0% 100%;
 
   /* Destructive */
   --destructive: 0 84% 60%;
   --destructive-foreground: 0 0% 100%;
 
   /* Input / Border / Ring */
-  --border: 220 20% 87%;
-  --input: 220 20% 87%;
-  --ring: 232 72% 26%;
+  --border: 218 20% 84%;
+  --input: 218 20% 84%;
+  --ring: 229 55% 25%;
 
   /* Charts */
   --chart-1: 232 72% 26%;
@@ -102,12 +102,6 @@
     );
 
   /* Typography */
-  --app-font-sans:
-    var(--font-plus-jakarta),
-    Arial,
-    Helvetica,
-    sans-serif;
-
   --app-font-mono:
     Menlo,
     Monaco,
@@ -323,10 +317,17 @@ html {
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
 
-  font-size: 16px;
+  font-size: 100%;
 }
 
 body {
+  /* Defined here, not on :root: next/font sets --font-plus-jakarta on <body>, so a :root reference would resolve to nothing. */
+  --app-font-sans:
+    var(--font-plus-jakarta),
+    Arial,
+    Helvetica,
+    sans-serif;
+
   margin: 0;
 
   width: 100%;
@@ -356,19 +357,19 @@ body {
 
 @media (max-width: 375px) {
   html {
-    font-size: 14.5px;
+    font-size: 90.625%;
   }
 }
 
 @media (min-width: 376px) and (max-width: 414px) {
   html {
-    font-size: 15px;
+    font-size: 93.75%;
   }
 }
 
 @media (min-width: 415px) {
   html {
-    font-size: 16px;
+    font-size: 100%;
   }
 }
 
