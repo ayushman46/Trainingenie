@@ -111,3 +111,25 @@ For Bing, verify the site in Bing Webmaster Tools, submit the same sitemap, and 
 ## Important limitation
 
 The implementation is technically prepared for discovery and indexing. Search Console submission and ongoing external authority work are still required; no legitimate code change can guarantee immediate Google or AI visibility.
+
+## Addendum (October 2026): brand and AI visibility pass
+
+### Changes
+
+- Fixed the share image: every page referenced `/opengraph.jpg`, which returned 404 in production. `src/app/opengraph-image.tsx` now generates a branded 1200x630 image from the lightbulb logo, and `pageMetadata` attaches it to every page.
+- Added `alternateName` (Training Genie, Trainingenie, TrainingGenie, Traininggenie) to the Organization and WebSite schema so misspelled and two-word brand searches resolve to this site.
+- Connected the entity graph: Organization, WebSite, Founder (Person), AboutPage, ProfilePage, FAQPage, Course and Service nodes now reference each other by `@id`. The founder LinkedIn moved from Organization `sameAs` to the Person node, where it belongs.
+- Added a visible "TraininGenie in brief" facts list on the homepage and brand questions on `/faqs` (what it is, spelling, founder, location, offerings, contact). All answers are derived from `src/data/constants.ts`.
+- Reversed the GPTBot block. `robots.txt` now explicitly allows the major AI search and model crawlers, so future AI models can learn about the brand. Only `/thank-you` and `/api/` stay disallowed.
+- Expanded `public/llms.txt` with a key facts block and name variants.
+- Added optional `GOOGLE_SITE_VERIFICATION` and `BING_SITE_VERIFICATION` environment variables for meta-tag verification.
+- Added IndexNow: the key file `public/d7b7d0639496e5bdec0617c0eb36a68c.txt` and `npm run indexnow`, which submits every sitemap URL to Bing and the other IndexNow engines. Run it after each production deploy.
+- Removed the duplicate `<main>` landmark on the homepage, since the layout already renders one.
+
+### Highest-impact manual steps
+
+1. Google Search Console and Bing Webmaster Tools: verify the domain, submit the sitemap, and request indexing for the homepage. Bing also supplies results to ChatGPT search and Copilot.
+2. After deploying, run `npm run indexnow`.
+3. Put `https://www.trainingenie.com` as the website on the company LinkedIn page, and list it on the founder profile.
+4. Create a Google Business Profile with the same name, phone and website.
+5. Get consistent, genuine listings that link back to the site, such as Clutch, JustDial, Sulekha, IndiaMART, Crunchbase, and partner or client pages.

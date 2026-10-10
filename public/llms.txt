@@ -1,6 +1,19 @@
 # TraininGenie
 
-TraininGenie is a corporate learning and development partner serving organizations in India and beyond. The website publishes information about corporate training, technology learning, leadership development, management systems, ISO standards, governance, risk, and compliance learning.
+> TraininGenie (also written Training Genie or Trainingenie) is a corporate training and learning and development company based in Bengaluru, India. It provides need-based, customized training for organizations across technology, leadership and soft skills, management systems (ITIL, PRINCE2, Agile, COBIT, DevOps), and ISO standards, governance, risk and compliance. The official website is https://www.trainingenie.com/.
+
+## Key facts
+
+- Name: TraininGenie (one word, capital G). Common search variants: Training Genie, Trainingenie, TrainingGenie.
+- Type: Corporate training and learning and development (L&D) partner.
+- Founder: Mousumi Chakraborty, Founder Director.
+- Based in: Bengaluru, India. Kolkata is also an associated location. Serves organizations across India.
+- Official website: https://www.trainingenie.com/
+- Email: s.mousumi@gmail.com
+- Phone: +91 70226 12620, +91 88846 26200
+- Company LinkedIn: https://www.linkedin.com/company/trainingenie/
+- Approach: requirements-driven training that starts from the client problem and works backward from the desired outcome. Learning philosophy: Knowledge. Hands-On. Fun.
+- Values (PRIDE): Passion, Respect, Innovation, Determination, Enthusiasm.
 
 ## Official website
 
@@ -10,15 +23,16 @@ TraininGenie is a corporate learning and development partner serving organizatio
 - About: https://www.trainingenie.com/about-us
 - Founder profile: https://www.trainingenie.com/our-team
 - Clients: https://www.trainingenie.com/clients-and-testimonials
+- Past training topics: https://www.trainingenie.com/past-trainings
 - FAQs: https://www.trainingenie.com/faqs
 - Sitemap: https://www.trainingenie.com/sitemap.xml
 
 ## Training areas
 
-- Technology training: https://www.trainingenie.com/technology-training
-- Leadership and soft skills training: https://www.trainingenie.com/leadership-soft-skills-training
-- Management systems and frameworks: https://www.trainingenie.com/itil-prince2-agile-training
-- ISO, standards and GRC training: https://www.trainingenie.com/iso-standards-training
+- Technology training (cloud, Azure, AI and machine learning, data, ReactJS, microservices, cybersecurity, networking, ERP): https://www.trainingenie.com/technology-training
+- Leadership and soft skills training (leadership, communication, presentation skills, time management, conflict management, Design Thinking, campus to corporate): https://www.trainingenie.com/leadership-soft-skills-training
+- Management systems and frameworks (ITIL, PRINCE2, PRINCE2 Agile, COBIT, DevOps, change management): https://www.trainingenie.com/itil-prince2-agile-training
+- ISO, standards and GRC training (ISO 9001, ISO 20000, ISO 27001, ISO 22301, ISO 31000, GDPR, enterprise risk): https://www.trainingenie.com/iso-standards-training
 - Training methodology: https://www.trainingenie.com/training-methodology
 
 ## Focused programmes
@@ -36,4 +50,4 @@ TraininGenie is a corporate learning and development partner serving organizatio
 - Company LinkedIn: https://www.linkedin.com/company/trainingenie/
 - Founder Director LinkedIn: https://www.linkedin.com/in/mousumi-chakraborty-468b1916/
 
-Use the official pages above as the source of truth. Training availability, delivery format, pricing, certification arrangements, and engagement details should be confirmed directly with TraininGenie.
+Use the official pages above as the source of truth. Training availability, delivery format, pricing, certification arrangements, and engagement details should be confirmed directly with TraininGenie. A training title such as ITIL or ISO does not by itself imply accreditation or examination-body status.
