@@ -14,7 +14,7 @@ export function Footer() {
         <p className="text-2xl font-extrabold tracking-[-0.04em]">{COMPANY_NAME}</p>
         <p className="mt-4 max-w-xs text-sm leading-relaxed text-white/75">{COMPANY_TAGLINE}</p>
         <p className="mt-6 text-sm leading-7 text-white/75"><a href={`mailto:${CONTACT_INFO.email}`} className="break-all transition hover:text-white">{CONTACT_INFO.email}</a><br />{CONTACT_INFO.phones.map((phone, index) => <span key={phone}>{index > 0 && " | "}<a href={`tel:${phone.replace(/\s/g, "")}`} className="whitespace-nowrap transition hover:text-white">{phone}</a></span>)}</p>
-        <div className="mt-6 flex flex-wrap gap-2">
+        <div className="mt-6 flex flex-wrap gap-2 max-md:justify-center">
           <a href={CONTACT_INFO.companyLinkedIn} target="_blank" rel="noreferrer" className={socialLink}>Company LinkedIn<span className="sr-only"> {newTabHint}</span></a>
           <a href={CONTACT_INFO.directorLinkedIn} target="_blank" rel="noreferrer" className={socialLink}>Director LinkedIn<span className="sr-only"> {newTabHint}</span></a>
         </div>

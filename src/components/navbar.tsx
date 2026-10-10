@@ -22,6 +22,11 @@ const resourceLinks: readonly NavLink[] = [["FAQs", "/faqs"], ["Blog and resourc
 const menus = [["About", aboutLinks], ["Training", trainingLinks], ["Resources", resourceLinks]] as const;
 type MenuName = (typeof menus)[number][0] | "mobile";
 
+// Three lines that turn into a cross when the mobile menu is open.
+function MenuIcon({ open }: { open: boolean }) {
+  return <svg aria-hidden="true" viewBox="0 0 16 16" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">{open ? <path d="M3.5 3.5l9 9M12.5 3.5l-9 9" /> : <path d="M2.5 4.5h11M2.5 8h11M2.5 11.5h11" />}</svg>;
+}
+
 export function Navbar() {
   const pathname = usePathname();
   // Menus remember the page they were opened on, so navigating anywhere (links, back/forward) closes them without an effect.
@@ -65,7 +70,7 @@ export function Navbar() {
   };
 
   const mobileGroup = (label: string, links: readonly NavLink[]) => <div key={label}>
-    <p id={`mobile-${label.toLowerCase()}`} className="mb-2 mt-5 px-3 text-xs font-bold uppercase tracking-[0.18em] text-slate-600">{label}</p>
+    <p id={`mobile-${label.toLowerCase()}`} className="mb-1 mt-4 border-t border-border px-3 pt-4 text-xs font-bold uppercase tracking-[0.18em] text-accent">{label}</p>
     <ul aria-labelledby={`mobile-${label.toLowerCase()}`}>{links.map(([item, href]) => <li key={href}><Link href={href} aria-current={isCurrent(href) ? "page" : undefined} onClick={close} className={`block rounded-lg px-3 py-2.5 text-sm font-semibold ${isCurrent(href) ? "text-primary" : "text-slate-700"}`}>{item}</Link></li>)}</ul>
   </div>;
 
@@ -80,13 +85,13 @@ export function Navbar() {
         {dropdown("Resources", resourceLinks)}
         <Link href="/contact-us" aria-current={isCurrent("/contact-us") ? "page" : undefined} className={`${buttonPrimary} ml-2 px-5 py-2.5 text-[13px]`}>Contact</Link>
       </nav>
-      <button type="button" ref={(element) => { triggerRefs.current.mobile = element; }} className="shrink-0 rounded-full px-4 py-2.5 text-[13px] font-bold text-foreground transition hover:bg-primary/5 lg:hidden" aria-expanded={openMenu === "mobile"} aria-controls="mobile-navigation" onClick={() => toggle("mobile")}>{openMenu === "mobile" ? "Close" : "Menu"}<span className="sr-only"> navigation</span></button>
-      {openMenu === "mobile" && <nav id="mobile-navigation" className="absolute left-3 right-3 top-[76px] max-h-[calc(100dvh-90px)] overflow-y-auto overscroll-contain rounded-2xl border border-border bg-white p-4 shadow-[0_16px_40px_rgba(15,23,42,0.14)] sm:left-6 sm:right-6 lg:hidden" aria-label="Mobile navigation">
+      <button type="button" ref={(element) => { triggerRefs.current.mobile = element; }} className="inline-flex shrink-0 items-center gap-2 rounded-full border border-border bg-white px-4 py-2 text-[13px] font-bold text-foreground shadow-sm transition hover:bg-primary/5 lg:hidden" aria-expanded={openMenu === "mobile"} aria-controls="mobile-navigation" onClick={() => toggle("mobile")}><MenuIcon open={openMenu === "mobile"} />{openMenu === "mobile" ? "Close" : "Menu"}<span className="sr-only"> navigation</span></button>
+      {openMenu === "mobile" && <nav id="mobile-navigation" className="absolute left-3 right-3 top-[76px] max-h-[calc(100dvh-90px)] overflow-y-auto overscroll-contain rounded-2xl border border-border bg-white p-5 text-center shadow-[0_16px_40px_rgba(15,23,42,0.14)] sm:left-6 sm:right-6 lg:hidden" aria-label="Mobile navigation">
         <ul><li><Link href="/" aria-current={isCurrent("/") ? "page" : undefined} onClick={close} className={`block rounded-lg px-3 py-2.5 text-sm font-semibold ${isCurrent("/") ? "text-primary" : "text-slate-700"}`}>Home</Link></li></ul>
         {menus.slice(0, 2).map(([label, links]) => mobileGroup(label, links))}
-        <ul className="mt-5"><li><Link href="/clients-and-testimonials" aria-current={isCurrent("/clients-and-testimonials") ? "page" : undefined} onClick={close} className={`block rounded-lg px-3 py-2.5 text-sm font-semibold ${isCurrent("/clients-and-testimonials") ? "text-primary" : "text-slate-700"}`}>Clients</Link></li></ul>
+        <ul className="mt-4 border-t border-border pt-3"><li><Link href="/clients-and-testimonials" aria-current={isCurrent("/clients-and-testimonials") ? "page" : undefined} onClick={close} className={`block rounded-lg px-3 py-2.5 text-sm font-semibold ${isCurrent("/clients-and-testimonials") ? "text-primary" : "text-slate-700"}`}>Clients</Link></li></ul>
         {menus.slice(2).map(([label, links]) => mobileGroup(label, links))}
-        <Link href="/contact-us" onClick={close} className={`${buttonPrimary} mt-4 w-full`}>Contact</Link>
+        <Link href="/contact-us" onClick={close} className={`${buttonPrimary} mt-5 w-full`}>Contact</Link>
       </nav>}
     </div>
   </header>;

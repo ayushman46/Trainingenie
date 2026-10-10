@@ -568,6 +568,29 @@ input[type="search"]::-webkit-search-cancel-button {
 
 
 /* ============================================================
+   Mobile Layout
+   Below the md breakpoint, page content and the footer are centred.
+   Form fields stay left-aligned so labels and typed text line up.
+   ============================================================ */
+
+@media (width < 48rem) {
+  main,
+  footer {
+    text-align: center;
+  }
+
+  main form {
+    text-align: left;
+  }
+
+  /* Width-capped blocks (max-w-*) would otherwise sit at the left edge with centred text inside. */
+  :where(main, footer) [class*="max-w-"] {
+    margin-inline: auto;
+  }
+}
+
+
+/* ============================================================
    Reduced Motion Accessibility
    ============================================================ */
 

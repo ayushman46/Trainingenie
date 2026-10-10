@@ -41,6 +41,6 @@ export function ContactForm() {
     <label className={fieldLabel}>Preferred format<input name="format" placeholder="Online, onsite, or hybrid" maxLength={120} className={input} /></label>
     <label className={fieldLabel}>Message<Required /><textarea required name="message" rows={5} maxLength={5000} className={input} /></label>
     <p className="text-sm leading-relaxed text-slate-600">Your enquiry is sent to TraininGenie by email through FormSubmit and used only to respond to you. Read the <Link href="/privacy-policy" className="font-semibold text-primary underline underline-offset-4">privacy policy</Link>.</p>
-    <button type="submit" disabled={submitting} aria-disabled={submitting} className={buttonPrimary}>{submitting ? "Sending…" : "Request a training proposal"}</button>
+    <button type="submit" disabled={submitting} aria-disabled={submitting} className={`${buttonPrimary} max-md:w-full`}>{submitting ? "Sending…" : "Request a training proposal"}</button>
   </form>;
 }
