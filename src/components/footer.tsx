@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { COMPANY_NAME, COMPANY_TAGLINE, CONTACT_INFO, COURSES, TRAINING_PILLARS } from "@/data";
+import { COMPANY_NAME, COMPANY_TAGLINE, CONTACT_INFO, COURSES, LEGAL_ENTITY, TRAINING_PILLARS } from "@/data";
 import { newTabHint } from "@/lib/ui";
 
 const companyLinks = [["About", "/about-us"], ["Training", "/corporate-training-services"], ["Clients", "/clients-and-testimonials"], ["Contact", "/contact-us"], ["Privacy policy", "/privacy-policy"]];
@@ -23,6 +23,6 @@ export function Footer() {
       <nav aria-label="Training areas"><p className={footerHeading}>Training</p>{TRAINING_PILLARS.map((item) => <Link key={item.slug} href={`/${item.slug}`} className={footerLink}>{item.title}</Link>)}</nav>
       <nav aria-label="Popular programmes"><p className={footerHeading}>Popular programmes</p>{COURSES.slice(0, 4).map((item) => <Link key={item.slug} href={`/${item.slug}`} className={footerLink}>{item.title}</Link>)}</nav>
     </div>
-    <div className="mx-auto mt-14 max-w-7xl border-t border-white/15 pt-6 text-xs text-white/70">© {new Date().getFullYear()} {COMPANY_NAME}. All rights reserved.</div>
+    <div className="mx-auto mt-14 max-w-7xl space-y-2 border-t border-white/15 pt-6 text-xs leading-relaxed text-white/70"><p>© {new Date().getFullYear()} {COMPANY_NAME}. All rights reserved.</p><p>{COMPANY_NAME} is operated by {LEGAL_ENTITY.name} · CIN {LEGAL_ENTITY.cin} · Registered office: {LEGAL_ENTITY.registeredOffice.label}</p></div>
   </footer>;
 }

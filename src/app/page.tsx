@@ -3,7 +3,7 @@ import Link from "next/link";
 import { CatalogueSection } from "@/components/catalogue-section";
 import { ClientLogoWall } from "@/components/client-logo-wall";
 import { CorporateProofStrip } from "@/components/corporate-proof-strip";
-import { BEHAVIORAL_GROUPS, COMPANY_NAME, CONTACT_INFO, FRAMEWORK_GROUPS, ISO_GROUPS, SITE_URL, TECHNOLOGY_GROUPS, TRAINING_PILLARS } from "@/data";
+import { BEHAVIORAL_GROUPS, COMPANY_NAME, CONTACT_INFO, FRAMEWORK_GROUPS, ISO_GROUPS, LEGAL_ENTITY, SITE_URL, TECHNOLOGY_GROUPS, TRAINING_PILLARS } from "@/data";
 import { jsonLd, ORGANIZATION_ID, SEO_KEYWORDS, WEBSITE_ID } from "@/lib/seo";
 import { buttonPrimary, buttonSecondary } from "@/lib/ui";
 
@@ -12,8 +12,9 @@ export const metadata: Metadata = { title: { absolute: `${COMPANY_NAME} | Corpor
 
 const atAGlance = [
   ["Company", `${COMPANY_NAME} (also written Training Genie) is a corporate training and learning and development company.`],
+  ["Legal name", `${LEGAL_ENTITY.name}, incorporated ${LEGAL_ENTITY.incorporatedLabel} (CIN ${LEGAL_ENTITY.cin}).`],
   ["Founder", "Mousumi Chakraborty, Founder Director."],
-  ["Based in", "Bengaluru, India. Kolkata is also an associated location."],
+  ["Based in", `Bengaluru, India. Registered office in ${LEGAL_ENTITY.registeredOffice.label}.`],
   ["Training areas", TRAINING_PILLARS.map((pillar) => pillar.title).join(", ") + "."],
   ["Website", "www.trainingenie.com"],
   ["Contact", `${CONTACT_INFO.email} | ${CONTACT_INFO.phones.join(" | ")}`],
