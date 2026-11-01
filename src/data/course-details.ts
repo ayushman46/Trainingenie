@@ -35,7 +35,7 @@ export const COURSE_DETAILS: Record<string, CourseDetail> = {
     ],
     faqs: [
       ["Who should attend ITIL 4 Foundation training?", "Anyone who works in or with IT services: service desk and support staff, operations and infrastructure teams, developers moving towards DevOps, project and delivery managers, and business stakeholders who consume IT services."],
-      ["Does this training include the ITIL 4 Foundation exam?", "Examination arrangements, including vouchers and the accredited body involved, are confirmed for each engagement. Training on ITIL content does not by itself imply accreditation."],
+      ["Does this training include the ITIL 4 Foundation exam?", "The programme covers the ITIL 4 Foundation syllabus and prepares participants for the examination where certification is part of the engagement. Examination arrangements, including vouchers and the accredited body involved, are confirmed for each engagement. Training on ITIL content does not by itself imply accreditation."],
       ["Can ITIL 4 training be tailored to our tools and processes?", "Yes. Examples and exercises can be built around the organization's own services, ticketing workflows, and improvement priorities, while still covering the Foundation syllabus."],
     ],
     related: ["prince2-training", "scrum-agile-training", "iso-27001-training"],
@@ -62,9 +62,9 @@ export const COURSE_DETAILS: Record<string, CourseDetail> = {
     faqs: [
       ["Is PRINCE2 still relevant for agile teams?", "Yes. PRINCE2 governs the project as a whole, and the method explicitly supports tailoring. PRINCE2 Agile combines PRINCE2 governance with agile delivery approaches such as Scrum and Kanban."],
       ["Who benefits most from PRINCE2 training?", "Project managers, project coordinators, PMO staff, team leads, and sponsors or board members who need to understand how a controlled project should be run."],
-      ["Does the training include PRINCE2 certification?", "Examination and certification arrangements are confirmed for each engagement. A PRINCE2 training title does not by itself imply accreditation."],
+      ["Does the training include PRINCE2 certification?", "The programme prepares participants for PRINCE2 examinations where certification is part of the engagement. Examination and certification arrangements are confirmed for each engagement. Training on PRINCE2 content does not by itself imply accreditation."],
     ],
-    related: ["scrum-agile-training", "itil-4-foundation-training", "design-thinking-workshop"],
+    related: ["scrum-agile-training", "itil-4-foundation-training", "iso-9001-training"],
   },
   "scrum-agile-training": {
     overview: [
@@ -113,7 +113,7 @@ export const COURSE_DETAILS: Record<string, CourseDetail> = {
     ],
     faqs: [
       ["What is the difference between ISO 27001 and ISO 27002?", "ISO/IEC 27001 contains the certifiable requirements for an ISMS. ISO/IEC 27002 is guidance that explains the Annex A controls in more detail and how they can be implemented."],
-      ["Do you offer ISO 27001 Lead Auditor and Lead Implementer training?", "Both are part of the ISO and GRC training area. The specific scope and any examination or certification body arrangements are confirmed for each engagement."],
+      ["Do you offer ISO 27001 Lead Auditor and Lead Implementer training?", "Yes. Both are part of the ISO and GRC training area. The specific scope and any examination or certification body arrangements are confirmed for each engagement."],
       ["Does training make our organization ISO 27001 certified?", "No. Organizational certification comes from an accredited certification body's audit. Training builds the knowledge teams need to implement, operate, and audit the ISMS."],
     ],
     related: ["iso-9001-training", "itil-4-foundation-training", "prince2-training"],
@@ -139,7 +139,7 @@ export const COURSE_DETAILS: Record<string, CourseDetail> = {
     ],
     faqs: [
       ["Who should attend ISO 9001 training?", "Quality managers and coordinators, process owners, operations and production teams, internal auditors, and managers responsible for customer outcomes."],
-      ["Do you offer ISO 9001 Lead Auditor and Lead Implementer training?", "Both are part of the ISO and GRC training area. The specific scope and any examination or certification body arrangements are confirmed for each engagement."],
+      ["Do you offer ISO 9001 Lead Auditor and Lead Implementer training?", "Yes. Both are part of the ISO and GRC training area. The specific scope and any examination or certification body arrangements are confirmed for each engagement."],
       ["How is ISO 9001 related to other ISO standards?", "ISO 9001 shares a common high-level structure with standards such as ISO/IEC 27001 and ISO 22301, which makes it easier to run an integrated management system."],
     ],
     related: ["iso-27001-training", "itil-4-foundation-training", "design-thinking-workshop"],

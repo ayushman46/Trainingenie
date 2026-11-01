@@ -1,610 +1,640 @@
-/* ============================================================
-   TraininGenie Global Styles
-   Next.js + Tailwind CSS v4
-   ============================================================ */
-
-
-/* ============================================================
-   Imports
-   IMPORTANT: @import rules must come before all other rules.
-   ============================================================ */
-
 @import "tailwindcss";
-
+/* The shadcn files in components/ui are not used by any page: keep their utilities out of the stylesheet. */
+@source not "../components/ui";
 
 /* ============================================================
-   Design Tokens
+   Design tokens: "Plain" (the nike.com look)
+   A white page with near-black ink and grey secondary text. Colour comes only from the
+   TraininGenie bulb: its red marks the bulb, the dot-matrix emblems' accents and the focus ring,
+   nothing else. #f5f5f5 is the media backdrop (tiles, the hero panel) and the quiet field.
+   The token names are the v5 ones, so every page keeps working; only the values changed.
+   Every text pairing meets WCAG AA, on white and on #f5f5f5.
    ============================================================ */
 
 :root {
-  --button-outline: rgba(0, 0, 0, 0.1);
-  --badge-outline: rgba(0, 0, 0, 0.05);
-  --opaque-button-border-intensity: -8;
-
-  --elevate-1: rgba(0, 0, 0, 0.03);
-  --elevate-2: rgba(0, 0, 0, 0.08);
-
-  /* Core */
-  --background: 220 23% 97%;
-  --foreground: 218 46% 10%;
-
-  /* Card */
-  --card: 0 0% 100%;
-  --card-foreground: 220 45% 10%;
-  --card-border: 220 20% 88%;
-
-  /* Popover */
-  --popover: 0 0% 100%;
-  --popover-foreground: 220 45% 10%;
-  --popover-border: 220 20% 88%;
-
-  /* Primary */
-  --primary: 229 55% 25%;
-  --primary-foreground: 0 0% 100%;
-
-  /* Secondary */
-  --secondary: 220 18% 88%;
-  --secondary-foreground: 220 45% 10%;
-
-  /* Muted */
-  --muted: 220 18% 92%;
-  --muted-foreground: 220 15% 44%;
-
-  /* Accent */
-  --accent: 24 57% 40%;
-  --accent-foreground: 0 0% 100%;
-
-  /* Destructive */
-  --destructive: 0 84% 60%;
-  --destructive-foreground: 0 0% 100%;
-
-  /* Input / Border / Ring */
-  --border: 218 20% 84%;
-  --input: 218 20% 84%;
-  --ring: 229 55% 25%;
-
-  /* Charts */
-  --chart-1: 232 72% 26%;
-  --chart-2: 36 96% 50%;
-  --chart-3: 188 82% 36%;
-  --chart-4: 272 56% 48%;
-  --chart-5: 338 66% 56%;
-
-  /* Sidebar */
-  --sidebar: 220 44% 9%;
-  --sidebar-foreground: 216 24% 96%;
-  --sidebar-border: 220 38% 18%;
-
-  --sidebar-primary: 36 96% 50%;
-  --sidebar-primary-foreground: 232 72% 16%;
-
-  --sidebar-accent: 220 38% 16%;
-  --sidebar-accent-foreground: 216 24% 96%;
-
-  --sidebar-ring: 36 96% 50%;
-
-  --sidebar-primary-border:
-    hsl(
-      from hsl(var(--sidebar-primary))
-      h
-      s
-      calc(l + var(--opaque-button-border-intensity))
-      / alpha
-    );
-
-  --sidebar-accent-border:
-    hsl(
-      from hsl(var(--sidebar-accent))
-      h
-      s
-      calc(l + var(--opaque-button-border-intensity))
-      / alpha
-    );
-
-  /* Typography */
-  --app-font-mono:
-    Menlo,
-    Monaco,
-    Consolas,
-    "Liberation Mono",
-    monospace;
-
-  /* Radius */
-  --radius: 0.5rem;
-
-  /* Shadows */
-  --shadow-2xs:
-    0 1px 2px hsl(232 72% 26% / 0.04);
-
-  --shadow-xs:
-    0 2px 4px hsl(232 72% 26% / 0.05);
-
-  --shadow-sm:
-    0 1px 3px hsl(232 72% 26% / 0.06),
-    0 1px 2px hsl(232 72% 26% / 0.04);
-
-  --shadow:
-    0 4px 12px hsl(232 72% 26% / 0.08);
-
-  --shadow-md:
-    0 8px 24px hsl(232 72% 26% / 0.1);
-
-  --shadow-lg:
-    0 16px 48px hsl(232 72% 26% / 0.12);
-
-  --shadow-xl:
-    0 24px 64px hsl(232 72% 26% / 0.16);
-
-  --shadow-2xl:
-    0 40px 96px hsl(232 72% 26% / 0.2);
+  --background: #ffffff;          /* the page, the header and the footer */
+  --tint: #f5f5f5;                /* media backdrops (tiles, the hero panel) and the one grey band */
+  --surface: #ffffff;             /* menus, the search dialog, inputs */
+  --field: #f5f5f5;               /* the search pill and quiet fields */
+  --foreground: #111111;          /* ink: headings, key text, the primary pill (18.9 on white) */
+  --copy: #39393b;                /* body copy (11.6 on white): any sentence that can wrap to two or more
+                                     lines, and any description under a title */
+  --muted-foreground: #6b6b6d;    /* secondary text (5.3 on white, 4.9 on #f5f5f5), for one-line metadata
+                                     only: labels, counts, tags, captions and timestamps */
+  --border: #e5e5e5;              /* hairlines */
+  --border-strong: #cacacb;       /* strong rules, the secondary pill border */
+  --input: #8d8d8f;               /* form control borders (3.3 on white) */
+  --accent: #9e2a2b;              /* bulb red: the bulb, emblem accents and focus rings only */
+  --accent-hover: #7e1f21;
+  --accent-tint: #f5f5f5;         /* the current row in menus and search (neutral now) */
+  --blush: #e5e5e5;               /* light pill hover on the night band (neutral now) */
+  --danger: #b42318;              /* form errors */
+  --night: #111111;               /* the one dark band */
+  --night-raised: #1f1f21;
+  --night-foreground: #ffffff;
+  --night-muted: #a8a8aa;         /* 8.2 on #111 */
+  --night-accent: #ffffff;        /* focus ring and link hover on the night band */
+  --night-dot: #a8a8aa;           /* list numbers on the night band */
+  --night-border: #39393b;
+  --ease-out-soft: cubic-bezier(0.2, 0.7, 0.2, 1);
+  /* Motion durations: UI state changes (disclosures, the plus turning), entrances, exits, and the
+     scroll reveal and hero rise. */
+  --motion-ui: 240ms;
+  --motion-in: 300ms;
+  --motion-out: 200ms;
+  --motion-reveal: 450ms;
+  /* The site is designed light only: no dark form controls or scrollbars from the system theme. */
+  color-scheme: only light;
+  /* The focus ring's corner on links and buttons without a radius of their own. */
+  --radius-focus: 4px;
 }
 
-
-/* ============================================================
-   Dark Theme
-   ============================================================ */
-
-.dark {
-  --button-outline: rgba(255, 255, 255, 0.1);
-  --badge-outline: rgba(255, 255, 255, 0.05);
-  --opaque-button-border-intensity: 9;
-
-  --elevate-1: rgba(255, 255, 255, 0.04);
-  --elevate-2: rgba(255, 255, 255, 0.09);
-
-  --background: 224 44% 6%;
-  --foreground: 216 24% 95%;
-
-  --card: 224 40% 10%;
-  --card-foreground: 216 24% 95%;
-  --card-border: 224 36% 16%;
-
-  --popover: 224 40% 10%;
-  --popover-foreground: 216 24% 95%;
-  --popover-border: 224 36% 16%;
-
-  --primary: 36 96% 50%;
-  --primary-foreground: 232 72% 12%;
-
-  --secondary: 224 36% 16%;
-  --secondary-foreground: 216 24% 95%;
-
-  --muted: 224 36% 14%;
-  --muted-foreground: 220 16% 62%;
-
-  --accent: 232 72% 55%;
-  --accent-foreground: 0 0% 100%;
-
-  --destructive: 0 62% 40%;
-  --destructive-foreground: 0 0% 100%;
-
-  --border: 224 36% 16%;
-  --input: 224 36% 16%;
-  --ring: 36 96% 50%;
+/* Motion: a bare `transition-*` utility runs 200ms on this curve; ease-out is the site's soft curve. */
+@theme {
+  --default-transition-duration: 200ms;
+  --default-transition-timing-function: cubic-bezier(0.2, 0, 0, 1);
+  --ease-out: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);
 }
-
-
-/* ============================================================
-   Tailwind CSS v4 Theme Mapping
-
-   This exposes the CSS variables above as Tailwind utilities.
-
-   Examples:
-   bg-background
-   text-foreground
-   bg-primary
-   text-primary-foreground
-   border-border
-   text-muted-foreground
-   bg-accent
-   font-sans
-   ============================================================ */
 
 @theme inline {
-  /* Core */
+  --color-background: var(--background);
+  --color-tint: var(--tint);
+  --color-surface: var(--surface);
+  --color-field: var(--field);
+  --color-foreground: var(--foreground);
+  --color-copy: var(--copy);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-input: var(--input);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-tint: var(--accent-tint);
+  --color-blush: var(--blush);
+  --color-danger: var(--danger);
+  --color-night: var(--night);
+  --color-night-raised: var(--night-raised);
+  --color-night-foreground: var(--night-foreground);
+  --color-night-muted: var(--night-muted);
+  --color-night-accent: var(--night-accent);
+  --color-night-dot: var(--night-dot);
+  --color-night-border: var(--night-border);
+  --color-ring: var(--accent);
 
-  --color-background: hsl(var(--background));
-  --color-foreground: hsl(var(--foreground));
+  --font-sans: var(--font-geist), "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-display: var(--font-geist), "Helvetica Neue", Helvetica, Arial, sans-serif;
+  /* Archivo is loaded on the landing page only (brand/slogan-font.ts sets --font-archivo on the hero),
+     so the var() carries its own condensed fallback for anywhere it is unset. */
+  --font-condensed: var(--font-archivo, "Arial Narrow"), "Arial Narrow", "Roboto Condensed", "Bahnschrift", "sans-serif-condensed", "Helvetica Neue", sans-serif;
 
-  /* Card */
+  /* Paragraphs and leads use max-w-measure (about 70 Geist characters at any size); headings keep
+     their ch caps. */
+  --container-measure: 32em;
+  /* Body blocks under a split SectionHead start at column 4 of the 12-column grid: lg:pl-col-4 or
+     lg:ml-col-4. */
+  --spacing-col-4: calc(25% + 0.625rem);
 
-  --color-card: hsl(var(--card));
-  --color-card-foreground: hsl(var(--card-foreground));
-  --color-card-border: hsl(var(--card-border));
-
-  /* Popover */
-
-  --color-popover: hsl(var(--popover));
-  --color-popover-foreground: hsl(var(--popover-foreground));
-  --color-popover-border: hsl(var(--popover-border));
-
-  /* Primary */
-
-  --color-primary: hsl(var(--primary));
-  --color-primary-foreground: hsl(var(--primary-foreground));
-
-  /* Secondary */
-
-  --color-secondary: hsl(var(--secondary));
-  --color-secondary-foreground: hsl(var(--secondary-foreground));
-
-  /* Muted */
-
-  --color-muted: hsl(var(--muted));
-  --color-muted-foreground: hsl(var(--muted-foreground));
-
-  /* Accent */
-
-  --color-accent: hsl(var(--accent));
-  --color-accent-foreground: hsl(var(--accent-foreground));
-
-  /* Destructive */
-
-  --color-destructive: hsl(var(--destructive));
-  --color-destructive-foreground:
-    hsl(var(--destructive-foreground));
-
-  /* Border */
-
-  --color-border: hsl(var(--border));
-  --color-input: hsl(var(--input));
-  --color-ring: hsl(var(--ring));
-
-  /* Charts */
-
-  --color-chart-1: hsl(var(--chart-1));
-  --color-chart-2: hsl(var(--chart-2));
-  --color-chart-3: hsl(var(--chart-3));
-  --color-chart-4: hsl(var(--chart-4));
-  --color-chart-5: hsl(var(--chart-5));
-
-  /* Sidebar */
-
-  --color-sidebar: hsl(var(--sidebar));
-  --color-sidebar-foreground:
-    hsl(var(--sidebar-foreground));
-
-  --color-sidebar-border:
-    hsl(var(--sidebar-border));
-
-  --color-sidebar-primary:
-    hsl(var(--sidebar-primary));
-
-  --color-sidebar-primary-foreground:
-    hsl(var(--sidebar-primary-foreground));
-
-  --color-sidebar-accent:
-    hsl(var(--sidebar-accent));
-
-  --color-sidebar-accent-foreground:
-    hsl(var(--sidebar-accent-foreground));
-
-  --color-sidebar-ring:
-    hsl(var(--sidebar-ring));
-
-  /* Fonts */
-
-  --font-sans: var(--app-font-sans);
-  --font-mono: var(--app-font-mono);
-
-  /* Radius */
-
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
-
-  /* Shadows */
-
-  --shadow-2xs: var(--shadow-2xs);
-  --shadow-xs: var(--shadow-xs);
-  --shadow-sm: var(--shadow-sm);
-  --shadow-md: var(--shadow-md);
-  --shadow-lg: var(--shadow-lg);
-  --shadow-xl: var(--shadow-xl);
-  --shadow-2xl: var(--shadow-2xl);
+  --radius-control: 8px;
+  --radius-menu: 12px;
+  --ease-out-soft: cubic-bezier(0.2, 0.7, 0.2, 1);
 }
-
 
 /* ============================================================
-   Document Defaults
+   Typography. Use these for every heading and text block.
+   Geist (the Helvetica Now stand-in) for everything, at weights 400 and 500, never heavier.
+   Archivo condensed (type-slogan) only for a 2-6 word campaign slogan: the landing hero.
    ============================================================ */
 
-html {
-  scroll-behavior: smooth;
-  overflow-x: hidden;
+/* The campaign slogan, set like Nike's condensed headlines: heavy, condensed, uppercase, tight. */
+/* The font stack is written out (not var(--font-condensed)) so that --font-archivo resolves on the
+   element itself: it is set on the landing hero only, not on :root. */
+@utility type-slogan { font-family: var(--font-archivo, "Arial Narrow"), "Arial Narrow", "Roboto Condensed", "Bahnschrift", "sans-serif-condensed", "Helvetica Neue", sans-serif; font-weight: 800; font-stretch: 62%; font-size: clamp(3.5rem, 2rem + 7vw, 7rem); line-height: .9; letter-spacing: -0.005em; text-transform: uppercase; text-wrap: balance; }
 
-  -webkit-text-size-adjust: 100%;
-  text-size-adjust: 100%;
+/* Display sizes, set like Helvetica Now Display: medium weight, tight tracking, sentence case.
+   The fluid sizes run from a 390px phone to a 1440px desktop and land on whole pixels at both ends:
+   display 36→60 (64 from 1536px), closing 30→48, h2 28→40, row and pull 22→28, h3 and title 20→24. */
+@utility type-display  { font-family: var(--font-display); font-weight: 500; font-size: clamp(2.25rem, 1.693rem + 2.286vw, 3.75rem); line-height: 1.02; letter-spacing: -0.032em; text-wrap: balance; @media (width >= 96rem) { font-size: 4rem; } }
+@utility type-closing  { font-family: var(--font-display); font-weight: 500; font-size: clamp(1.875rem, 1.457rem + 1.714vw, 3rem); line-height: 1.05; letter-spacing: -0.03em; text-wrap: balance; }
+@utility type-h2       { font-family: var(--font-display); font-weight: 500; font-size: clamp(1.75rem, 1.471rem + 1.143vw, 2.5rem); line-height: 1.08; letter-spacing: -0.028em; text-wrap: balance; }
+/* Row titles and small section titles: one size with type-h3. */
+@utility type-title    { font-family: var(--font-display); font-weight: 500; font-size: clamp(1.25rem, 1.157rem + 0.381vw, 1.5rem); line-height: 1.2; letter-spacing: -0.02em; text-wrap: balance; }
+@utility type-row      { font-family: var(--font-display); font-weight: 500; font-size: clamp(1.375rem, 1.236rem + 0.571vw, 1.75rem); line-height: 1.15; letter-spacing: -0.025em; text-wrap: balance; }
+@utility type-h3       { font-family: var(--font-display); font-weight: 500; font-size: clamp(1.25rem, 1.157rem + 0.381vw, 1.5rem); line-height: 1.2; letter-spacing: -0.02em; text-wrap: balance; }
+@utility type-h4       { font-family: var(--font-display); font-weight: 500; font-size: 1.125rem; line-height: 1.3; letter-spacing: -0.012em; text-wrap: balance; }
+/* A list item's title (a step, a short statement): 17px medium, one step over the 15-16px text under it. */
+@utility type-item     { font-weight: 500; font-size: 1.0625rem; line-height: 1.4; letter-spacing: -0.005em; text-wrap: balance; }
+@utility type-tagline  { font-family: var(--font-display); font-weight: 400; font-size: clamp(1.25rem, 1rem + 0.8vw, 1.75rem); line-height: 1.2; letter-spacing: -0.02em; }
+@utility type-pull     { font-family: var(--font-display); font-weight: 500; font-size: clamp(1.375rem, 1.236rem + 0.571vw, 1.75rem); line-height: 1.2; letter-spacing: -0.025em; text-wrap: balance; }
+@utility type-triplet  { font-family: var(--font-display); font-weight: 500; font-size: clamp(2rem, 1.3rem + 2.2vw, 3.25rem); line-height: 1; letter-spacing: -0.035em; }
+/* The lead and hero sentences are exactly 17px on phones (one step under the h2s there) and reach
+   20px at 1280px wide. */
+@utility type-hero     { font-size: 1.0625rem; line-height: 1.45; text-wrap: pretty; @media (width >= 40rem) { font-size: clamp(1.0625rem, 0.875rem + 0.469vw, 1.25rem); } }
+@utility type-lead     { font-size: 1.0625rem; line-height: 1.5; text-wrap: pretty; @media (width >= 40rem) { font-size: clamp(1.0625rem, 0.875rem + 0.469vw, 1.25rem); } }
+@utility type-body     { font-size: 1.0625rem; line-height: 1.6; text-wrap: pretty; }
+@utility type-small    { font-size: 1rem; line-height: 1.55; text-wrap: pretty; }
+@utility type-ui       { font-size: 0.9375rem; line-height: 1.55; text-wrap: pretty; }
+@utility type-label    { font-size: 0.875rem; font-weight: 500; line-height: 1.4; letter-spacing: 0; text-wrap: pretty; }
+@utility type-caption  { font-size: 0.875rem; font-weight: 400; line-height: 1.45; text-wrap: pretty; }
+/* The 13px legal and CIN lines. */
+@utility type-fine     { font-size: 0.8125rem; line-height: 1.55; }
 
-  font-size: 100%;
-}
-
-body {
-  /* Defined here, not on :root: next/font sets --font-plus-jakarta on <body>, so a :root reference would resolve to nothing. */
-  --app-font-sans:
-    var(--font-plus-jakarta),
-    Arial,
-    Helvetica,
-    sans-serif;
-
-  margin: 0;
-
-  width: 100%;
-  min-height: 100vh;
-
-  overflow-x: hidden;
-
-  font-family: var(--app-font-sans);
-
-  font-feature-settings:
-    "kern" 1,
-    "liga" 1,
-    "calt" 1,
-    "ss01" 1;
-
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-
-  background-color: hsl(var(--background));
-  color: hsl(var(--foreground));
-}
-
-
-/* ============================================================
-   Small-screen font scaling
-   ============================================================ */
-
-@media (max-width: 375px) {
-  html {
-    font-size: 90.625%;
+/* Firefox has no text-wrap: pretty: the short leads and labels balance instead, so none ends on one
+   word. Body copy (type-ui, type-caption) keeps plain wrapping there: balancing a paragraph narrows it. */
+@layer utilities {
+  @supports not (text-wrap: pretty) {
+    .type-hero, .type-lead, .type-label { text-wrap: balance; }
   }
 }
 
-@media (min-width: 376px) and (max-width: 414px) {
-  html {
-    font-size: 93.75%;
-  }
-}
-
-@media (min-width: 415px) {
-  html {
-    font-size: 100%;
-  }
-}
-
-
 /* ============================================================
-   Basic Element Defaults
+   Base
    ============================================================ */
 
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    /* No grey flash on tap: touch feedback is the :active dimming below. */
+    -webkit-tap-highlight-color: transparent;
+    /* Clears the sticky header when jumping to an anchor. Smooth scrolling is handled per link by
+       SmoothAnchors, never globally (global smooth scrolling broke full-page screenshots).
+       Anchor targets take no scroll-margin (scroll-mt-*) of their own: it would add to this 96px on
+       arrival from another page, while SmoothAnchors always lands same-page clicks at 96px. */
+    scroll-padding-top: 96px;
+    /* Below lg the fixed MobileCta bar (about 73px) covers the viewport bottom, so a control that
+       Tab scrolls into view would land under it. Keep this in step with the bar's height. A short
+       screen (a phone on its side) keeps its few lines for the content instead. */
+    @media (width < 64rem) and (height >= 30rem) {
+      scroll-padding-bottom: calc(88px + env(safe-area-inset-bottom));
+    }
+    @media (height < 30rem) {
+      scroll-padding-top: 1rem;
+    }
+  }
 
-* {
-  border-color: hsl(var(--border));
-}
+  body {
+    margin: 0;
+    min-height: 100vh;
+    overflow-x: hidden;
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans);
+    font-size: 16px;
+    font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-family: var(--app-font-sans);
-  letter-spacing: -0.03em;
-}
+  /* The outline colour is set at rest as well as on focus. Tailwind v4's `transition-colors` also
+     animates outline-color, so without this a focus ring would fade in from currentColor instead of
+     appearing at full colour at once. */
+  * {
+    border-color: var(--border);
+    outline-color: var(--accent);
+  }
 
-img,
-video {
-  display: block;
+  .bg-night * {
+    outline-color: var(--night-accent);
+  }
 
-  max-width: 100%;
-  height: auto;
-}
-
-
-/*
-  IMPORTANT:
-
-  Do NOT globally apply:
-
-  svg {
+  img,
+  video {
+    display: block;
     max-width: 100%;
     height: auto;
   }
 
-  Lucide and other component icons are SVG elements and should retain
-  their component-specific width/height classes.
-*/
+  button,
+  input,
+  textarea,
+  select {
+    font: inherit;
+  }
 
+  /* Everything that acts on a click shows the hand, buttons included (the browser default is the arrow). */
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]),
+  summary,
+  label:has(> input[type="radio"]) {
+    cursor: pointer;
+  }
 
-button,
-input,
-textarea,
-select {
-  font: inherit;
+  /* Touch feedback: on a touch screen, where nothing hovers, a pressed link or control dims while the
+     finger is down. */
+  @media (hover: none) {
+    :where(a[href], button:not(:disabled), summary, [role="option"], label:has(> input)):active {
+      opacity: 0.7;
+    }
+  }
+
+  *:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
+
+  /* Links and buttons without a radius of their own take a slightly rounded focus ring; a rounded-*
+     utility still wins. Rows that draw their own hairline opt out with focus-visible:rounded-none,
+     or the radius would bend the hairline's ends. */
+  :where(a, button, summary):focus-visible {
+    border-radius: var(--radius-focus);
+  }
+
+  /* The dark band needs a light focus ring. */
+  .bg-night :focus-visible {
+    outline-color: var(--night-accent);
+  }
+
+  ::selection {
+    background-color: var(--foreground);
+    color: var(--background);
+  }
+
+  summary {
+    list-style: none;
+  }
+
+  summary::-webkit-details-marker {
+    display: none;
+  }
 }
 
-button,
-a {
-  -webkit-tap-highlight-color: transparent;
+.tabular {
+  font-variant-numeric: tabular-nums;
 }
 
+/* The dotted timeline rule (PhaseLine): horizontal from md, vertical below. */
+.dot-rule-x,
+.dot-rule-y {
+  background-image: radial-gradient(circle, var(--border-strong) 1.1px, transparent 1.4px);
+}
+
+.dot-rule-x {
+  background-size: 9px 3px;
+  background-repeat: repeat-x;
+}
+
+.dot-rule-y {
+  background-size: 3px 9px;
+  background-repeat: repeat-y;
+}
+
+/* Targets that SmoothAnchors focuses for screen readers do not draw a ring around a whole section. */
+[data-anchor-target]:focus {
+  outline: none;
+}
 
 /* ============================================================
-   Search Input
+   Dot-matrix emblems (EmblemDots), the "product shots" inside MediaTiles.
+   Ink outline, grey glass and bulb-red accents. The glass switches on, turning warm like the
+   bulb, while the surrounding tile (or any group) is hovered or keyboard-focused.
    ============================================================ */
 
-input[type="search"]::-webkit-search-cancel-button {
-  display: none;
-  -webkit-appearance: none;
+.emblem-dots {
+  --emblem-ink: var(--foreground);
+  --emblem-glass: #c9c9cb;
+  --emblem-glass-on: rgb(214 104 78 / 0.85);
+  --emblem-accent: var(--accent);
 }
 
-
-/* ============================================================
-   Page Transition
-   ============================================================ */
-
-.page-transition {
-  will-change:
-    opacity,
-    transform,
-    filter;
-
-  backface-visibility: hidden;
-  transform-origin: center top;
+.emblem-dots.emblem-night {
+  --emblem-ink: var(--night-foreground);
+  --emblem-glass: rgb(255 255 255 / 0.24);
+  --emblem-accent: #d4635c;
 }
 
-
-/* ============================================================
-   Scroll Progress
-   ============================================================ */
-
-.progress-bar {
-  transform-origin: left center;
+.emblem-ink { stroke: var(--emblem-ink); }
+.emblem-accent { stroke: var(--emblem-accent); }
+.emblem-glass {
+  stroke: var(--emblem-glass);
+  transition: stroke 400ms var(--ease-out-soft);
 }
 
+/* Hover only where a pointer hovers, and keyboard focus only (not a tap's focus), so a tapped tile
+   never stays warm on a touch screen. */
+@media (hover: hover) {
+  :is(.group, .group\/link, .group\/card, .group\/tile):hover .emblem-glass {
+    stroke: var(--emblem-glass-on);
+  }
+}
+
+:is(.group, .group\/link, .group\/card, .group\/tile):is(:focus-visible, :has(:focus-visible)) .emblem-glass {
+  stroke: var(--emblem-glass-on);
+}
 
 /* ============================================================
-   Hide Scrollbar
+   Motion
+   Kept deliberately small: one fade-up per section head as it first scrolls into view, colour
+   transitions, and soft expand/collapse. Content is visible without JavaScript: the hidden start
+   state only applies once RevealObserver has added <html class="reveal-ready">.
+   Durations come from the --motion-* tokens on :root, curves from --ease-out-soft.
    ============================================================ */
+
+[data-reveal] {
+  transition:
+    opacity var(--motion-reveal) var(--ease-out-soft),
+    transform var(--motion-reveal) var(--ease-out-soft);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+html.reveal-ready [data-reveal]:not(.is-visible) {
+  opacity: 0;
+  transform: translateY(12px);
+}
+
+/* Landing hero only: each .hero-rise element fades up on load, after its own --rise-delay, so a
+   block can cascade (0ms, 70ms, 140ms...) whatever its position in the markup. The fill is
+   `backwards` only: the from-state holds through the delay, and once the rise ends the block is
+   back to its own style (the `to` frame matches it). A forward fill would keep an identity
+   transform on the block, which WebKit composites, and then draws the secondary pill's 1.5px
+   inset edge faint, or flickering in and out. */
+@media (prefers-reduced-motion: no-preference) {
+  .hero-rise { animation: hero-rise var(--motion-reveal) var(--ease-out-soft) var(--rise-delay, 0ms) backwards; }
+}
+
+@keyframes hero-rise {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: none; }
+}
+
+/* Soft expand/collapse using grid rows, for accordions and disclosures. */
+.collapse-grid {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows var(--motion-ui) var(--ease-out-soft);
+}
+
+.collapse-grid[data-open="true"] {
+  grid-template-rows: 1fr;
+}
+
+.collapse-grid > * {
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* Native <details class="disclosure"> rows open and close at the accordion's pace where the browser
+   can animate to height: auto; elsewhere they snap, as before. Never use it on TopicsDisclosure or the
+   contact form's optional fold: both force their content open from md through ::details-content. */
+@supports (interpolate-size: allow-keywords) {
+  details.disclosure {
+    interpolate-size: allow-keywords;
+  }
+
+  details.disclosure::details-content {
+    block-size: 0;
+    overflow-y: clip;
+    transition:
+      block-size var(--motion-ui) var(--ease-out-soft),
+      content-visibility var(--motion-ui) allow-discrete;
+  }
+
+  details.disclosure[open]::details-content {
+    block-size: auto;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    details.disclosure::details-content {
+      transition: none;
+    }
+  }
+}
+
+/* The search dialog (CommandMenu) fades and rises in, and its backdrop fades from clear to the 40%
+   ink wash. Closing runs the same in reverse only where the browser can keep a closing dialog in the
+   top layer (`overlay`); elsewhere (WebKit, Firefox) it closes at once, since a dialog that fades
+   after leaving the top layer is drawn, and scrolled to, at the end of the page. */
+.search-dialog {
+  transition:
+    opacity 200ms var(--ease-out-soft),
+    translate 240ms var(--ease-out-soft);
+}
+
+@starting-style {
+  .search-dialog[open] {
+    opacity: 0;
+    translate: 0 8px;
+  }
+}
+
+/* Full screen on phones, so it travels a little further there. */
+@media (width < 40rem) {
+  @starting-style {
+    .search-dialog[open] {
+      translate: 0 16px;
+    }
+  }
+}
+
+.search-dialog::backdrop {
+  background-color: rgb(17 17 17 / 0.4);
+  transition: background-color 200ms var(--ease-out-soft);
+}
+
+@starting-style {
+  .search-dialog[open]::backdrop {
+    background-color: rgb(17 17 17 / 0);
+  }
+}
+
+@supports (overlay: auto) {
+  .search-dialog {
+    transition:
+      opacity 200ms var(--ease-out-soft),
+      translate 240ms var(--ease-out-soft),
+      overlay 200ms allow-discrete,
+      display 200ms allow-discrete;
+  }
+
+  .search-dialog:not([open]) {
+    opacity: 0;
+    translate: 0 8px;
+  }
+
+  @media (width < 40rem) {
+    .search-dialog:not([open]) {
+      translate: 0 16px;
+    }
+  }
+
+  .search-dialog::backdrop {
+    transition:
+      background-color 200ms var(--ease-out-soft),
+      overlay 200ms allow-discrete,
+      display 200ms allow-discrete;
+  }
+
+  .search-dialog:not([open])::backdrop {
+    background-color: rgb(17 17 17 / 0);
+  }
+}
+
+/* Hide scrollbars on horizontal rows (the phone tile rails) while keeping them scrollable. */
+.no-scrollbar {
+  scrollbar-width: none;
+}
 
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
 
-.no-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-
-
 /* ============================================================
-   Mobile Touch Targets / Safe Areas
-   ============================================================ */
-
-@media (max-width: 767px) {
-  .mobile-touch-target {
-    min-width: 44px;
-    min-height: 44px;
-  }
-
-  .mobile-safe-bottom {
-    padding-bottom:
-      max(
-        1rem,
-        env(safe-area-inset-bottom, 0px)
-      );
-  }
-
-  .mobile-safe-top {
-    padding-top:
-      max(
-        1rem,
-        env(safe-area-inset-top, 0px)
-      );
-  }
-}
-
-
-/* ============================================================
-   Overflow Protection
-   ============================================================ */
-
-.overflow-safe {
-  overflow-wrap: break-word;
-  word-break: break-word;
-  hyphens: auto;
-}
-
-
-/* ============================================================
-   Desktop Card Hover
-   ============================================================ */
-
-@media (hover: hover) {
-  .card-hover {
-    transition:
-      transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-      box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .card-hover:hover {
-    transform: translateY(-2px);
-
-    box-shadow:
-      0 12px 32px
-      hsl(232 72% 26% / 0.1);
-  }
-}
-
-
-/* ============================================================
-   Focus States
-   ============================================================ */
-
-*:focus-visible {
-  outline:
-    2px solid
-    hsl(var(--ring) / 0.5);
-
-  outline-offset: 2px;
-  border-radius: 0.375rem;
-}
-
-
-/* ============================================================
-   Text Selection
-   ============================================================ */
-
-::selection {
-  background-color: hsl(var(--primary) / 0.15);
-  color: hsl(var(--foreground));
-}
-
-
-/* ============================================================
-   Mobile Layout
-   Below the md breakpoint, page content and the footer are centred.
-   Form fields stay left-aligned so labels and typed text line up.
-   ============================================================ */
-
-@media (width < 48rem) {
-  main,
-  footer {
-    text-align: center;
-  }
-
-  main form {
-    text-align: left;
-  }
-
-  /* Width-capped blocks (max-w-*) would otherwise sit at the left edge with centred text inside. */
-  :where(main, footer) [class*="max-w-"] {
-    margin-inline: auto;
-  }
-}
-
-
-/* ============================================================
-   Reduced Motion Accessibility
+   Reduced motion: nothing moves or fades.
    ============================================================ */
 
 @media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
+  html.reveal-ready [data-reveal]:not(.is-visible) {
+    opacity: 1;
+    transform: none;
   }
 
   *,
   *::before,
   *::after {
-    scroll-behavior: auto !important;
     animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
     animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
+    /* Zero, not a tiny duration: a tiny one would switch transitions on for every property. */
+    transition-duration: 0s !important;
+    transition-delay: 0s !important;
+  }
+
+  /* The universal selector does not reach ::backdrop. */
+  ::backdrop {
+    transition-duration: 0s !important;
+  }
+}
+
+/* ============================================================
+   Print: a programme or company page prints (or saves as a PDF) as a clean A4 outline. The site
+   chrome, the search dialog, the closing band and the page's jump-link indexes are left off; every
+   folded answer and disclosure prints open; pills print as ink outlines. The footer's brand block
+   (email, phones, LinkedIn) and legal lines still print, and PrintPrep (kit/print-prep.tsx) adds a
+   one-line masthead with the page's address. Nothing here changes the screen.
+   ============================================================ */
+
+@media print {
+  @page {
+    size: A4;
+    margin: 14mm;
+  }
+
+  /* Every size is in rem, so this sets the whole page at print scale: 13px body copy (about 10pt)
+     instead of the screen's 16px, and the spacing with it. */
+  html {
+    font-size: 81.25%;
+  }
+
+  body {
+    font-size: 1rem;
+  }
+
+  [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  body > header,
+  #mobile-navigation,
+  aside[aria-label="Quick contact"],
+  dialog,
+  main > section.bg-night,
+  #related,
+  nav:has(#on-this-page),
+  nav[aria-labelledby="on-this-page-heading"],
+  footer nav[aria-label="Footer"],
+  [data-print-hide] {
+    display: none !important;
+  }
+
+  .sticky {
+    position: static !important;
+  }
+
+  /* The primary pill is ink on paper too, where backgrounds are not printed: an ink outline. */
+  .bg-foreground.text-background {
+    background: none !important;
+    color: var(--foreground) !important;
+    box-shadow: inset 0 0 0 1.5px var(--foreground) !important;
+  }
+
+  /* Everything folded prints open: native disclosures, the accordion's answers (closed ones are
+     hidden until found), and their plus and chevron marks are left off. */
+  details::details-content {
+    content-visibility: visible !important;
+    block-size: auto !important;
+  }
+
+  .collapse-grid {
+    grid-template-rows: 1fr !important;
+  }
+
+  .collapse-grid [hidden] {
+    display: block !important;
+    content-visibility: visible !important;
+  }
+
+  summary svg,
+  button[aria-expanded] svg {
+    display: none !important;
+  }
+
+  /* The bands' screen padding (up to 96px a side) would leave half-empty pages: on paper the
+     hairline dividers already separate them. */
+  main > section {
+    padding-block: 1.25rem !important;
+  }
+
+  /* The page hero starts right under PrintPrep's masthead rule. */
+  main > header > div:first-child {
+    padding-top: 0 !important;
+  }
+
+  /* The footer prints as its brand block and legal lines only, closer together and on one page. */
+  body > footer > div {
+    padding-block: 1.25rem 0 !important;
+    break-inside: avoid;
+  }
+
+  body > footer > div > .type-fine {
+    margin-top: 0.75rem !important;
+    padding-top: 0.5rem !important;
+  }
+
+  /* A heading stays with the label above it and the text after it. */
+  h2,
+  h3 {
+    break-after: avoid;
+    break-inside: avoid;
+  }
+
+  h2 {
+    break-before: avoid;
+  }
+
+  li,
+  dl > div {
+    break-inside: avoid;
+  }
+
+  /* A row set as a grid (a concept: its name over its detail) keeps each part whole instead of the
+     whole row: Chromium pushes such kept-together rows, and what follows them, to the next page well
+     before it has to. As one column it prints as a flex column, gaps and all. */
+  li.grid {
+    display: flex;
+    flex-direction: column;
+    break-inside: auto;
+  }
+
+  li.grid > * {
+    break-inside: avoid;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
   }
 }

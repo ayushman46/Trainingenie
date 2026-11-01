@@ -26,6 +26,9 @@ const securityHeaders = [
 
 const nextConfig: NextConfig = {
   reactCompiler: true,
+  // The floating Next.js "N" badge is a dev-server overlay (never in production); off, so it does not
+  // sit over the page's text while the site is reviewed on localhost.
+  devIndicators: false,
   poweredByHeader: false,
   async headers() {
     return [{ source: "/:path*", headers: securityHeaders }];
