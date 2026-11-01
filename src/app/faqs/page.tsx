@@ -1,4 +1,47 @@
-import type { Metadata } from "next"; import { pageMetadata, jsonLd, ORGANIZATION_ID } from "@/lib/seo"; import { PageShell } from "@/components/page-shell"; import { CONTACT_INFO, LEGAL_ENTITY, SITE_URL, TRAINING_PILLARS } from "@/data";
+import type { Metadata } from "next";
+import { ClosingBand } from "@/components/tg/closing-band";
+import { PageHero } from "@/components/tg/page-hero";
+import { Section } from "@/components/tg/section";
+import { FaqSearch, type FaqGroup, type FaqLink } from "@/components/utility/faq-search";
+import { COURSES, FAQS, SITE_URL, TRAINING_PILLARS } from "@/data";
+import { jsonLd, ORGANIZATION_ID, pageMetadata } from "@/lib/seo";
+
 export const metadata: Metadata = pageMetadata("FAQs", "Answers to common questions about TraininGenie: who we are, who founded the company, where we are based, and how our corporate training works.", "/faqs");
-const faqs = [["What is TraininGenie?", "TraininGenie is a corporate training and learning and development company in India. It provides need-based training for organizations across technology, leadership and soft skills, management systems such as ITIL, PRINCE2 and Agile, and ISO standards, governance, risk and compliance."], ["Is it TraininGenie or Training Genie?", "The company name is written TraininGenie, as one word with a capital G. People also search for it as Training Genie or Trainingenie. The official website is www.trainingenie.com."], ["Who founded TraininGenie?", "TraininGenie was founded by Mousumi Chakraborty, who leads the company as Founder Director and brings more than two decades of experience across multiple businesses and industries."], ["Where is TraininGenie based?", `TraininGenie is based in Bengaluru, India, and its registered office is in ${LEGAL_ENTITY.registeredOffice.label}. Kolkata is also an associated location, and training is offered to organizations across India.`], ["Is TraininGenie a registered company?", `Yes. TraininGenie is operated by ${LEGAL_ENTITY.name}, incorporated in India on ${LEGAL_ENTITY.incorporatedLabel} with Corporate Identification Number (CIN) ${LEGAL_ENTITY.cin}.`], ["What training does TraininGenie offer?", `TraininGenie organizes its training into ${TRAINING_PILLARS.length} areas: ${TRAINING_PILLARS.map((pillar) => pillar.title).join(", ")}. Focused programmes include ITIL 4 Foundation, PRINCE2, Scrum and Agile, ISO 27001, ISO 9001, Design Thinking, and ReactJS corporate training.`], ["How do I contact TraininGenie?", `Email ${CONTACT_INFO.email}, call ${CONTACT_INFO.phones.join(" or ")}, or send an enquiry through ${SITE_URL}/contact-us.`], ["Can training be customized?", "Yes. TraininGenie specializes in need-based customized training, and standard offerings can be fine-tuned to specific requirements."], ["Who is TraininGenie's training for?", "TraininGenie works with organizations and participants across corporate, technology, leadership, behavioral, management systems, standards, risk, governance, and compliance learning needs."], ["Can TraininGenie deliver onsite training?", "Delivery format should be discussed for the specific requirement. Contact TraininGenie with your preferred format and team context."], ["Does training imply accreditation or examination authority?", "No. A training title such as ITIL or ISO does not by itself establish accreditation, examination-institute status, or authorized certification-body status. Any such arrangements should be confirmed for the specific programme."]];
-export default function Page() { return <PageShell title="Frequently Asked Questions" intro="Clear answers for organizations evaluating corporate training and certification preparation with TraininGenie."><div className="mt-16 divide-y divide-border rounded-3xl border border-border">{faqs.map(([question, answer]) => <section key={question} className="p-6 sm:p-8"><h2 className="text-xl font-bold">{question}</h2><p className="mt-3 leading-relaxed text-muted-foreground">{answer}</p></section>)}</div>{jsonLd({ "@context": "https://schema.org", "@type": "FAQPage", "@id": `${SITE_URL}/faqs#faq`, url: `${SITE_URL}/faqs`, about: { "@id": ORGANIZATION_ID }, mainEntity: faqs.map(([name, text]) => ({ "@type": "Question", name, acceptedAnswer: { "@type": "Answer", text } })) })}</PageShell>; }
+
+const meta = [`${FAQS.length} questions answered`, `${TRAINING_PILLARS.length} training areas`, `${COURSES.length} focused programmes`];
+
+// Words that each find one of the questions below, shown as grey search-term pills. Four short ones, so the
+// pills keep to one line in the desktop search column; on phones they wrap under "Try" ("Exam" finds the
+// certification question).
+const suggestions = ["Founder", "Customized", "Onsite", "Exam"];
+
+// The questions sorted by what the reader wants to know: a buyer's questions about training and delivery come
+// first, then the company (the spelling of the name last). Each group lists its questions in this order. Each name must match a question in
+// FAQS exactly; anything left out is still listed, under "Other questions".
+const groups: FaqGroup[] = [
+  { id: "training", title: "Training and delivery", questions: ["Can TraininGenie deliver onsite training?", "Can training be customized?", "What training does TraininGenie offer?", "Who is TraininGenie's training for?", "How do certification and examinations work?"] },
+  { id: "company", title: "About the company", questions: ["What is TraininGenie?", "Who founded TraininGenie?", "Where is TraininGenie based?", "Is TraininGenie a registered company?", "How do I contact TraininGenie?", "Is it TraininGenie or Training Genie?"] },
+];
+
+// Where to read more after an answer.
+const related: Record<string, FaqLink> = {
+  "What is TraininGenie?": { href: "/about-us", label: "About TraininGenie" },
+  "Who founded TraininGenie?": { href: "/our-team", label: "Founder profile" },
+  "Where is TraininGenie based?": { href: "/contact-us", label: "Contact details" },
+  "What training does TraininGenie offer?": { href: "/corporate-training-services", label: "All training topics" },
+  "Can training be customized?": { href: "/training-methodology", label: "See how we work" },
+  "Who is TraininGenie's training for?": { href: "/clients-and-testimonials", label: "Selected clients" },
+  "Can TraininGenie deliver onsite training?": { href: "/contact-us#enquiry", label: "Share your format and location" },
+  "How do I contact TraininGenie?": { href: "/contact-us#enquiry", label: "Go to the enquiry form" },
+};
+
+export default function Page() {
+  return <>
+    <PageHero crumbs={[{ label: "Frequently Asked Questions" }]} label="FAQs" title="Frequently Asked Questions" size="compact" meta={meta} lead="Clear answers for organizations evaluating corporate training and certification preparation with TraininGenie." />
+    <Section divider labelledBy="questions-heading">
+      <FaqSearch items={FAQS} groups={groups} related={related} suggestions={suggestions} title="Find an answer" intro="Who we are, who founded the company, where we are based, and how our corporate training works." />
+    </Section>
+    {jsonLd({ "@context": "https://schema.org", "@type": "FAQPage", "@id": `${SITE_URL}/faqs#faq`, url: `${SITE_URL}/faqs`, about: { "@id": ORGANIZATION_ID }, mainEntity: FAQS.map(([name, text]) => ({ "@type": "Question", name, acceptedAnswer: { "@type": "Answer", text } })) })}
+    <ClosingBand title="Still have a question? Ask TraininGenie directly." />
+  </>;
+}

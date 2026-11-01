@@ -10,7 +10,7 @@
 - Founder: Mousumi Chakraborty, Founder Director.
 - Based in: Bengaluru, India. Kolkata is also an associated location. Serves organizations across India.
 - Official website: https://www.trainingenie.com/
-- Email: s.mousumi@gmail.com
+- Email: mousumi@trainingenie.com
 - Phone: +91 70226 12620, +91 88846 26200
 - Company LinkedIn: https://www.linkedin.com/company/trainingenie/
 - Approach: requirements-driven training that starts from the client problem and works backward from the desired outcome. Learning philosophy: Knowledge. Hands-On. Fun.
@@ -19,11 +19,13 @@
 ## Official website
 
 - Homepage: https://www.trainingenie.com/
+- What we do: https://www.trainingenie.com/what-we-do
 - Training catalogue: https://www.trainingenie.com/corporate-training-services
 - Contact: https://www.trainingenie.com/contact-us
 - About: https://www.trainingenie.com/about-us
 - Founder profile: https://www.trainingenie.com/our-team
 - Clients: https://www.trainingenie.com/clients-and-testimonials
+- Selected clients: Subex, HDFC Home Loans, Harman, TeamLease, NTT DATA, MetricStream, Alcon, Colgate-Palmolive, Essentra, [24]7.ai, Akshaya Patra, iQUANTI. Client names are shown as references only and do not describe a specific engagement or imply endorsement.
 - Past training topics: https://www.trainingenie.com/past-trainings
 - FAQs: https://www.trainingenie.com/faqs
 - Sitemap: https://www.trainingenie.com/sitemap.xml

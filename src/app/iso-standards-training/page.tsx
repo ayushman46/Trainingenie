@@ -1,8 +1,22 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import { CatalogueSection } from "@/components/catalogue-section";
-import { PageShell } from "@/components/page-shell";
-import { ISO_GROUPS } from "@/data";
+import { programmesFor } from "@/components/catalogue/utils";
+import { AreaPage } from "@/components/tg/area-page";
+import { CertificationNote } from "@/components/tg/certification-note";
+import { TRAINING_PILLARS } from "@/data";
 import { pageMetadata, serviceJsonLd } from "@/lib/seo";
-export const metadata: Metadata = pageMetadata("ISO, Standards and GRC Training", "Explore TraininGenie training across ISO 9001, ISO 27001, ISO 20000, ISO 22301, ISO 31000, risk, privacy, and compliance.", "/iso-standards-training");
-export default function Page() { return <PageShell title="ISO, Standards and GRC Training" intro="Learning support across quality, information security, service management, business continuity, risk, privacy, governance, and compliance. Programme names do not imply accreditation or certification-body status."><div className="mt-4"><CatalogueSection number="01" eyebrow="Standards catalogue" title="ISO and Governance, Risk and Compliance" intro="Use the catalogue to identify a relevant area, then confirm the specific programme, delivery, and certification-preparation requirements with TraininGenie." groups={ISO_GROUPS} /></div><section className="border-t border-border py-16"><h2 className="text-3xl font-extrabold tracking-[-0.04em]">Focused standards programmes</h2><div className="mt-8 grid gap-4 sm:grid-cols-2"><Link href="/iso-27001-training" className="border-b border-border py-4 font-bold text-primary">ISO 27001 corporate training</Link><Link href="/iso-9001-training" className="border-b border-border py-4 font-bold text-primary">ISO 9001 corporate training</Link></div></section><section className="border-t border-border py-16"><h2 className="text-3xl font-extrabold tracking-[-0.04em]">A note on certification language</h2><p className="mt-4 max-w-3xl text-lg leading-relaxed text-slate-600">Training with a standard or framework name does not automatically establish that TraininGenie is an accredited examination institute, authorized training partner, or certification body. Those details should be confirmed for the specific engagement.</p></section>{serviceJsonLd({ name: "ISO, Standards and GRC Training", description: "Training across ISO standards, quality, information security, service management, business continuity, risk, privacy, governance, and compliance.", path: "/iso-standards-training" })}</PageShell>; }
+
+export const metadata: Metadata = pageMetadata("ISO, Standards and GRC Training", "Explore TraininGenie training across ISO 9001, ISO 27001, ISO 20000, ISO 22301, ISO 31000, risk, privacy, and compliance.", "/iso-standards-training", true);
+
+const programmes = programmesFor("ISO, Standards and GRC");
+
+// Who the area serves comes from the audiences of its focused programmes.
+export default function Page() {
+  return <AreaPage slug="iso-standards-training" title="ISO, Standards and GRC Training" intro="Learning support across quality, information security, service management, business continuity, risk, privacy, governance, and compliance."
+    overview={{ title: "Quality, security, risk, and compliance teams.", statement: "Choose a topic from the catalogue; the programme, delivery, and any certification preparation are then agreed with TraininGenie.", audiences: true }}
+    catalogue={{ title: "ISO and Governance, Risk and Compliance", intro: TRAINING_PILLARS[3].description }}
+    programmes={{ title: "Focused standards\u00a0programmes", items: programmes, showAudience: false }}
+    // Below md the programme rows already close on a hairline, so the note drops its own there.
+    note={<CertificationNote className="mt-14 max-md:mt-8 max-md:border-t-0 max-md:pt-0" />}>
+    {serviceJsonLd({ name: "ISO, Standards and GRC Training", description: "Training across ISO standards, quality, information security, service management, business continuity, risk, privacy, governance, and compliance.", path: "/iso-standards-training" })}
+  </AreaPage>;
+}

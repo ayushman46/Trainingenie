@@ -1,8 +1,31 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { CatalogueSection } from "@/components/catalogue-section";
-import { PageShell } from "@/components/page-shell";
-import { TECHNOLOGY_GROUPS } from "@/data";
+import type { ReactNode } from "react";
+import { programmesFor } from "@/components/catalogue/utils";
+import { AreaPage } from "@/components/tg/area-page";
 import { pageMetadata, serviceJsonLd } from "@/lib/seo";
-export const metadata: Metadata = pageMetadata("Technology Training", "Explore TraininGenie technology training across cloud, software engineering, data, AI, enterprise systems, cybersecurity, and networks.", "/technology-training");
-export default function Page() { return <PageShell title="Technology Training" intro="Technology training for corporate teams that need practical capability across infrastructure, software engineering, data, emerging technology, enterprise platforms, security, and networks."><section className="mt-16 grid gap-10 border-b border-border pb-16 lg:grid-cols-[0.8fr_1.2fr]"><div><p className="text-xs font-bold uppercase tracking-[0.2em] text-accent">Who it is for</p><h2 className="mt-4 text-3xl font-extrabold tracking-[-0.04em]">Teams building, operating, and improving technology</h2></div><div className="space-y-4 text-lg leading-relaxed text-slate-600"><p>Programmes can support engineering, technology, data, security, and delivery teams. The emphasis can be adjusted to the participant level and the organization context.</p><p>TraininGenie starts with the requirement, then works backward to shape the learning experience and practical application.</p></div></section><div className="mt-4"><CatalogueSection number="01" eyebrow="Technology catalogue" title="Areas of learning" intro="The catalogue is organized by the kind of capability a corporate team may need to build." groups={TECHNOLOGY_GROUPS} /></div><section className="border-t border-border py-16"><h2 className="text-3xl font-extrabold tracking-[-0.04em]">Focused technology programmes</h2><p className="mt-4 max-w-2xl text-lg leading-relaxed text-slate-600">Explore focused pages for teams looking for a specific technology learning path.</p><div className="mt-8 grid gap-4 sm:grid-cols-2"><Link href="/reactjs-training" className="border-b border-border py-4 font-bold text-primary">ReactJS corporate training</Link><Link href="/contact-us" className="border-b border-border py-4 font-bold text-primary">Discuss technology training</Link></div></section><section className="grid gap-10 border-t border-border py-16 md:grid-cols-3"><div><h2 className="text-xl font-bold">Interactive learning</h2><p className="mt-3 leading-relaxed text-slate-600">Use lectures, discussion, practical work, and examples appropriate to the programme.</p></div><div><h2 className="text-xl font-bold">Context first</h2><p className="mt-3 leading-relaxed text-slate-600">Standard content can be fine-tuned around participant needs and organizational requirements.</p></div><div><h2 className="text-xl font-bold">A clear next step</h2><p className="mt-3 leading-relaxed text-slate-600">Discuss the audience, topic, and desired outcome through the contact page.</p></div></section>{serviceJsonLd({ name: "Technology Training", description: "Technology training for corporate teams across infrastructure, software engineering, data, emerging technology, enterprise platforms, security, and networks.", path: "/technology-training" })}</PageShell>; }
+
+export const metadata: Metadata = pageMetadata("Technology Training", "Explore TraininGenie technology training across cloud, software engineering, data, AI, enterprise systems, cybersecurity, and networks.", "/technology-training", true);
+
+const programmes = programmesFor("Technology Training");
+
+// An inline link in running text, as TextLink: ink with a 1px underline that stays on hover while the colour turns grey.
+const inlineLink = "text-foreground underline decoration-1 underline-offset-4 transition-colors duration-200 ease-out hover:text-muted-foreground";
+
+const principles: [string, ReactNode][] = [
+  ["Interactive learning", "Use lectures, discussion, practical work, and examples appropriate to the programme."],
+  // "fine-tuned" stays on one line, so a narrow column never breaks it at the hyphen.
+  ["Context first", <>Standard content can be <span className="whitespace-nowrap">fine-tuned</span> around participant needs and organizational requirements.</>],
+  ["A clear next step", <>Discuss the audience, topic, and desired outcome through <Link href="/contact-us#enquiry" className={inlineLink}>the contact page</Link>.</>],
+];
+
+export default function Page() {
+  return <AreaPage slug="technology-training" title="Technology Training" intro="Technology training for corporate teams that need practical capability across infrastructure, software engineering, data, emerging technology, enterprise platforms, security, and networks." approach={principles}
+    overview={{ title: "Teams building, operating, and improving technology.", statement: "Programmes can support engineering, technology, data, security, and delivery teams. The emphasis can be adjusted to the participant level and the organization context.", support: ["TraininGenie starts with the requirement, then works backward to shape the learning experience and practical application."] }}
+    catalogue={{ title: "Areas of learning", intro: "The catalogue is organized by the kind of capability a corporate team may need to build." }}
+    programmes={{ title: "Focused technology\u00a0programme", intro: "Explore focused pages for teams looking for a specific technology learning path.", items: programmes, discuss: "Discuss technology training" }}
+    // The work delivered so far is business tools, ERP and AI (as /past-trainings says), so the intro names it.
+    deliveredIntro="Training across business tools, ERP and AI.">
+    {serviceJsonLd({ name: "Technology Training", description: "Technology training for corporate teams across infrastructure, software engineering, data, emerging technology, enterprise platforms, security, and networks.", path: "/technology-training" })}
+  </AreaPage>;
+}

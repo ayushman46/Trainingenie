@@ -1,8 +1,19 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import { CatalogueSection } from "@/components/catalogue-section";
-import { PageShell } from "@/components/page-shell";
-import { FRAMEWORK_GROUPS } from "@/data";
+import { programmesFor } from "@/components/catalogue/utils";
+import { AreaPage } from "@/components/tg/area-page";
+import { TRAINING_PILLARS } from "@/data";
 import { pageMetadata, serviceJsonLd } from "@/lib/seo";
-export const metadata: Metadata = pageMetadata("Management Systems and Frameworks", "Explore TraininGenie training across ITIL, PRINCE2, PRINCE2 Agile, COBIT, DevOps, and change management.", "/itil-prince2-agile-training");
-export default function Page() { return <PageShell title="Management Systems and Frameworks" intro="Training that helps organizations build shared language and practical understanding around service management, project delivery, agile ways of working, DevOps, and change."><div className="mt-4"><CatalogueSection number="01" eyebrow="Framework catalogue" title="Management systems and delivery" intro="These programmes can be discussed and adapted around the organization, the participant group, and the intended application." groups={FRAMEWORK_GROUPS} /></div><section className="grid gap-10 border-t border-border py-16 md:grid-cols-2"><div><h2 className="text-2xl font-extrabold">Related programmes</h2><p className="mt-3 leading-relaxed text-slate-600">Explore ITIL 4 Foundation, PRINCE2, and Scrum and Agile training pages for more focused programme information.</p></div><div className="space-y-3"><Link href="/itil-4-foundation-training" className="block border-b border-border py-3 font-bold text-primary">ITIL 4 Foundation Training</Link><Link href="/prince2-training" className="block border-b border-border py-3 font-bold text-primary">PRINCE2 Training</Link><Link href="/scrum-agile-training" className="block border-b border-border py-3 font-bold text-primary">Scrum and Agile Training</Link></div></section>{serviceJsonLd({ name: "Management Systems and Frameworks Training", description: "Training across ITIL, PRINCE2, Agile, COBIT, DevOps, service management, project delivery, and change management.", path: "/itil-prince2-agile-training" })}</PageShell>; }
+
+export const metadata: Metadata = pageMetadata("Management Systems and Frameworks", "Explore TraininGenie training across ITIL, PRINCE2, PRINCE2 Agile, COBIT, DevOps, and change management.", "/itil-prince2-agile-training", true);
+
+const programmes = programmesFor("Management Systems and Frameworks");
+
+// Who the area serves comes from the audiences of its focused programmes.
+export default function Page() {
+  return <AreaPage slug="itil-prince2-agile-training" title="Management Systems and Frameworks" intro="Training that helps organizations build shared language and practical understanding around service management, project delivery, agile ways of working, DevOps, and change."
+    overview={{ title: "Service management, project delivery, and agile teams.", statement: "These programmes can be discussed and adapted around the organization, the participant group, and the intended application.", audiences: true }}
+    catalogue={{ title: "Management systems and delivery", intro: TRAINING_PILLARS[2].description }}
+    programmes={{ title: "Focused framework\u00a0programmes", intro: "Explore ITIL 4 Foundation, PRINCE2, and Scrum and Agile training pages for more focused programme information.", items: programmes, showAudience: false }}>
+    {serviceJsonLd({ name: "Management Systems and Frameworks Training", description: "Training across ITIL, PRINCE2, Agile, COBIT, DevOps, service management, project delivery, and change management.", path: "/itil-prince2-agile-training" })}
+  </AreaPage>;
+}
