@@ -104,9 +104,9 @@ export const AREA_ASIDE_DELIVERY = "Delivered online, onsite or hybrid.";
 
 /**
  * The one plain answer to "Can you deliver onsite?". HELPER: DELIVERY_FORMATS' three names joined with
- * the existing line "Training is offered to organizations across India".
+ * "across India" from the existing line "Training is offered to organizations across India".
  */
-export const DELIVERY_PROMISE = "Online, onsite at your location, or hybrid, for organizations across India.";
+export const DELIVERY_PROMISE = "Online, onsite at your location, or hybrid, across India.";
 
 /**
  * The site-wide call to action (existing label). It opens /contact-us at the enquiry form (#enquiry), not

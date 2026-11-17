@@ -79,6 +79,8 @@ export function CommandMenu() {
   const [active, setActive] = useState(0);
   // Whether the visitor has moved the active row (arrow keys or the mouse) since the dialog opened.
   const [moved, setMoved] = useState(false);
+  // Whether the dialog is open, so the combobox reports the listbox as expanded only while it shows rows.
+  const [shown, setShown] = useState(false);
   const baseId = useId();
   const listId = `${baseId}-list`;
   const optionId = (index: number) => `${baseId}-option-${index}`;
@@ -107,6 +109,7 @@ export function CommandMenu() {
     setQuery("");
     setActive(0);
     setMoved(false);
+    setShown(true);
     dialog.showModal();
     releaseScroll.current?.();
     releaseScroll.current = lockPageScroll();
@@ -119,6 +122,7 @@ export function CommandMenu() {
     const dialog = dialogRef.current;
     inputRef.current?.blur();
     if (dialog?.open) dialog.close();
+    setShown(false);
     releaseScroll.current?.();
     releaseScroll.current = null;
     const target = returnFocus.current;
@@ -163,7 +167,7 @@ export function CommandMenu() {
     <div className="flex h-16 items-center gap-2 px-5 sm:h-auto sm:gap-3 sm:p-4">
       <div className="flex min-w-0 flex-1 items-center gap-2.5 rounded-full bg-field pl-4 pr-2 transition-shadow duration-200 has-[input:focus-visible]:shadow-[inset_0_0_0_1.5px_var(--foreground)]">
       <SearchIcon className="size-[18px] text-foreground" />
-      <input ref={inputRef} type="text" role="combobox" aria-expanded={ordered.length > 0} aria-controls={listId} aria-autocomplete="list" aria-activedescendant={engaged && ordered.length > 0 ? optionId(active) : undefined} aria-label="Search topics and pages" placeholder="Search topics and pages" autoComplete="off" spellCheck={false} value={query} onChange={(event) => { setQuery(event.target.value); setActive(0); }} onKeyDown={onKeyDown} className="h-12 min-w-0 flex-1 text-ellipsis bg-transparent text-base text-foreground outline-hidden placeholder:text-muted-foreground max-[399px]:placeholder:text-[0.9375rem]" />
+      <input ref={inputRef} type="text" role="combobox" aria-expanded={shown && ordered.length > 0} aria-controls={listId} aria-autocomplete="list" aria-activedescendant={shown && engaged && ordered.length > 0 ? optionId(active) : undefined} aria-label="Search topics and pages" placeholder="Search topics, e.g. Azure" autoComplete="off" spellCheck={false} value={query} onChange={(event) => { setQuery(event.target.value); setActive(0); }} onKeyDown={onKeyDown} className="h-12 min-w-0 flex-1 text-ellipsis bg-transparent text-base text-foreground outline-hidden placeholder:text-muted-foreground max-[399px]:placeholder:text-[0.9375rem]" />
       </div>
       <button type="button" onClick={close} aria-keyshortcuts="Escape" className="inline-flex size-11 shrink-0 items-center justify-center rounded-full text-foreground transition-colors duration-200 hover:bg-field"><CloseIcon className="size-4" /><span className="sr-only">Close search</span></button>
     </div>

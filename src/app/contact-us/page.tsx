@@ -16,7 +16,7 @@ import { CONTACT_INFO, FAQS, LEGAL_ENTITY } from "@/data";
 import { DELIVERY_PROMISE } from "@/data/site-copy";
 import { breadcrumbJsonLd, pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = pageMetadata("Contact TraininGenie", `Discuss your organization's training requirements with TraininGenie: call ${CONTACT_INFO.phones[0]} or send an enquiry. Based in Bengaluru; online, onsite or hybrid across India.`, "/contact-us");
+export const metadata: Metadata = pageMetadata("Contact TraininGenie | Corporate Training, Bengaluru", `Discuss your organization's training requirements with TraininGenie: call ${CONTACT_INFO.phones[0]} or send an enquiry. Online, onsite or hybrid across India.`, "/contact-us");
 
 const tel = (phone: string) => `tel:${phone.replace(/\s/g, "")}`;
 const crumbs = [{ label: "Contact" }];
@@ -59,11 +59,12 @@ function WhatHappensNext({ className }: { className: string }) {
 }
 
 // The quickest routes, a tap away before the form on phones and tablets. On phones the two pills share the row; from
-// sm they keep one shared minimum width, and "Call" also shows the number, for screens that cannot dial. From lg the
+// sm they keep one shared minimum width. "Call" always shows the number it dials (under the label on phones), for
+// screens that cannot dial and so nobody taps blind. From lg the
 // direct contact list stands beside the form with the same links (and Copy buttons), so the pills are not repeated.
 const quickContact = <div className="mt-8 flex gap-3 lg:hidden">
   <ButtonLink href={`mailto:${CONTACT_INFO.email}?subject=Training%20enquiry`} variant="secondary" arrow={false} className="flex-1 sm:min-w-36 sm:flex-none">Email us</ButtonLink>
-  <ButtonLink href={tel(CONTACT_INFO.phones[0])} variant="secondary" arrow={false} className="flex-1 sm:min-w-36 sm:flex-none"><span>Call<span className="tabular-nums max-sm:hidden"> {CONTACT_INFO.phones[0]}</span></span></ButtonLink>
+  <ButtonLink href={tel(CONTACT_INFO.phones[0])} variant="secondary" arrow={false} className="flex-1 sm:min-w-36 sm:flex-none"><span className="flex flex-col items-center leading-tight sm:block">Call<span className="tabular-nums max-sm:type-caption max-sm:font-normal"><span className="max-sm:hidden"> </span>{CONTACT_INFO.phones[0]}</span></span></ButtonLink>
 </div>;
 
 /** One row of the direct contact list: the label, then the detail, under a hairline. No icons: the label says what it is. */
@@ -101,7 +102,7 @@ export default function Page() {
             <h1 className={`mt-5 type-display text-foreground ${h1Fit}`}>{title}</h1>
           </div>
           <div className="lg:col-span-5 lg:col-start-8 xl:col-span-4 xl:col-start-9">
-            <p className="max-w-measure type-lead text-copy">Tell us about your team, your objectives, and your preferred learning format. We can then discuss a suitable training or certification-preparation approach with you.</p>
+            <p className="max-w-measure type-lead text-copy">Tell us who the training is for, what they need to learn and your preferred format. We can then discuss a suitable training or certification-preparation approach with you.</p>
             <p className="mt-6 type-ui text-copy max-sm:hidden">{DELIVERY_PROMISE}</p>
             {quickContact}
           </div>

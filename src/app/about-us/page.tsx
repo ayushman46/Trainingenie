@@ -20,7 +20,7 @@ import { CLIENT_REFERENCES, COMPANY_NAME, COMPANY_TAGLINE, CONTACT_INFO, FAQS, L
 import { DELIVERY_PROMISE } from "@/data/site-copy";
 import { jsonLd, ORGANIZATION_ID, pageMetadata, WEBSITE_ID } from "@/lib/seo";
 
-export const metadata: Metadata = pageMetadata("About TraininGenie", "Learn about TraininGenie's corporate learning position, mission, vision, PRIDE values, and Founder Director Mousumi Chakraborty.", "/about-us");
+export const metadata: Metadata = pageMetadata("About TraininGenie | Corporate Training Company", "Learn about TraininGenie's corporate learning position, mission, vision, PRIDE values, and Founder Director Mousumi Chakraborty.", "/about-us");
 
 // The scale first (the clients, the areas and the topics); the incorporation date stays in the record.
 const meta = ["Bengaluru, India", `${CLIENT_REFERENCES.length} clients`, `${TRAINING_PILLARS.length} training areas`, `${TOTAL_TOPICS} topics`];
@@ -184,6 +184,13 @@ export default function Page() {
             <div id="company-record"><FactList title="Company record" headingLevel={3} rows={companyDetails} layout="auto" /></div>
             <ClientOnly><CopyButton label="Copy company record" what="company record" value={companyRecord} target="company-record" className="mt-2" /></ClientOnly>
           </div>
+          {/* For a supplier onboarding: the enquiry form, preset to vendor documents, with email as the second route
+              (which documents exist is the owner's to say, so none are listed). */}
+          <section aria-labelledby="about-procurement" className="mt-12 border-t border-border-strong pt-6">
+            <h3 id="about-procurement" className="type-h3 text-foreground">For procurement teams</h3>
+            <p className="mt-3 max-w-measure type-body text-copy">Empanelling TraininGenie as a vendor? Request registration documents, and mention your vendor form or document checklist. The legal entity and CIN are in the company record above.</p>
+            <div className="mt-6 flex flex-wrap gap-x-8 gap-y-3"><TextLink href="/contact-us?type=vendor#enquiry">Request vendor registration documents</TextLink><TextLink href={`mailto:${CONTACT_INFO.email}?subject=${encodeURIComponent("Vendor registration documents request")}`}>Or email us</TextLink></div>
+          </section>
         </div>
         {/* Its own h2, so the accordion's h3 questions sit under it */}
         <div className={`${right} ${besideHeading}`}>

@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { Suspense, useCallback, useEffect, useRef, useState, type FocusEvent, type FormEvent, type KeyboardEvent, type ReactNode } from "react";
 import { Button } from "@/components/tg/button";
-import { PlusIcon } from "@/components/tg/icons";
+import { ChevronIcon } from "@/components/tg/icons";
 import { ENQUIRY_SENT_KEY } from "@/components/utility/enquiry-echo";
 import { CONTACT_INFO, COURSES, SITE_URL, TRAINING_PILLARS } from "@/data";
 
@@ -16,27 +16,39 @@ import { CONTACT_INFO, COURSES, SITE_URL, TRAINING_PILLARS } from "@/data";
 const control = "mt-2.5 block w-full min-w-0 rounded-[var(--radius-control)] border border-input bg-surface px-4 type-body font-normal text-foreground [--edge:var(--foreground)] transition-[border-color,box-shadow] duration-200 placeholder:text-muted-foreground hover:border-foreground focus-visible:border-[var(--edge)] focus-visible:shadow-[inset_0_0_0_1px_var(--edge)] focus-visible:outline-hidden user-invalid:border-danger user-invalid:[--edge:var(--danger)] aria-[invalid=true]:border-danger aria-[invalid=true]:[--edge:var(--danger)]";
 const input = `${control} h-14`;
 const fieldLabel = "block min-w-0 type-ui font-medium text-foreground";
-// Required fields carry no mark: four of them are, and the rest say "(optional)" in grey after the label.
+// Required fields carry no mark: three of them are (a line under the heading says so), and the rest say "(optional)" in grey after the label.
 const Optional = () => <span className="font-normal text-muted-foreground"> (optional)</span>;
 const formats = ["Online", "Onsite", "Hybrid", "Not sure yet"];
+// The kind of request goes into the email subject, so a repeat batch or a quotation stands out in the inbox.
+const requestTypes = ["Training enquiry", "Training for myself", "Quick question", "Repeat or new batch of a previous programme", "Formal quotation or proposal", "Vendor registration documents"];
+const examChoices = ["Yes", "No", "Not sure"];
+const defaultSubject = "New TraininGenie website enquiry";
 const inlineLink = "font-medium text-foreground underline decoration-1 underline-offset-4 transition-colors duration-200 hover:text-muted-foreground";
 
 // The browser compiles `pattern` with the `v` flag, so parentheses and hyphens inside a class are escaped.
 const emailPattern = String.raw`[^@\s]+@[^@\s]+\.[^@\s]{2,}`;
 const phonePattern = String.raw`[0-9+\(\)\s.\-]{7,30}`;
 
-type Field = HTMLInputElement | HTMLTextAreaElement;
+type Field = HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement;
 const errorId = (name: string) => `contact-${name}-error`;
 const messageHint = "contact-message-hint";
 const phoneHint = "contact-phone-hint";
-// The Training topic field suggests the programme and area titles as the visitor types; any other topic can still be typed.
+const topicHint = "contact-topic-hint";
+// The Training topic field suggests the programme and area titles as the visitor types, and offers them as chips under
+// it (with "Not sure yet"); any other topic can still be typed.
 const topicSuggestions = [...COURSES.map((course) => course.title), ...TRAINING_PILLARS.map((pillar) => pillar.title)];
-const asField = (target: EventTarget) => target instanceof HTMLInputElement || target instanceof HTMLTextAreaElement ? target : null;
+// "Not sure yet" leads; on phones only the programme chips show, so the four area chips are hidden there.
+const topicChips = ["Not sure yet", ...topicSuggestions];
+const programmeCount = COURSES.length;
+const vendorType = "Vendor registration documents";
+const locationsHint = "contact-locations-hint";
+const timeframeHint = "contact-timeframe-hint";
+const asField = (target: EventTarget) => target instanceof HTMLInputElement || target instanceof HTMLTextAreaElement || target instanceof HTMLSelectElement ? target : null;
 
 // What to fix, in words, for the constraint the browser found broken. The constraints themselves are the fields' own attributes.
-const emailProblem = "Enter an email address in the format name@company.com.";
-const missing: Record<string, string> = { name: "Enter your name.", company: "Enter your organization.", email: "Enter your email.", training_topic: "Enter the training topic." };
-const mismatch: Record<string, string> = { email: emailProblem, phone: "Enter a phone number using digits, spaces and +.", participants: "Enter a number from 1 to 100,000." };
+const emailProblem = "Enter an email like name@company.com.";
+const missing: Record<string, string> = { name: "Enter your name.", email: "Enter your email, like name@company.com.", training_topic: "Enter a training topic, or tap Not sure yet." };
+const mismatch: Record<string, string> = { email: emailProblem, phone: "Enter a phone number using digits, spaces and +, for example +91 98765 43210.", participants: "Enter the number of participants as a whole number, for example 12." };
 function problem(field: Field) {
   const { validity } = field;
   if (validity.valueMissing) return missing[field.name] ?? field.validationMessage;
@@ -49,7 +61,7 @@ function problem(field: Field) {
 // does not empty the form. Storage can be missing or throw (private modes, blocked site data); the form works the
 // same without it.
 const DRAFT_KEY = "tg-enquiry-draft";
-const draftFields = ["name", "email", "company", "phone", "training_topic", "message", "participants", "format"];
+const draftFields = ["name", "email", "company", "phone", "training_topic", "message", "participants", "format", "request_type", "locations", "timeframe", "exam"];
 const storage = {
   read: (key: string) => { try { return JSON.parse(sessionStorage.getItem(key) ?? "null") as unknown; } catch { return null; } },
   write: (key: string, value: unknown) => { try { sessionStorage.setItem(key, JSON.stringify(value)); } catch { /* not kept */ } },
@@ -62,17 +74,21 @@ const storage = {
  * a topic name travels in the URL. It renders nothing and sits in its own Suspense boundary, so only it waits for the
  * URL when the page is prerendered: the form itself stays in the HTML.
  */
-function LinkedTopic({ onTopic }: { onTopic: (topic: string | null) => void }) {
-  const linked = useSearchParams().get("topic")?.trim().slice(0, 160) || null;
+function LinkedTopic({ onTopic, onVendor }: { onTopic: (topic: string | null) => void; onVendor: () => void }) {
+  const params = useSearchParams();
+  const linked = params.get("topic")?.trim().slice(0, 160) || null;
+  const vendor = params.get("type") === "vendor";
   useEffect(() => { onTopic(linked); }, [linked, onTopic]);
+  // ?type=vendor preselects "Vendor registration documents", only while the visitor has chosen no type.
+  useEffect(() => { if (vendor) onVendor(); }, [vendor, onVendor]);
   return null;
 }
 
-// Where Enter moves while the form is incomplete: the next field the visitor can see, in form order. Fields folded
-// into the closed optional row are passed over, and a radio group counts once (its checked radio, or its first).
+// Where Enter moves while the form is incomplete: the next field the visitor can see, in form order. Topic chips are
+// passed over, and a radio group counts once (its checked radio, or its first).
 function canTakeFocus(element: Element) {
-  if (element.closest("details:not([open])") || element.getClientRects().length === 0) return false;
-  if (element instanceof HTMLButtonElement || element instanceof HTMLTextAreaElement) return true;
+  if (element.getClientRects().length === 0 || element.hasAttribute("data-chip")) return false;
+  if (element instanceof HTMLButtonElement || element instanceof HTMLTextAreaElement || element instanceof HTMLSelectElement) return true;
   if (!(element instanceof HTMLInputElement)) return false;
   if (element.type !== "radio") return true;
   const group = element.form?.elements.namedItem(element.name);
@@ -104,12 +120,16 @@ export function ContactForm() {
   const focusNext = useRef<Field | null>(null);
   const validating = useRef(false);
   const formRef = useRef<HTMLFormElement>(null);
-  const moreRef = useRef<HTMLDetailsElement>(null);
   const saveTimer = useRef<number | undefined>(undefined);
   const stopWaiting = useRef<() => void>(() => {});
+  // The chosen request type (vendor documents changes the button and makes the topic optional), the topic text (for
+  // the chips' added state) and the last chip press, announced in the status region.
+  const [requestType, setRequestType] = useState("");
+  const [topicValue, setTopicValue] = useState("");
+  const [chipNote, setChipNote] = useState("");
+  const vendor = requestType === vendorType;
 
-  // On arrival the form takes back an unsent draft from this tab, into the fields that are still empty. A draft value
-  // inside the folded optional row opens it, so nothing restored is hidden.
+  // On arrival the form takes back an unsent draft from this tab, into the fields that are still empty.
   useEffect(() => {
     const form = formRef.current;
     if (!form) return;
@@ -120,21 +140,11 @@ export function ContactForm() {
       const value = draft[name];
       if (!field || typeof value !== "string" || !value || field.value) continue;
       field.value = value;
-      const fold = moreRef.current;
-      if (fold?.contains(field instanceof RadioNodeList ? field[0] : field)) fold.open = true;
     }
-  }, []);
-
-  // The optional fields fold into a closed <details> on phones and sit open from md. CSS opens its content at md
-  // (::details-content); where that is unsupported, this sets `open` once the viewport reaches md.
-  useEffect(() => {
-    const details = moreRef.current;
-    if (!details) return;
-    const wide = window.matchMedia("(min-width: 768px)");
-    const sync = () => { if (wide.matches) details.open = true; };
-    sync();
-    wide.addEventListener("change", sync);
-    return () => wide.removeEventListener("change", sync);
+    const type = form.elements.namedItem("request_type");
+    if (type instanceof HTMLSelectElement) setRequestType(type.value);
+    const topicField = form.elements.namedItem("training_topic");
+    if (topicField instanceof HTMLInputElement) setTopicValue(topicField.value);
   }, []);
 
   // A pending draft save is written at once when the page is left or the form unmounts (a link to another page),
@@ -162,7 +172,14 @@ export function ContactForm() {
       setErrors((current) => { if (!current.training_topic) return current; const next = { ...current }; delete next.training_topic; return next; });
     }
     setTopic(next);
+    setTopicValue(field.value);
     setTopicChanged(Boolean(next) && field.value.trim() !== next);
+  }, []);
+  const onVendor = useCallback(() => {
+    const field = formRef.current?.elements.namedItem("request_type");
+    if (!(field instanceof HTMLSelectElement) || field.value) return;
+    field.value = vendorType;
+    setRequestType(vendorType);
   }, []);
 
   // Focus moves once the messages are rendered, so a screen reader hears the field together with its error.
@@ -176,6 +193,10 @@ export function ContactForm() {
   const onSubmit = (event: FormEvent<HTMLFormElement>) => {
     if (submitting) { event.preventDefault(); return; }
     const data = new FormData(event.currentTarget);
+    // The request type, unless it is a plain enquiry, goes into the subject; the browser reads the fields after this.
+    const subject = event.currentTarget.elements.namedItem("_subject");
+    const requestType = String(data.get("request_type") ?? "");
+    if (subject instanceof HTMLInputElement) subject.value = requestType && requestType !== requestTypes[0] ? `${defaultSubject}: ${requestType}` : defaultSubject;
     window.clearTimeout(saveTimer.current);
     saveTimer.current = undefined;
     storage.remove(DRAFT_KEY);
@@ -200,9 +221,6 @@ export function ContactForm() {
     const field = asField(event.target);
     if (!field?.name) return;
     event.preventDefault();
-    // A broken optional field folded away on a phone is shown before it takes focus and its message.
-    const fold = field.closest("details");
-    if (fold && !fold.open) fold.open = true;
     // One submit fires all its "invalid" events in the same task; only the first of them takes focus.
     if (!validating.current) { validating.current = true; focusNext.current = field; window.setTimeout(() => { validating.current = false; }); }
     show(field);
@@ -222,10 +240,23 @@ export function ContactForm() {
   const onInput = (event: FormEvent<HTMLFormElement>) => {
     const field = asField(event.target);
     if (field && errors[field.name]) show(field);
-    if (field?.name === "training_topic") { topicEdited.current = true; if (topic) setTopicChanged(field.value.trim() !== topic); }
+    if (field?.name === "request_type") setRequestType(field.value);
+    if (field?.name === "training_topic") { setTopicValue(field.value); topicEdited.current = true; if (topic) setTopicChanged(field.value.trim() !== topic); }
     const form = event.currentTarget;
     window.clearTimeout(saveTimer.current);
     saveTimer.current = window.setTimeout(() => { saveTimer.current = undefined; saveDraft(form); }, 300);
+  };
+
+  // A tapped chip fills an empty Training topic field, or adds itself after what is there (never replacing it), and
+  // the field announces the change as typing would. "Not sure yet" only fills an empty field.
+  const addTopic = (chip: string) => {
+    const field = formRef.current?.elements.namedItem("training_topic");
+    if (!(field instanceof HTMLInputElement)) return;
+    const current = field.value.trim();
+    if (current.toLowerCase().includes(chip.toLowerCase()) || (current && chip === "Not sure yet")) { setChipNote(`${chip}: already added`); return; }
+    setChipNote(`${chip} added to Training topic`);
+    field.value = (current ? `${current}, ${chip}` : chip).slice(0, field.maxLength);
+    field.dispatchEvent(new Event("input", { bubbles: true }));
   };
 
   // Enter in a one-line field moves on to the next field while the form is still incomplete (a phone's "next" key),
@@ -249,23 +280,24 @@ export function ContactForm() {
   const error = (name: string) => errors[name] && <p id={errorId(name)} className="mt-2 type-label text-danger"><span className="sr-only">Error: </span>{errors[name]}</p>;
 
   return <form ref={formRef} action={`https://formsubmit.co/${CONTACT_INFO.email}`} method="POST" onSubmit={onSubmit} onInvalidCapture={onInvalid} onBlur={onBlur} onInput={onInput} onKeyDown={onKeyDown} aria-labelledby="contact-form-title" className="min-w-0">
-    <input type="hidden" name="_subject" value="New TraininGenie website enquiry" />
+    <input type="hidden" name="_subject" defaultValue={defaultSubject} />
     <input type="hidden" name="_next" value={`${SITE_URL}/thank-you`} />
     <input type="text" name="_honey" className="hidden" tabIndex={-1} autoComplete="off" aria-hidden="true" />
     {/* FormSubmit's own reCAPTCHA page is turned off, so a visitor is never sent off the site to solve one; the honeypot above stays. */}
     <input type="hidden" name="_captcha" value="false" />
-    <Suspense fallback={null}><LinkedTopic onTopic={onTopic} /></Suspense>
+    <Suspense fallback={null}><LinkedTopic onTopic={onTopic} onVendor={onVendor} /></Suspense>
 
     {/* The form sits open on the page: a heading, then each fieldset under its own rule. */}
     <h2 id="contact-form-title" className="type-h2 text-foreground">Send an enquiry</h2>
-    {topic && !topicChanged && <p className="mt-3 type-ui text-foreground">About {topic}.</p>}
+    <p className="mt-3 type-ui text-copy">All fields are required unless marked optional.</p>
+    {topic && !topicChanged && <p className="mt-2 type-ui text-foreground">About {topic}.</p>}
 
     <div className="mt-8 space-y-10 sm:mt-12 sm:space-y-14">
       <Group legend="Your details">
         <div className="grid gap-6 sm:grid-cols-2 sm:gap-x-6 sm:gap-y-7">
           <div className="min-w-0 sm:col-span-2"><label className={fieldLabel}>Name<input required name="name" autoComplete="name" autoCapitalize="words" autoCorrect="off" spellCheck={false} enterKeyHint="next" maxLength={120} className={input} {...check("name")} /></label>{error("name")}</div>
           <div className="min-w-0"><label className={fieldLabel}>Email<input required type="email" name="email" autoComplete="email" inputMode="email" pattern={emailPattern} spellCheck={false} enterKeyHint="next" maxLength={254} className={input} {...check("email")} /></label>{error("email")}</div>
-          <div className="min-w-0"><label className={fieldLabel}>Organization<input required name="company" autoComplete="organization" autoCapitalize="words" autoCorrect="off" spellCheck={false} enterKeyHint="next" maxLength={160} className={input} {...check("company")} /></label>{error("company")}</div>
+          <div className="min-w-0"><label className={fieldLabel}>Organization<Optional /><input name="company" autoComplete="organization" autoCapitalize="words" autoCorrect="off" spellCheck={false} enterKeyHint="next" maxLength={160} className={input} {...check("company")} /></label>{error("company")}</div>
           {/* The hint sits between the label and the box, as under Message. */}
           <div className="min-w-0">
             <label htmlFor="contact-phone" className={fieldLabel}>Phone<Optional /></label>
@@ -277,8 +309,22 @@ export function ContactForm() {
       </Group>
 
       <Group legend="Your requirement">
-        <div className="min-w-0"><label className={fieldLabel}>Training topic<input required name="training_topic" list="topic-suggestions" autoCorrect="off" spellCheck={false} enterKeyHint="next" maxLength={160} className={`${input} [&::-webkit-calendar-picker-indicator]:hidden`} {...check("training_topic")} /></label>{error("training_topic")}
+        {/* The request type comes first: vendor documents need no training topic. Its change reaches onInput. */}
+        <div className="min-w-0"><label className={fieldLabel}>Type of request<Optional /><span className="relative block"><select name="request_type" defaultValue="" className={`${input} cursor-pointer appearance-none truncate pr-11`}><option value="">Choose one</option>{requestTypes.map((type) => <option key={type} value={type}>{type}</option>)}</select><ChevronIcon className="pointer-events-none absolute right-4 top-[calc(50%+5px)] size-3.5 -translate-y-1/2 text-foreground" /></span></label></div>
+        <div className="min-w-0">
+          <label htmlFor="contact-topic" className={fieldLabel}>Training topic{vendor && <Optional />}</label>
+          <p id={topicHint} className="mt-1 type-caption text-muted-foreground">One or more topics, for example ISO 9001 awareness and communication skills.</p>
+          <input id="contact-topic" required={!vendor} name="training_topic" list="topic-suggestions" autoCorrect="off" spellCheck={false} enterKeyHint="next" maxLength={160} className={`${input} [&::-webkit-calendar-picker-indicator]:hidden`} {...check("training_topic", topicHint)} />
+          {error("training_topic")}
           <datalist id="topic-suggestions">{topicSuggestions.map((title) => <option key={title} value={title} />)}</datalist>
+          {/* Hairline chips that wrap at every width, 44px tall on phones: a tap adds the topic to the field above. A chip
+              whose topic is already in the field is filled ink, with a check, and pressed. */}
+          <ul aria-label="Suggested topics" className="mt-3 flex flex-wrap gap-2">
+            {topicChips.map((chip, index) => {
+              const added = topicValue.toLowerCase().includes(chip.toLowerCase());
+              return <li key={chip} className={index > programmeCount ? "max-sm:hidden" : undefined}><button type="button" data-chip aria-pressed={added} aria-label={`Add topic: ${chip}`} onClick={() => addTopic(chip)} className="inline-flex min-h-11 items-center gap-1.5 rounded-full border border-border bg-surface px-4 type-label text-foreground transition-colors duration-200 hover:border-foreground aria-pressed:border-foreground aria-pressed:bg-foreground aria-pressed:text-background sm:min-h-9">{added && <span aria-hidden="true">✓</span>}{chip}</button></li>;
+            })}
+          </ul>
         </div>
         {/* The hint sits between the label and the box, outside the label, so it is read as the description, not the name. */}
         <div className="min-w-0">
@@ -289,50 +335,46 @@ export function ContactForm() {
         </div>
       </Group>
 
-      {/* The two remaining optional fields. On phones they fold into one hairline row, so the form opens on its
-          four required fields and the phone number; from md the row is hidden and the fields stand open as the
-          form's third group. */}
-      <details ref={moreRef} className="group/more border-t border-border md:border-0 md:[&::details-content]:block md:[&::details-content]:[content-visibility:visible]">
-        <summary className="group/summary flex min-h-13 cursor-pointer list-none items-center justify-between gap-4 type-ui font-medium text-foreground md:hidden [&::-webkit-details-marker]:hidden">
-          {/* Plain wrapping, so a narrow phone breaks before "(optional)" rather than mid-phrase. */}
-          <span className="decoration-1 underline-offset-4 [text-wrap:wrap] group-hover/summary:underline">Add participants and format <span className="whitespace-nowrap font-normal text-muted-foreground">(optional)</span></span>
-          <PlusIcon className="size-[18px] text-foreground transition-transform duration-200 group-open/more:rotate-45" />
-        </summary>
-        <div className="pb-8 pt-3 md:border-t md:border-border md:pb-0 md:pt-8">
-          <fieldset className="min-w-0">
-            <legend className="type-h4 text-foreground max-md:sr-only">Optional details</legend>
-            <div className="space-y-6 md:mt-7 md:space-y-7">
-              {/* A text field with a number pattern: no native stepper, and no wheel or arrow key changes the count by accident. */}
-              <div className="grid gap-6 sm:grid-cols-2 sm:gap-x-6 sm:gap-y-7">
-                <div className="min-w-0"><label className={fieldLabel}>Number of participants<input type="text" name="participants" inputMode="numeric" pattern="[1-9][0-9]{0,4}|100000" maxLength={6} autoComplete="off" enterKeyHint="next" className={input} {...check("participants")} /></label>{error("participants")}</div>
-              </div>
-              {/* Native radios in one open row, no tiles. Each label is a 44px-tall target. Checked is Nike's
-                  ink radio: a black ring, a white gap and a black centre. */}
-              <fieldset className="min-w-0">
-                <legend className={fieldLabel}>Preferred format</legend>
-                <div className="mt-2 grid grid-cols-2 gap-x-6 sm:flex sm:flex-wrap sm:gap-x-8">
-                  {formats.map((format) => <label key={format} className="group/format inline-flex min-h-11 cursor-pointer items-center gap-3 type-ui text-foreground">
-                    <input type="radio" name="format" value={format} className="size-5 shrink-0 cursor-pointer appearance-none rounded-full border border-input bg-surface transition-[background-color,border-color,box-shadow] duration-200 not-checked:group-hover/format:border-foreground checked:border-foreground checked:bg-foreground checked:shadow-[inset_0_0_0_3.5px_var(--surface)] forced-colors:appearance-auto" />
-                    {format}
-                  </label>)}
-                </div>
-              </fieldset>
-            </div>
-          </fieldset>
+      {/* The optional details stand open as the form's third group, on phones too, so nobody misses them. */}
+      <Group legend="Optional details">
+        {/* A text field with a number pattern: no native stepper, and no wheel or arrow key changes the count by accident. */}
+        <div className="grid gap-6 sm:grid-cols-2 sm:gap-x-6 sm:gap-y-7">
+          <div className="min-w-0"><label className={fieldLabel}>Number of participants<Optional /><input type="text" name="participants" inputMode="numeric" pattern="[1-9][0-9]{0,4}|100000" maxLength={6} autoComplete="off" enterKeyHint="next" className={input} {...check("participants")} /></label>{error("participants")}</div>
+          <div className="min-w-0">
+            <label htmlFor="contact-locations" className={fieldLabel}>Participant location(s)<Optional /></label>
+            <p id={locationsHint} className="mt-1 type-caption text-muted-foreground">For example Pune, or teams in India and UAE.</p>
+            <input id="contact-locations" name="locations" autoCorrect="off" enterKeyHint="next" maxLength={200} className={input} aria-describedby={locationsHint} />
+          </div>
+          <div className="min-w-0">
+            <label htmlFor="contact-timeframe" className={fieldLabel}>Preferred timeframe<Optional /></label>
+            <p id={timeframeHint} className="mt-1 type-caption text-muted-foreground">For example next quarter.</p>
+            <input id="contact-timeframe" name="timeframe" enterKeyHint="next" maxLength={120} className={input} aria-describedby={timeframeHint} />
+          </div>
         </div>
-      </details>
+        {/* Native radios in one open row, no tiles. Each label is a 44px-tall target. Checked is Nike's
+            ink radio: a black ring, a white gap and a black centre. */}
+        {[{ legend: "Preferred format", name: "format", options: formats }, { legend: "Certification exam needed?", name: "exam", options: examChoices }].map((group) => <fieldset key={group.name} className="min-w-0">
+          <legend className={fieldLabel}>{group.legend}<Optional /></legend>
+          <div className="mt-2 grid grid-cols-2 gap-x-6 sm:flex sm:flex-wrap sm:gap-x-8">
+            {group.options.map((option) => <label key={option} className="group/format inline-flex min-h-11 cursor-pointer items-center gap-3 type-ui text-foreground">
+              <input type="radio" name={group.name} value={option} className="size-5 shrink-0 cursor-pointer appearance-none rounded-full border border-input bg-surface transition-[background-color,border-color,box-shadow] duration-200 not-checked:group-hover/format:border-foreground checked:border-foreground checked:bg-foreground checked:shadow-[inset_0_0_0_3.5px_var(--surface)] forced-colors:appearance-auto" />
+              {option}
+            </label>)}
+          </div>
+        </fieldset>)}
+      </Group>
     </div>
 
-    {/* On phones the submit row's rule closes the optional row above it; from md it keeps the groups' spacing.
-        Where the enquiry goes, and what the site does not do, is read just before the button. */}
-    <div className="border-t border-border pt-6 sm:pt-8 md:mt-14">
+    {/* Where the enquiry goes, and what the site does not do, is read just before the button. */}
+    <div className="mt-10 border-t border-border pt-6 sm:mt-14 sm:pt-8">
       <p className="max-w-measure type-ui text-copy">Your enquiry is sent to TraininGenie by email through FormSubmit and used only to respond to you. This website does not use cookies, analytics or advertising trackers. Read the <Link href="/privacy-policy" className={inlineLink}>privacy policy</Link>.</p>
       {/* Not natively disabled while sending, so keyboard focus stays on the button; onSubmit blocks repeats. A mouse
           press does not move focus off the field being typed in, so a message that field shows on blur cannot shift
           the button between press and release (WebKit then loses the click). Keyboard and touch are unchanged. */}
-      <Button type="submit" aria-disabled={submitting} onMouseDown={(event) => event.preventDefault()} className="mt-6 aria-disabled:cursor-progress aria-disabled:opacity-60 max-sm:w-full">{submitting ? "Sending…" : "Request a training proposal"}</Button>
+      <Button type="submit" aria-disabled={submitting} onMouseDown={(event) => event.preventDefault()} className="mt-6 aria-disabled:cursor-progress aria-disabled:opacity-60 max-sm:w-full">{submitting ? "Sending…" : vendor ? "Request vendor documents" : "Send enquiry"}</Button>
       <div role="status">
         {submitting && <span className="sr-only">Sending your enquiry…</span>}
+        {!submitting && chipNote && <span className="sr-only">{chipNote}</span>}
         {stalled && <p className="mt-4 max-w-measure type-ui text-copy">Still sending. If nothing changes, check your connection and try again, or email <a href={`mailto:${CONTACT_INFO.email}`} className={`${inlineLink} wrap-anywhere`}>{CONTACT_INFO.email}</a>.</p>}
       </div>
     </div>

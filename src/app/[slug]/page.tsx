@@ -21,6 +21,7 @@ import { HEAD, RowHead, SectionHead } from "@/components/tg/section-head";
 import { TextLink } from "@/components/tg/text-link";
 import { ShareActions } from "@/components/utility/share-actions";
 import { CONTACT_INFO, COURSE_DETAILS, COURSES, SITE_URL } from "@/data";
+import { METHOD_STEPS } from "@/data/methodology";
 import { DELIVERY_PROMISE, UI_LABELS } from "@/data/site-copy";
 import { jsonLd, ORGANIZATION_ID, pageMetadata } from "@/lib/seo";
 
@@ -29,7 +30,7 @@ export function generateStaticParams() { return COURSES.map((course) => ({ slug:
 // without this page rendering at all.
 export const dynamicParams = false;
 // Each programme shares its own card (./opengraph-image.tsx and ./twitter-image.tsx) rather than the site's.
-export function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> { return params.then(({ slug }) => { const course = COURSES.find((item) => item.slug === slug); return course ? pageMetadata(course.title, course.description, `/${course.slug}`, true) : {}; }); }
+export function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> { return params.then(({ slug }) => { const course = COURSES.find((item) => item.slug === slug); return course ? pageMetadata(course.title.includes("Corporate") ? course.title : course.title.replace(/ Training$/, " Corporate Training"), course.description, `/${course.slug}`, true) : {}; }); }
 
 // Links to the programme's training area, by the area's short name: the header's second action, and
 // the "Explore further" row's link (short enough to stay on one line on phones).
@@ -53,7 +54,10 @@ function splitLead(paragraph: string): [string, string] { const match = /^(.+?[.
 // inline-flex label sits on no line box: its top then lines up with the side list's title in column 9.
 const headBlock = "flex flex-col items-start";
 const headingClass = "mt-5 max-w-[22ch] type-h2 text-foreground";
-// "To discuss": plain hairline rows from lg. Below lg the three items are too short for rows of their
+// How a programme is customized: the methodology's requirement, assessment, customization and review
+// steps, in its own words.
+const CUSTOMIZE_STEPS = [0, 1, 2, 5].map((index) => METHOD_STEPS[index]);
+// "What we discuss with you": plain hairline rows from lg. Below lg the three items are too short for rows of their
 // own, so they run on after the title as one line, each followed by a middot held to it (no line
 // starts with one, and no item breaks); screen readers hear commas instead of the middots.
 const DISCUSS = ["Audience", "Business objective", "Preferred format"];
@@ -82,6 +86,9 @@ export default async function CoursePage({ params }: { params: Promise<{ slug: s
   const url = `${SITE_URL}/${course.slug}`;
   const area = areaByTitle(course.pillar);
   const related = detail.related.map((item) => COURSES.find((other) => other.slug === item)).filter((item) => item !== undefined);
+  // PRINCE2 and Scrum name each other for PMOs combining the two.
+  const crossCourse = detail.crossLink && COURSES.find((other) => other.slug === detail.crossLink?.[1]);
+  const crossLink = detail.crossLink && crossCourse ? [detail.crossLink[0], crossCourse] as const : undefined;
   const [lead, leadRest] = splitLead(detail.overview[0] ?? "");
   const overviewBody = [leadRest, ...detail.overview.slice(1)].filter(Boolean);
   const areaLinks = AREA_LINKS[area.slug] ?? { action: `Explore ${area.title}`, all: `All ${lowerFirst(area.short)} training` };
@@ -94,11 +101,14 @@ export default async function CoursePage({ params }: { params: Promise<{ slug: s
   // is among the past trainings, a link back to them. The audience keeps its full stop: this is the
   // only place its sentence renders exactly as written. What the programme covers is listed under the
   // hero's actions instead.
+  // Where a programme's FAQs cover examination arrangements, At a glance points to them.
+  const examFaq = detail.faqs.some(([, answer]) => /examination/i.test(answer));
   const glance: [string, ReactNode][] = [
     ["Training area", <Link key="area" href={area.href} className={glanceLink}>{course.pillar}</Link>],
     ["Delivery formats", DELIVERY_PROMISE],
     [UI_LABELS.reviewed, UI_LABELS.reviewedValue],
     ["Who it is for", course.audience],
+    [examFaq ? "Duration, pricing and exam" : "Duration and pricing", examFaq ? <>Agreed with you for each engagement. <Link key="exam" href="#faqs" className={delivered.length > 0 ? glanceLink : glanceLastLink}>See the FAQs below</Link></> : "Scoped with you"],
     ...(delivered.length > 0 ? [["Recently delivered", <Link key="delivered" href="/past-trainings" className={glanceLastLink}>{delivered.map((training) => training.title).join(", ")}</Link>] as [string, ReactNode]] : []),
   ];
   // The rest of the page in reading order, listed in the hero aside under At a glance.
@@ -138,12 +148,14 @@ export default async function CoursePage({ params }: { params: Promise<{ slug: s
         <ButtonLink href={enquiryHref}>{discussLabel}</ButtonLink>
         <ButtonLink href={area.href} variant="secondary">{areaLinks.action}</ButtonLink>
       </div>
+      {/* Individuals land here from search too; the enquiry form's "Training for myself" request type and the "Who can enquire?" FAQ cover them. */}
+      <p className="mt-4 type-small text-muted-foreground">Enquiring for your team or for yourself? Use the same form.</p>
       <ClientProof className="mt-8 sm:mt-10" />
       <p className="mt-6 type-ui text-copy md:hidden print:hidden">{DELIVERY_PROMISE}</p>
       <div className="mt-10 max-lg:hidden lg:mt-12">
         <p className="type-label text-muted-foreground">Covers</p>
         <ul className="mt-2 lg:columns-2 lg:gap-x-8">
-          {detail.concepts.map((concept) => <li key={concept.name} className="break-inside-avoid py-1 type-ui text-copy">{concept.name}</li>)}
+          {detail.concepts.map((concept) => <li key={concept.name} className="break-inside-avoid py-1.5 type-small text-foreground">{concept.name}</li>)}
         </ul>
       </div>
     </PageHero>
@@ -199,9 +211,16 @@ export default async function CoursePage({ params }: { params: Promise<{ slug: s
           {/* Its last two words stay together, except below 360px, where together they are wider than the column. */}
           <h2 id="customization-heading" className={headingClass}>How is the <span className="whitespace-nowrap max-[359px]:whitespace-normal">programme customized?</span></h2>
           <p className="mt-6 max-w-measure type-body text-copy">TraininGenie uses a requirements-driven approach. Standard offerings can be fine-tuned to specific requirements.</p>
+          <ol className="mt-6 w-full max-w-measure border-t border-border">
+            {CUSTOMIZE_STEPS.map(([, title, text], index) => <li key={title} className="grid grid-cols-[2rem_1fr] gap-x-3 border-b border-border py-3.5">
+              <span aria-hidden="true" className="type-ui text-muted-foreground tabular-nums">{`0${index + 1}`}</span>
+              <span className="type-ui text-copy"><span className="font-medium text-foreground">{title}.</span> {text}</span>
+            </li>)}
+          </ol>
+          {crossLink && <p className="mt-6 max-w-measure type-body text-copy">{crossLink[0]}: <Link href={`/${crossLink[1].slug}`} className={inlineLink}>{crossLink[1].title}</Link>.</p>}
         </div>
         <div className="max-lg:border-t max-lg:border-border max-lg:pt-6 max-lg:type-ui max-lg:text-copy lg:col-span-4 lg:col-start-9">
-          <h3 className={`${listTitleClass} max-lg:inline max-lg:type-ui max-lg:text-copy`}>To discuss<span className="lg:hidden">:</span></h3>{" "}
+          <p className={`${listTitleClass} max-lg:inline max-lg:type-ui max-lg:text-copy`}>What we discuss with you<span className="lg:hidden">:</span></p>{" "}
           <ul className="mt-4 border-t border-border max-lg:mt-0 max-lg:inline max-lg:border-t-0">
             {DISCUSS.map((item, index) => <li key={item} className={sideRow}>
               <span className="max-lg:whitespace-nowrap">{item}{index < DISCUSS.length - 1 && <><span className="sr-only lg:hidden">,</span><span aria-hidden="true" className="lg:hidden">{"\u00a0·"}</span></>}</span>{" "}
@@ -221,7 +240,7 @@ export default async function CoursePage({ params }: { params: Promise<{ slug: s
       <div id="next-steps" data-cta-zone className="mt-10 grid gap-2 border-t border-border pt-7 lg:grid-cols-12 lg:gap-x-10">
         <h3 className="type-h3 text-foreground lg:col-span-3">Next steps</h3>
         <div className="lg:col-span-9">
-          <p className="max-w-measure type-body text-copy">Each engagement is scoped with you: programme duration, delivery mode, pricing, and certification or examination arrangements are agreed around your team&apos;s requirement.</p>
+          <p className="max-w-measure type-body text-copy">Each engagement is scoped with you: programme duration, delivery mode, pricing, and certification or examination arrangements are agreed around your team&apos;s requirement. Pricing depends on duration, group size, delivery format and the level of customization.</p>
           <p className="mt-4 max-w-measure type-body text-copy">TraininGenie is led by its founder, <Link href="/our-team" className={inlineLink}>Mousumi Chakraborty</Link>, who brings more than two decades of experience across multiple businesses and industries.</p>
           <div className="mt-6 flex flex-wrap items-center gap-x-8 gap-y-4">
             {/* The enquiry form's topic is prefilled with this programme, and the email's subject names it. */}

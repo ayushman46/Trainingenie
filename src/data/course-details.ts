@@ -11,6 +11,8 @@ export type CourseDetail = {
   outcomes: string[];
   faqs: [string, string][];
   related: string[];
+  // A related programme named in the customization column, as a link only: [lead-in, slug].
+  crossLink?: [string, string];
 };
 
 export const COURSE_DETAILS: Record<string, CourseDetail> = {
@@ -65,6 +67,7 @@ export const COURSE_DETAILS: Record<string, CourseDetail> = {
       ["Does the training include PRINCE2 certification?", "The programme prepares participants for PRINCE2 examinations where certification is part of the engagement. Examination and certification arrangements are confirmed for each engagement. Training on PRINCE2 content does not by itself imply accreditation."],
     ],
     related: ["scrum-agile-training", "itil-4-foundation-training", "iso-9001-training"],
+    crossLink: ["For PMOs combining PRINCE2 and Agile", "scrum-agile-training"],
   },
   "scrum-agile-training": {
     overview: [
@@ -91,6 +94,7 @@ export const COURSE_DETAILS: Record<string, CourseDetail> = {
       ["Can the training be built around our existing agile setup?", "Yes. The programme can start from how the teams work today and focus on the specific gaps, whether that is backlog quality, Sprint events, or cross-team coordination."],
     ],
     related: ["prince2-training", "design-thinking-workshop", "reactjs-training"],
+    crossLink: ["For PMOs combining PRINCE2 and Agile", "prince2-training"],
   },
   "iso-27001-training": {
     overview: [

@@ -54,10 +54,11 @@ function FoldedColumn({ title, links, className = "" }: { title: string; links: 
 /**
  * Items joined by middots. Each middot follows its item with no space in between, so a wrapped line
  * never starts with one; its margins give it room, so the separator never crowds its neighbours.
- * On phones each item takes its own line instead, so no line ends with a stray dot.
+ * On phones each item takes its own line instead, so no line ends with a stray dot, unless `inline`
+ * keeps short items (the two legal links) on one row there too.
  */
-function Dotted({ items }: { items: ReactNode[] }) {
-  return <>{items.map((item, index) => <Fragment key={index}><span className="max-sm:block">{item}</span>{index < items.length - 1 && <><span aria-hidden="true" className="ml-2 mr-1 text-border-strong max-sm:hidden">·</span>{" "}</>}</Fragment>)}</>;
+function Dotted({ items, inline = false }: { items: ReactNode[]; inline?: boolean }) {
+  return <>{items.map((item, index) => <Fragment key={index}><span className={inline ? undefined : "max-sm:block"}>{item}</span>{index < items.length - 1 && <><span aria-hidden="true" className={`ml-2 mr-1 text-border-strong ${inline ? "" : "max-sm:hidden"}`}>·</span>{" "}</>}</Fragment>)}</>;
 }
 
 /**
@@ -114,10 +115,13 @@ export function SiteFooter() {
 
       <div className="mt-8 space-y-1.5 type-fine text-muted-foreground sm:mt-16 sm:border-t sm:border-border sm:pt-8">
         <p>© {new Date().getFullYear()} {COMPANY_NAME}. All rights reserved.</p>
-        {/* The legal name, the CIN and the date are kept whole, so none splits across lines. */}
-        <p><Dotted items={[<span key="operator">{COMPANY_NAME} is operated by <span className="whitespace-nowrap">{LEGAL_ENTITY.name}</span></span>,<span key="cin" className="whitespace-nowrap">CIN {LEGAL_ENTITY.cin}</span>, <span key="incorporated" className="whitespace-nowrap">Incorporated {LEGAL_ENTITY.incorporatedLabel}</span>, `Registered office: ${LEGAL_ENTITY.registeredOffice.label}`]} /></p>
-        {/* Below lg each link is a 44px row, as the contacts are, so the 13px links stay easy to tap. */}
-        <p><Dotted items={LEGAL_LINKS.map(([label, href]) => <Link key={href} href={href} className={legalClass}>{label}</Link>)} /></p>
+        {/* Two lines on wide screens, the entity with its CIN, then the office with the date; the legal
+            name, the CIN and the date are kept whole, so none splits across lines. */}
+        <p><Dotted items={[<span key="operator">{COMPANY_NAME} is operated by <span className="whitespace-nowrap">{LEGAL_ENTITY.name}</span></span>, <span key="cin" className="whitespace-nowrap">CIN {LEGAL_ENTITY.cin}</span>]} /></p>
+        <p><Dotted items={[`Registered office: ${LEGAL_ENTITY.registeredOffice.label}`, <span key="incorporated" className="whitespace-nowrap">Incorporated {LEGAL_ENTITY.incorporatedLabel}</span>]} /></p>
+        {/* Below lg each link is a 44px row, as the contacts are, so the 13px links stay easy to tap;
+            the two stay on one row on phones too. */}
+        <p><Dotted inline items={LEGAL_LINKS.map(([label, href]) => <Link key={href} href={href} className={legalClass}>{label}</Link>)} /></p>
         <ClientNote />
       </div>
     </Container>

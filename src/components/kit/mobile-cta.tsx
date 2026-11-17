@@ -22,7 +22,7 @@ const pastTop = () => window.scrollY > 80;
 const onServer = () => false;
 
 /**
- * The site's one phone action bar (below lg): a round outline Call button and the black
+ * The site's one phone action bar (below lg): an outline Call button (its icon and the word) and the black
  * "Discuss your training needs" pill, pinned to the bottom of the screen. On a programme or training area
  * page the pill opens the enquiry form with that programme or area as the topic, as the page's own pills do.
  *
@@ -71,10 +71,10 @@ export function MobileCta() {
 
   return <aside aria-label="Quick contact" inert={!shown} aria-hidden={!shown} className={`fixed inset-x-0 bottom-0 z-40 border-t border-border bg-background px-5 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] transition-[translate,visibility] motion-reduce:transition-none sm:px-8 lg:hidden [@media(max-height:30rem)]:hidden ${shown ? "visible translate-y-0 duration-(--motion-in) ease-out" : "invisible translate-y-full duration-(--motion-out) ease-in"}`}>
     <div className="flex gap-3 max-[359px]:gap-2 sm:justify-end">
-      <ButtonLink href={`tel:${phone.replace(/\s+/g, "")}`} variant="outline" className="w-12 shrink-0 px-0! sm:w-auto sm:px-6!">
+      {/* The Call button names itself on every width, so it never reads as an unlabelled icon. */}
+      <ButtonLink href={`tel:${phone.replace(/\s+/g, "")}`} variant="outline" className="shrink-0 gap-2 px-4! max-[359px]:px-3! sm:px-6!">
         <PhoneIcon className="size-[18px]" />
-        <span className="sr-only">Call TraininGenie</span>
-        <span aria-hidden="true" className="hidden sm:inline">{UI_LABELS.call}</span>
+        <span>{UI_LABELS.call}<span className="sr-only"> TraininGenie</span></span>
       </ButtonLink>
       <ButtonLink href={href} className="min-w-0 flex-1 max-[359px]:px-3! sm:flex-none">{PRIMARY_CTA.label}</ButtonLink>
     </div>

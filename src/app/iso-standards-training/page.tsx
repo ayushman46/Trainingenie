@@ -15,6 +15,7 @@ export default function Page() {
     overview={{ title: "Quality, security, risk, and compliance teams.", statement: "Choose a topic from the catalogue; the programme, delivery, and any certification preparation are then agreed with TraininGenie.", audiences: true }}
     catalogue={{ title: "ISO and Governance, Risk and Compliance", intro: TRAINING_PILLARS[3].description }}
     programmes={{ title: "Focused standards\u00a0programmes", items: programmes, showAudience: false }}
+    topicNotes={{ "Enterprise Risk Manager": "Identifying, assessing and managing risk across an organization.", "ISO 31000": "The international standard for risk management.", GDPR: "The EU General Data Protection Regulation: data protection and privacy." }}
     // Below md the programme rows already close on a hairline, so the note drops its own there.
     note={<CertificationNote className="mt-14 max-md:mt-8 max-md:border-t-0 max-md:pt-0" />}>
     {serviceJsonLd({ name: "ISO, Standards and GRC Training", description: "Training across ISO standards, quality, information security, service management, business continuity, risk, privacy, governance, and compliance.", path: "/iso-standards-training" })}

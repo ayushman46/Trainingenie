@@ -40,6 +40,12 @@ type Props = {
   note?: ReactNode;
   /** A line under "Recently delivered in this area", where the area has delivered trainings; it can say what that work was. */
   deliveredIntro?: string;
+  /** The title over the recently delivered trainings, where the generic one would overstate what they were. */
+  deliveredTitle?: string;
+  /** A one-line scope under each named topic, where the bare names would not say what a topic covers. */
+  topicNotes?: Record<string, string>;
+  /** A short pointer closing "Who it is for", such as the leadership page's links for senior leaders. */
+  pointer?: ReactNode;
   children?: ReactNode;
 };
 
@@ -91,15 +97,16 @@ export function HowItWorks({ principles, tone, divider = false }: { principles?:
  * One delivered training under a hairline: its title, what the topic covers and its tags. On phones
  * they stack; from `md` the title and tags sit on the left and the description on the right. A
  * training with its own programme page says so in words, as on /past-trainings: "See the programme"
- * under its description (last on phones). No row is a link as a whole, so every title reads the same
+ * under its description (last on phones), unless `linked` is false: the programme is already featured
+ * on this page, so the link would only repeat it. No row is a link as a whole, so every title reads the same
  * and a row without a programme page never looks like a link that does nothing.
  */
-function DeliveredRow({ item }: { item: PastTraining }) {
+function DeliveredRow({ item, linked = true }: { item: PastTraining; linked?: boolean }) {
   return <div className="py-5 md:grid md:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] md:grid-rows-[auto_1fr_auto] md:gap-x-10">
     <h3 className="type-ui font-medium text-pretty text-foreground">{item.title}</h3>
     {item.about && <p className="mt-1 max-w-measure type-ui text-copy md:col-start-2 md:row-span-2 md:row-start-1 md:mt-0">{item.about}</p>}
     <p className="mt-2 type-label text-muted-foreground md:col-start-1 md:row-start-2 md:mt-1">{item.tags.join(" · ")}</p>
-    {item.programme && <div className="mt-4 md:col-start-2 md:row-start-3 md:mt-3"><TextLink href={item.programme.href} size="sm">See the programme<span className="sr-only">: {item.programme.title}</span></TextLink></div>}
+    {linked && item.programme && <div className="mt-4 md:col-start-2 md:row-start-3 md:mt-3"><TextLink href={item.programme.href} size="sm">See the programme<span className="sr-only">: {item.programme.title}</span></TextLink></div>}
   </div>;
 }
 
@@ -116,7 +123,7 @@ function DeliveredRow({ item }: { item: PastTraining }) {
  * "Programmes", "Past trainings").
  * The visible trail is Home / Training / {title}; the BreadcrumbList keeps its two items (Home, {title}).
  */
-export function AreaPage({ slug, title, intro, overview, catalogue, programmes, approach, note, deliveredIntro, children }: Props) {
+export function AreaPage({ slug, title, intro, overview, catalogue, programmes, approach, note, deliveredIntro, deliveredTitle, topicNotes, pointer, children }: Props) {
   const area = areaBySlug(slug);
   const { groups, topics } = area;
   const count = programmes.items.length;
@@ -167,6 +174,7 @@ export function AreaPage({ slug, title, intro, overview, catalogue, programmes, 
           <p className="max-w-measure type-lead text-foreground">{overview.statement}</p>
           <div className="space-y-4">{overview.support.map((text) => <p key={text} className="max-w-measure type-body text-copy">{text}</p>)}</div>
         </div> : <p className="max-w-measure type-lead text-foreground">{overview.statement}</p>}
+        {pointer}
       </div>
     </Section>
 
@@ -176,7 +184,7 @@ export function AreaPage({ slug, title, intro, overview, catalogue, programmes, 
       <SectionHead id="topics-heading" label="Topics" title={catalogue.title} intro={catalogue.intro} />
       <div data-reveal className={`${HEAD.body} lg:pl-col-4`}>
         {/* A lone group named like the section heading keeps its title for screen readers only. */}
-        <TopicGroups groups={groups} variant="feature" hideTitle={groups.length === 1 && groups[0].title.toLowerCase() === catalogue.title.toLowerCase()} />
+        <TopicGroups groups={groups} variant="feature" notes={topicNotes} hideTitle={groups.length === 1 && groups[0].title.toLowerCase() === catalogue.title.toLowerCase()} />
         <div className="mt-10"><TextLink href={enquire(title)}>{UI_LABELS.askTopics}</TextLink></div>
       </div>
     </Section>
@@ -200,9 +208,9 @@ export function AreaPage({ slug, title, intro, overview, catalogue, programmes, 
 
     {/* Proof beside the catalogue: the area's trainings from the past trainings page, if it has any */}
     {delivered.length > 0 && <Section id="recently-delivered" divider labelledBy="recently-delivered-heading">
-      <SectionHead id="recently-delivered-heading" label="Past trainings" title="Recently delivered in this area" intro={deliveredIntro} action={<TextLink href="/past-trainings">See past trainings</TextLink>} />
+      <SectionHead id="recently-delivered-heading" label="Past trainings" title={deliveredTitle ?? "Recently delivered in this area"} intro={deliveredIntro} action={<TextLink href="/past-trainings">See past trainings</TextLink>} />
       <ul data-reveal className={`${HEAD.body} lg:pl-col-4`}>
-        {delivered.map((item) => <li key={item.title} className="border-t border-border"><DeliveredRow item={item} /></li>)}
+        {delivered.map((item) => <li key={item.title} className="border-t border-border"><DeliveredRow item={item} linked={!programmes.items.some((programme) => item.programme?.href === `/${programme.slug}`)} /></li>)}
       </ul>
     </Section>}
 

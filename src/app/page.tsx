@@ -40,12 +40,16 @@ const destinationName: Record<string, string> = {
   "/technology-training": "Technology Training",
   "/what-we-do": "What we do",
   "/past-trainings#group-technology-training": "Past trainings: business tools, ERP and AI",
+  "/leadership-soft-skills-training": "Leadership and Soft Skills",
   "/leadership-soft-skills-training#topics": "Leadership and soft skills topics",
+  "/leadership-soft-skills-training#senior-leaders": "Leadership and Soft Skills: for senior leaders",
 };
-const audienceRows = AUDIENCES.map((audience) => {
-  const href = AUDIENCE_LINKS[audience] ?? "/what-we-do";
-  return { label: audience, href, meta: destinationName[href] };
-});
+// "Managers and new joiners" shows as three rows here: senior managers lead to the leadership area's
+// pointer for senior leaders, and managers and new joiners to its topics band (Team Management, Campus to Corporate).
+const SPLIT_AUDIENCES: Record<string, [label: string, href: string][]> = {
+  "Managers and new joiners": [["Senior managers and leadership teams", "/leadership-soft-skills-training#senior-leaders"], ["Managers, supervisors and team leads", "/leadership-soft-skills-training#topics"], ["New joiners", "/leadership-soft-skills-training#topics"]],
+};
+const audienceRows = AUDIENCES.flatMap((audience) => SPLIT_AUDIENCES[audience] ?? [[audience, AUDIENCE_LINKS[audience] ?? "/what-we-do"]]).map(([label, href]) => ({ label, href, meta: destinationName[href] }));
 
 // The founder facts beside the Company statement. The full company record lives on /about-us. The CIN
 // is the copyable, tabular one used there, so it can be pasted into a registry search.
@@ -91,7 +95,7 @@ export default function Home() {
               on phones lead, pills, proof, then the rest and the caption; from lg lead, rest, pills, proof. */}
           <div className="pt-2 sm:pt-8 lg:col-span-6 lg:col-start-1 lg:row-start-1 lg:pt-0">
             <h1 className="hero-rise">
-              <span className="block text-[1rem] font-medium leading-[1.4] text-foreground">{COMPANY_NAME}</span>{" "}
+              <span className="block text-[1rem] font-medium leading-[1.4] text-foreground">{COMPANY_NAME}<span className="sr-only">: corporate training in India.</span></span>{" "}
               {/* The slogan, the hero's display line. On phones two lines, "Transcend / Beyond growth.",
                   sized to the column: the longer line is about 6.4em in Archivo and 7.6em in the
                   normal-width fallback a phone shows while Archivo loads, so a 1/8.1 column size keeps

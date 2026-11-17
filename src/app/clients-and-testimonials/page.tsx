@@ -4,15 +4,18 @@ import { CompanyLinks } from "@/components/company/company-links";
 import { OnThisPage } from "@/components/company/on-this-page";
 import { PAST_TRAINING_GROUPS } from "@/components/company/past-training-groups";
 import { ClosingBand } from "@/components/tg/closing-band";
+import { Label } from "@/components/tg/label";
 import { LogoWall } from "@/components/tg/logo-wall";
 import { PageHero } from "@/components/tg/page-hero";
 import { Section } from "@/components/tg/section";
-import { HEAD, RowHead, SectionHead } from "@/components/tg/section-head";
+import { HEAD, RowHead } from "@/components/tg/section-head";
 import { TextLink } from "@/components/tg/text-link";
+import { ClientOnly } from "@/components/utility/client-only";
+import { CopyButton } from "@/components/utility/copy-button";
 import { CLIENT_REFERENCES } from "@/data";
 import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = pageMetadata("Clients", "Organizations that have worked with TraininGenie for corporate training and learning include Colgate-Palmolive, HDFC Home Loans, Harman, NTT DATA, Alcon and TeamLease.", "/clients-and-testimonials");
+export const metadata: Metadata = pageMetadata("Corporate Training Clients", "Organizations that have worked with TraininGenie for corporate training include Colgate-Palmolive, HDFC Home Loans, Harman, NTT DATA, Alcon and TeamLease.", "/clients-and-testimonials");
 
 // The sectors the clients come from, read in the hero lead, so the logos follow the hero directly.
 // Neither the sector count nor the past-training count is promoted to the meta line until the owner
@@ -20,6 +23,8 @@ export const metadata: Metadata = pageMetadata("Clients", "Organizations that ha
 const sectors = ["technology", "financial services", "healthcare", "consumer goods", "staffing", "the non-profit sector"];
 const lead = `A selection of organizations that have worked with TraininGenie, across ${sectors.slice(0, -1).join(", ")}, and ${sectors.at(-1)}.`;
 const meta = [`${CLIENT_REFERENCES.length} clients`];
+// The twelve names as plain text under the wall, so a procurement form can take them in one paste.
+const clientList = CLIENT_REFERENCES.map((client) => client.name).join(", ");
 
 // The hero aside: the page's two sections.
 const chapters = [
@@ -58,28 +63,38 @@ export default function Page() {
       <RowHead id="client-references-heading" title="Organizations we have worked with." />
       <div className={HEAD.rowBody}>
         <LogoWall variant="captioned" className={logoGrid} />
+        <div className="mt-6 flex flex-wrap items-baseline gap-x-6">
+          <p className="max-w-measure type-caption text-muted-foreground">Client list: <span id="client-list" className="text-copy">{clientList}</span></p>
+          <ClientOnly><CopyButton label="Copy client list" what="client list" value={clientList} target="client-list" /></ClientOnly>
+        </div>
       </div>
     </Section>
 
     {/* What the work covered: the past training titles grouped by area, titles only (the tags and
         descriptions live on the Past trainings page). A title with its own programme page links to it.
-        The page's one grey band. */}
+        The page's one grey band: the heading and intro in the left four columns, as on the About page's
+        splits, and the groups beside them, so the band opens on content rather than a lone label. */}
     <Section id="past-work" tone="tint" labelledBy="past-work-heading">
-      <SectionHead id="past-work-heading" label="Past work" title="What the work covered" intro="Training across business tools, ERP and AI, leadership, team effectiveness, and innovation." action={<TextLink href="/past-trainings">See past trainings</TextLink>} />
-      {/* From column 4, under the heading, so the text keeps the heading's axis instead of spans that
-          start from column 1 (the logo grid above is imagery, so it runs the full width). */}
-      <div className={`${HEAD.body} grid gap-12 md:grid-cols-2 md:gap-x-10 lg:pl-col-4`}>
-        {PAST_TRAINING_GROUPS.map((group) => <section key={group.key} aria-labelledby={`work-${group.key}`} className="border-t border-border-strong pt-6">
-          <h3 id={`work-${group.key}`} className="type-h3 text-foreground">{group.title}</h3>
-          <p className="mt-1 type-label tabular-nums text-muted-foreground">{group.items.length} {group.items.length === 1 ? "training" : "trainings"}</p>
-          {/* One hairline between titles, so a title that wraps still reads as one item */}
-          <ul className="mt-4 divide-y divide-border type-body text-copy">
-            {group.items.map((item) => <li key={item.title} className="py-2.5">{item.programme
-              ? <Link href={item.programme.href} className={itemLink}>{item.title}<span className="sr-only">: programme page</span></Link>
-              : item.title}</li>)}
-          </ul>
-          {group.area && <div className="mt-5"><TextLink href={group.area.href} size="sm">Explore the area<span className="sr-only">: {group.area.title}</span></TextLink></div>}
-        </section>)}
+      <div className="grid gap-y-10 lg:grid-cols-12 lg:gap-x-10">
+        <div data-reveal className="lg:col-span-4">
+          <Label>Past work</Label>
+          <h2 id="past-work-heading" className="mt-5 max-w-[22ch] type-h2 text-foreground">What the work covered</h2>
+          <p className="mt-5 max-w-measure type-lead text-copy">Training across business tools, ERP and AI, leadership, team effectiveness, and innovation.</p>
+          <div className={HEAD.action}><TextLink href="/past-trainings">See past trainings</TextLink></div>
+        </div>
+        <div className="grid gap-12 md:grid-cols-2 md:gap-x-10 lg:col-span-8">
+          {PAST_TRAINING_GROUPS.map((group) => <section key={group.key} aria-labelledby={`work-${group.key}`} className="border-t border-border-strong pt-6">
+            <h3 id={`work-${group.key}`} className="type-h3 text-foreground">{group.title}</h3>
+            <p className="mt-1 type-label tabular-nums text-muted-foreground">{group.items.length} {group.items.length === 1 ? "training" : "trainings"}</p>
+            {/* One hairline between titles, so a title that wraps still reads as one item */}
+            <ul className="mt-4 divide-y divide-border type-body text-copy">
+              {group.items.map((item) => <li key={item.title} className="py-2.5">{item.programme
+                ? <Link href={item.programme.href} aria-label={`${item.title}, programme page`} className={itemLink}>{item.title}</Link>
+                : item.title}</li>)}
+            </ul>
+            {group.area && <div className="mt-5"><TextLink href={group.area.href} size="sm" aria-label={`Explore the area, ${group.area.title}`}>Explore the area</TextLink></div>}
+          </section>)}
+        </div>
       </div>
     </Section>
 

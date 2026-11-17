@@ -11,7 +11,7 @@ import { TextLink } from "@/components/tg/text-link";
 import { CONTACT_INFO, LEGAL_ENTITY, SITE_URL } from "@/data";
 import { FOUNDER_ID, jsonLd, ORGANIZATION_ID, pageMetadata, WEBSITE_ID } from "@/lib/seo";
 
-export const metadata: Metadata = pageMetadata("Founder Profile", "Meet Mousumi Chakraborty, Founder Director of TraininGenie: a Bengaluru-based learning and business leader with more than two decades of experience across multiple businesses and industries.", "/our-team");
+export const metadata: Metadata = pageMetadata("Mousumi Chakraborty, Founder Director", "Meet Mousumi Chakraborty, Founder Director of TraininGenie: a Bengaluru-based learning and business leader with more than two decades of experience.", "/our-team");
 
 // The facts in the header beside the name. Only the site's own copy: the delivery units (the
 // biography's own sentence, her most concrete achievement, so it leads), "more than two decades"

@@ -325,8 +325,8 @@
 
 /* ============================================================
    Motion
-   Kept deliberately small: one fade-up per section head as it first scrolls into view, colour
-   transitions, and soft expand/collapse. Content is visible without JavaScript: the hidden start
+   Kept deliberately small: one short rise per section head as it first scrolls into view, colour
+   transitions, and soft expand/collapse. Content is visible without JavaScript: the lowered start
    state only applies once RevealObserver has added <html class="reveal-ready">.
    Durations come from the --motion-* tokens on :root, curves from --ease-out-soft.
    ============================================================ */
@@ -338,8 +338,9 @@
   transition-delay: var(--reveal-delay, 0ms);
 }
 
+/* Only a short rise, never a fade from nothing: a block not yet revealed still shows, so a fast
+   scroll, a full-page screenshot, a link preview or a printout never meets an empty band. */
 html.reveal-ready [data-reveal]:not(.is-visible) {
-  opacity: 0;
   transform: translateY(12px);
 }
 

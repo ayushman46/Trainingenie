@@ -68,9 +68,10 @@ const compactColumns = (count: number) => (count === 1 ? "" : count === 3 ? "md:
  * catalogue) with no bullets and no rules per item. `compact` (catalogue): 15px medium group titles,
  * up to four columns, 16px topics. A single group
  * spreads its topics over columns instead. `hideTitle` keeps a lone group's title for screen readers
- * only, for when it would just repeat the section heading above it.
+ * only, for when it would just repeat the section heading above it. `notes` gives a topic a one-line
+ * scope under its link, where a bare name would not say what the topic is about.
  */
-export function TopicGroups({ groups, variant = "feature", headingLevel = 3, hideTitle = false, className = "" }: { groups: TopicGroup[]; variant?: "feature" | "compact"; headingLevel?: 3 | 4; hideTitle?: boolean; className?: string }) {
+export function TopicGroups({ groups, variant = "feature", headingLevel = 3, hideTitle = false, notes, className = "" }: { groups: TopicGroup[]; variant?: "feature" | "compact"; headingLevel?: 3 | 4; hideTitle?: boolean; notes?: Record<string, string>; className?: string }) {
   const Heading = headingLevel === 4 ? "h4" : "h3";
   const feature = variant === "feature";
   const single = groups.length === 1;
@@ -83,7 +84,7 @@ export function TopicGroups({ groups, variant = "feature", headingLevel = 3, hid
         <span className="shrink-0 type-label font-normal tabular-nums text-muted-foreground">{group.items.length}<span className="sr-only"> topics</span></span>
       </div>
       <ul className={`border-t border-border pt-2 max-md:pt-0 ${hideTitle ? "" : feature ? "mt-4" : "mt-3"} ${itemColumns}`}>
-        {group.items.map((topic) => <li key={topic} className={`break-inside-avoid ${rowPadding(feature)} ${feature ? "type-body text-foreground max-md:text-[1rem]" : "type-small text-copy"}`}><Topic topic={topic} feature={feature} /></li>)}
+        {group.items.map((topic) => <li key={topic} className={`break-inside-avoid ${rowPadding(feature)} ${feature ? "type-body text-foreground max-md:text-[1rem]" : "type-small text-copy"}`}><Topic topic={topic} feature={feature} />{notes?.[topic] && <p className="mt-1 pb-1 type-small text-muted-foreground max-md:-mt-1.5 max-md:pb-0">{notes[topic]}</p>}</li>)}
       </ul>
     </div>)}
   </div>;
