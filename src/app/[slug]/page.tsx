@@ -20,6 +20,7 @@ import { Section } from "@/components/tg/section";
 import { HEAD, RowHead, SectionHead } from "@/components/tg/section-head";
 import { TextLink } from "@/components/tg/text-link";
 import { ShareActions } from "@/components/utility/share-actions";
+import { ARTICLES } from "@/content/articles";
 import { CONTACT_INFO, COURSE_DETAILS, COURSES, SITE_URL } from "@/data";
 import { METHOD_STEPS } from "@/data/methodology";
 import { DELIVERY_PROMISE, UI_LABELS } from "@/data/site-copy";
@@ -218,6 +219,8 @@ export default async function CoursePage({ params }: { params: Promise<{ slug: s
             </li>)}
           </ol>
           {crossLink && <p className="mt-6 max-w-measure type-body text-copy">{crossLink[0]}: <Link href={`/${crossLink[1].slug}`} className={inlineLink}>{crossLink[1].title}</Link>.</p>}
+          {/* Articles that compare this programme's subject with another. */}
+          {ARTICLES.filter((article) => article.courses.includes(course.slug)).map((article) => <p key={article.slug} className="mt-6 max-w-measure type-body text-copy">Related reading: <Link href={`/blog/${article.slug}`} className={inlineLink}>{article.title}</Link></p>)}
         </div>
         <div className="max-lg:border-t max-lg:border-border max-lg:pt-6 max-lg:type-ui max-lg:text-copy lg:col-span-4 lg:col-start-9">
           <p className={`${listTitleClass} max-lg:inline max-lg:type-ui max-lg:text-copy`}>What we discuss with you<span className="lg:hidden">:</span></p>{" "}

@@ -48,6 +48,11 @@
 - Design Thinking workshop: https://www.trainingenie.com/design-thinking-workshop
 - ReactJS corporate training: https://www.trainingenie.com/reactjs-training
 
+## Articles
+
+- ITIL vs PRINCE2: what is the difference? (ITIL is a framework for running IT services; PRINCE2 is a method for managing projects): https://www.trainingenie.com/blog/itil-vs-prince2
+- Blog and resources: https://www.trainingenie.com/blog
+
 ## Entity references
 
 - Company LinkedIn: https://www.linkedin.com/company/trainingenie/
