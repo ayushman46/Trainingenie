@@ -12,7 +12,7 @@ import { TextLink } from "@/components/tg/text-link";
 import { CLIENT_REFERENCES } from "@/data";
 import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = pageMetadata("Past Trainings", "Past corporate training topics delivered by TraininGenie, including SAP DRC, Advanced Excel and VBA, agentic AI for finance, AI tools for procurement, leadership development, team building, and Design Thinking.", "/past-trainings");
+export const metadata: Metadata = pageMetadata("Past Corporate Trainings", "Training topics recently delivered by TraininGenie: SAP DRC, Advanced Excel and VBA, AI for finance and procurement, leadership, and Design Thinking.", "/past-trainings");
 
 // Computed totals are not promoted to the hero until the owner supplies real scale numbers; each
 // group still shows its own count beside its heading. The clients count pairs with "See clients".
@@ -28,7 +28,7 @@ const chapters = PAST_TRAINING_GROUPS.map((group) => ({ href: `#group-${group.ke
 
 export default function Page() {
   return <>
-    <PageHero crumbs={[{ label: "Past Trainings" }]} label="Company" title="Past Trainings" lead="A selection of past training topics delivered by TraininGenie, spanning business tools, ERP and AI, leadership, team effectiveness, and innovation." meta={meta} secondary={{ label: "See clients", href: "/clients-and-testimonials" }} size="compact" aside={<OnThisPage items={chapters} />} />
+    <PageHero crumbs={[{ label: "Past Trainings" }]} label="Company" title="Past Trainings" lead="Topics recently delivered: a selection of the training TraininGenie has run, spanning business tools, ERP and AI, leadership, team effectiveness, and innovation." meta={meta} secondary={{ label: "See clients", href: "/clients-and-testimonials" }} size="compact" aside={<OnThisPage items={chapters} />} />
 
     {/* A tight band under a compact hero, opened by one row title rather than a second statement, so
         the first training follows the hero (as the Clients page's logos do) */}

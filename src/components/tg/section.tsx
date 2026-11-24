@@ -12,7 +12,7 @@ const tones: Record<SectionTone, string> = {
   night: "bg-night text-night-foreground [--section-bg:var(--night)]",
 };
 // Phones get a little less than tablets, so stacked hero and section paddings never leave an empty band.
-const sizes = { default: "py-12 md:py-20 lg:py-24", tight: "py-10 lg:py-16", none: "" };
+const sizes = { default: "py-12 md:py-16 lg:py-18", tight: "py-10 lg:py-14", none: "" };
 
 /**
  * A full-width band. White is the page; use `tint` (#f5f5f5, alias `sand`) at most once per page and

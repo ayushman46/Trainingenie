@@ -17,7 +17,7 @@ import { COURSES, METHOD_CONSTANTS, METHOD_STEPS } from "@/data";
 import { UI_LABELS } from "@/data/site-copy";
 import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = pageMetadata("Training Methodology", "Understand TraininGenie's requirements-driven approach to customized corporate training and practical learning.", "/training-methodology");
+export const metadata: Metadata = pageMetadata("Corporate Training Methodology", "Understand TraininGenie's requirements-driven approach to customized corporate training and practical learning.", "/training-methodology");
 
 // A same-page link inside running text, set like TextLink: an ink underline that turns grey on hover
 // (no red). An invisible ::before pads the hit area to at least 44px tall without moving the line or
@@ -29,7 +29,9 @@ const inlineLink = "relative text-foreground before:absolute before:inset-x-0 be
 // activities and the levels of customization point to the step that names them, rather than listing them again.
 const contrast = [
   { title: "What stays consistent", text: METHOD_CONSTANTS.consistent, parts: [
-    ["Requirements-driven", "Work backward from the client problem and desired outcome."],
+    ["Requirement first", "Every engagement starts with a discussion of the client problem and the desired outcome."],
+    ["Starting point", "Pre-assessments or discussion clarify capability needs before the programme is shaped; see step 2."],
+    ["Review", "Post-assessments, feedback and the agreed objectives review the learning; see step 6."],
     ["The method", <a key="method" href="#method" className={inlineLink}>Understand, Shape, Deliver</a>],
   ] },
   { title: "What can change", text: METHOD_CONSTANTS.changeable, parts: [
@@ -108,7 +110,7 @@ export default function Page() {
 
     {/* The same method behind each training area and each focused programme. */}
     <Section id="where-it-applies" labelledBy="where-it-applies-heading">
-      <SectionHead id="where-it-applies-heading" label="Where it applies" title={`One method, across all ${AREAS.length} training areas.`} intro="Each programme can be adapted around the organization, the participants, and the outcome." />
+      <SectionHead id="where-it-applies-heading" label="Where it applies" title={`One method, across all ${AREAS.length} training areas.`} intro="The same steps sit behind each training area and each focused programme." />
       <AreaRows descriptionKey="description" className="mt-12 lg:mt-16" />
       {/* The focused programmes as open link rows, each with its training area, so the list scans like an index.
           Two columns, not three: at three, most titles wrap beside their area name. */}

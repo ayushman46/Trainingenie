@@ -20,7 +20,7 @@ import { COMPANY_NAME, COURSES, FAQS, SITE_URL, TRAINING_PILLARS } from "@/data"
 import { AUDIENCE_LINKS, AUDIENCES, WHAT_WE_DO } from "@/data/site-copy";
 import { jsonLd, ORGANIZATION_ID, pageMetadata, WEBSITE_ID } from "@/lib/seo";
 
-export const metadata: Metadata = pageMetadata("What We Do", "What TraininGenie does: need-based corporate training across technology, leadership and soft skills, ITIL, PRINCE2 and Agile, and ISO standards and GRC, customized or standard, delivered online, onsite or hybrid.", "/what-we-do");
+export const metadata: Metadata = pageMetadata("What We Do: Corporate Training in India", "What TraininGenie does: need-based corporate training in technology, leadership, ITIL, PRINCE2, Agile and ISO standards, online, onsite or hybrid.", "/what-we-do");
 
 // The eight chapters, in page order: the desktop rail, the phone list under the hero and the
 // section labels all read from here. The last one is the closing band. No numbers anywhere: Nike

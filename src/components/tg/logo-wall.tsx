@@ -29,7 +29,7 @@ const DEFAULT_LOGO: (typeof LOGOS)[string] = { width: 240, height: 96, strip: 36
 const LOGO_SIZES = "(min-width: 640px) 160px, 120px";
 
 /**
- * One logo, greyscale and faded at rest, full colour on hover where hover exists. The filter and
+ * One logo, greyscale and faded at rest (unfaded under prefers-contrast: more), full colour on hover where hover exists. The filter and
  * opacity sit on the image itself: on a parent they would isolate the multiply blend that keeps
  * white logo backgrounds from showing as boxes. In forced colours (high contrast) each logo shows as
  * its own file, unfaded and unblended on a white backing, since multiplied onto a dark Canvas, or
@@ -39,33 +39,33 @@ const LOGO_SIZES = "(min-width: 640px) 160px, 120px";
  * logos eagerly, at 80px).
  */
 function Logo({ client, scale, inline = false, sizes = LOGO_SIZES, loading }: { client: ClientReference; scale: number; inline?: boolean; sizes?: string; loading?: "eager" | "lazy" }) {
-  // NTT DATA, the one text tile, at 0.85× the size it first had, so its solid caps weigh the same as the marks.
-  if (!client.logo) return <span className={`font-semibold tracking-[-0.01em] text-[rgb(17_17_17/0.6)] transition-colors duration-300 [@media(hover:hover)]:group-hover/logo:text-[#174a8b] ${scale > 1 ? "text-[15px] sm:text-[19px]" : scale < 1 ? "text-[12px]" : "text-[13px] sm:text-[16px]"}`}>{client.name}</span>;
+  // NTT DATA, the one text tile: never under 14px and in solid foreground, so it reads as clearly as the marks.
+  if (!client.logo) return <span className={`font-semibold tracking-[-0.01em] text-foreground transition-colors duration-300 [@media(hover:hover)]:group-hover/logo:text-[#174a8b] ${scale > 1 ? "text-[15px] sm:text-[19px]" : scale < 1 ? "text-[14px]" : "text-[14px] sm:text-[16px]"}`}>{client.name}</span>;
   const logo = LOGOS[client.logo] ?? DEFAULT_LOGO;
   const optical = (inline ? logo.inline : undefined) ?? logo.scale ?? 1;
   const style = { "--logo-h": `${Math.round(logo.strip * scale * optical)}px`, "--logo-o": logo.opacity, "--logo-filter": "filter" in logo && logo.filter ? logo.filter : "grayscale(1) contrast(1.05)" } as CSSProperties;
-  return <Image src={client.logo} alt={client.name} width={logo.width} height={logo.height} sizes={sizes} loading={loading} style={style} className={`${inline ? "h-[var(--logo-h)]" : "h-[calc(var(--logo-h)*0.9)] sm:h-[var(--logo-h)]"} w-auto max-w-full object-contain opacity-[var(--logo-o)] mix-blend-multiply transition-[opacity,filter] duration-300 [filter:var(--logo-filter)] [@media(hover:hover)]:group-hover/logo:opacity-100 [@media(hover:hover)]:group-hover/logo:[filter:none] forced-colors:bg-white forced-colors:opacity-100 forced-colors:mix-blend-normal forced-colors:[filter:none] forced-colors:[forced-color-adjust:none]`} />;
+  return <Image src={client.logo} alt={client.name} width={logo.width} height={logo.height} sizes={sizes} loading={loading} style={style} className={`${inline ? "h-[var(--logo-h)]" : "h-[calc(var(--logo-h)*0.9)] sm:h-[var(--logo-h)]"} w-auto max-w-full object-contain opacity-[var(--logo-o)] mix-blend-multiply transition-[opacity,filter] duration-300 [filter:var(--logo-filter)] [@media(hover:hover)]:group-hover/logo:opacity-100 [@media(hover:hover)]:group-hover/logo:[filter:none] contrast-more:opacity-100 forced-colors:bg-white forced-colors:opacity-100 forced-colors:mix-blend-normal forced-colors:[filter:none] forced-colors:[forced-color-adjust:none]`} />;
 }
 
 /**
  * The client references. `strip` (landing): all 12 logos, six to a row on desktop and three on
- * phones. `captioned` (Clients page): each logo at 1.15× under a hairline, captioned with its name
+ * phones, loaded eagerly so a fast scroll or a full-page capture never shows an empty band. `captioned` (Clients page): each logo at 1.15× under a hairline, captioned with its name
  * (the caption stays invisible for NTT DATA, which is already text). `inline`: one wrapping row of
  * the passed clients at 0.8× strip height, with no captions (the hero proof rows, see ClientProof,
  * loaded eagerly so they do not pop in after the first paint). It stays 0.8× from lg too: at 1×
  * the five hero logos wrap in the landing hero's column at 1024.
  */
-export function LogoWall({ variant, clients = CLIENT_REFERENCES, className = "" }: { variant: "strip" | "captioned" | "inline"; clients?: ClientReference[]; className?: string }) {
+export function LogoWall({ variant, clients = CLIENT_REFERENCES, label, className = "" }: { variant: "strip" | "captioned" | "inline"; clients?: ClientReference[]; label?: string; className?: string }) {
   if (variant === "captioned") return <ul className={`grid grid-cols-2 gap-x-10 gap-y-12 sm:grid-cols-3 lg:grid-cols-4 ${className}`}>
     {clients.map((client) => <li key={client.name} className="group/logo flex flex-col items-center gap-4 border-t border-border pt-8">
       <div className="flex h-[70px] w-full items-center justify-center"><Logo client={client} scale={1.15} /></div>
       <p aria-hidden="true" className={`type-caption text-muted-foreground ${client.logo ? "" : "invisible"}`}>{client.name}</p>
     </li>)}
   </ul>;
-  if (variant === "inline") return <ul className={`flex flex-wrap items-center gap-x-3.5 gap-y-3 min-[375px]:gap-x-5 sm:gap-x-6 ${className}`}>
+  if (variant === "inline") return <ul aria-label={label} className={`flex flex-wrap items-center gap-x-3.5 gap-y-3 min-[375px]:gap-x-5 sm:gap-x-6 ${className}`}>
     {clients.map((client) => <li key={client.name} className="group/logo flex h-11 items-center"><Logo client={client} scale={0.8} inline loading="eager" sizes="80px" /></li>)}
   </ul>;
-  return <ul className={`grid grid-cols-3 items-center gap-x-4 gap-y-6 sm:grid-cols-4 sm:gap-x-8 sm:gap-y-10 lg:grid-cols-6 lg:gap-x-14 lg:gap-y-12 ${className}`}>
-    {clients.map((client) => <li key={client.name} className="group/logo flex h-12 items-center justify-center sm:h-14"><Logo client={client} scale={1} /></li>)}
+  return <ul aria-label={label} className={`grid grid-cols-3 items-center gap-x-4 gap-y-6 sm:grid-cols-4 sm:gap-x-8 sm:gap-y-10 lg:grid-cols-6 lg:gap-x-14 lg:gap-y-12 ${className}`}>
+    {clients.map((client) => <li key={client.name} className="group/logo flex h-12 items-center justify-center sm:h-14"><Logo client={client} scale={1} loading="eager" /></li>)}
   </ul>;
 }
